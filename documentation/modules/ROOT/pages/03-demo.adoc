@@ -1,34 +1,508 @@
-= Solution Pattern: Name Template
+= Solution Pattern: Build an extendable Multi-Channel Messaging Platform
 :sectnums:
 :sectlinks:
 :doctype: book
+:imagesdir: ../assets/images
 
 = See the Solution in Action
 
 == Demonstration
 
-Include here content related to potential existing demos: blogs, articles, recorded videos, walkthrough guides, tutorials.
+The Demo primarily showcases how the combination of key Red Hat technologies are strategically used to deliver a cloud-native, unified collaboration platform. The concept can easily be leveraged to various other scenarios, but in this case, the demo focusses on a customer support multi-channel service.
 
-[#demo-video]
-=== Watch a demonstration
+The sections below will help you walk through the essentials of installing and running the demo. Even though many technologies are at play, the demo is straightforward to showcase centring around the following bullet points:
 
-In this video you can see xpto:
+  - Initiate a customer support session using Rocket.Chat
+  - Simulate a collaborative conversation between the customer and multiple support members (teams).
+  - Close a session and trigger the process to archive a transcript.
+  - Play a conversation using the Globex Web portal channel.
+  - Extend the platform by creating and plugging a new customer channel.
 
-video::3yULVMdqJ98[youtube, width=800, height=480]
+{empty} +
 
-Next, you can learn how to walkthrough this demo.
+== Recorded Video
+Watch the recorded video of the solution pattern, and find below instructions on how to install the demo and run it.
 
-== Run the demonstration
+video::D7CsGIaKvhc[youtube, width=800, height=480] 
 
-=== Before getting started
-To run this demo, you will need xpto. Adding to that, make sure to have:
+// [#demo-video]
+// === Watch a demonstration
 
-* ABC
-* XYZ
-* XPTO
+// Coming soon!
 
-=== Installing the demo
-Installation guide and basic test of the demo installation if needed
+== Install the demonstration
 
-=== Walkthrough guide
-How to run through the demo
+
+
+=== Prerequisites
+
+You will require:
+
+- An _OpenShift Container Platform_ cluster running version 4.15 or above with cluster admin access.
+- _Docker, Podman or Ansible_ installed and running. +
+[NOTE]
+  To run the demo's _Ansible Playbook_ to deploy it you'll need one of the above. If none of them is installed on your machine we suggest installing _Docker_ using the most recent Docker version. See the https://docs.docker.com/engine/installation/[Docker Engine installation documentation^] for further information.
++ 
+[TIP]
+  You'll find more information below on how to use _Podman_ or _Ansible_ as alternatives to _Docker_. 
+
+
+{empty} +
+
+### Provision an OpenShift environment
+
+1. Provision the following _Red Hat Demo Platform_ (RHDP) item:
++
+--
+* https://demo.redhat.com/catalog?item=babylon-catalog-prod/community-content.com-multi-channel.prod&utm_source=webapp&utm_medium=share-link[**Solution Pattern - Build an extendable Multi-Channel Messaging Platform**^]
++
+image:29-rhdp-card.png[,30%,link=https://demo.redhat.com/catalog?item=babylon-catalog-prod/community-content.com-multi-channel.prod&utm_source=webapp&utm_medium=share-link, window=_blank]
++
+[NOTE]
+=====
+* The provisioning of the RHDP card above will just prepare for you a base environment (OCP). You still need to deploy the demo by running the installation process described below. +
+* The provisioning process takes around 80-90 minutes to complete. You need to wait its completion before proceeding to the demo installation.
+=====
+--
++
+{empty} +
+
+1. Alternatively, if you don't have access to RHDP, ensure you have an _OpenShift_ environment available.
+[TIP]
+  You can obtain one by deploying the trial version available at https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it[Try Red Hat OpenShift^].
+
+{empty} +
+
+
+=== Install the demo using _Docker_ or _Podman_
+
+[TIP]
+====
+For more installation tips and alternative options to _Docker_ and _Podman_, look at the https://github.com/brunoNetId/sp-multi-channel-messaging-platform/blob/main/README.md[README^] file in the demo's GitHub repository.
+====
+
+Ensure your base _OpenShift_ environment is ready and you have all the connection and credential details with you.
+
+1. Clone this GitHub repository:
++
+[.console-input]
+[source,bash]
+----
+git clone https://github.com/brunoNetId/sp-multi-channel-messaging-platform.git
+----
+
+1. Change to the `ansible` directory (in the root project).
++
+[.console-input]
+[source,bash]
+----
+cd sp-multi-channel-messaging-platform/ansible
+----
+
+1. Configure the `KUBECONFIG` file to use (where kube details are set after login).
++
+[.console-input]
+[source,bash]
+----
+export KUBECONFIG=./kube-demo
+----
+
+1. Obtain and execute your login command from _OpenShift_'s console, or use the `oc` command line below to access your cluster.
++
+[.console-input]
+[source,bash]
+----
+oc login --username="admin" --server=https://(...):6443 --insecure-skip-tls-verify=true
+----
++
+Replace the `--server` url with your own cluster API endpoint.
++
+{empty} +
+
+1. Run the Playbook
++
+* With Docker:
++
+[.console-input]
+[source,bash]
+----
+docker run -i -t --rm --entrypoint /usr/local/bin/ansible-playbook \
+-v $PWD:/runner \
+-v $PWD/kube-demo:/home/runner/.kube/config \
+quay.io/agnosticd/ee-multicloud:v0.0.11  \
+./playbooks/install.yml
+----
+
+* With Podman:
++
+[.console-input]
+[source,bash]
+----
+podman run -i -t --rm --entrypoint /usr/local/bin/ansible-playbook \
+-v $PWD:/runner \
+-v $PWD/kube-demo:/home/runner/.kube/config \
+quay.io/agnosticd/ee-multicloud:v0.0.11  \
+./playbooks/install.yml
+----
+
+{empty} +
+
+
+== Walkthrough guide
+
+The guide below will help you to familiarise with the main components in the demo, and how to operate it to trigger the actions...
+
+{empty} +
+
+=== Quick Topology Overview
+
+Because the automated installation process reuses deployment scripts from other lab resources, the platform components are split in three main namespaces:
+
+- `globex-im-platforms`: where the main instant messaging platfroms are deployed, namely Rocket.Chat and Matrix. The Apache Camel integration for Rocket.Chat is also included here.
+
+- `globex-integrations`: where all the main Apache Camel integrations are deployed. Also in this namespace you'll find the Globex Web portal, an instance of Data Grid and S3 storage with Minio where conversation transcripts are stored.
+
+- `globex-mw`: where the AMQ Streams (Kafka) instance used by the platform is deployed.
+
+The partitioned distribution of components is not ideal to get a single easy to understand view from the OpenShift console.
+
+The picture below shows a convenient composition of all three namespaces illustration all the relationships and interactions involved in the solution.
+
+// .Topology Overview of the Platform on OpenShift
+image::14-demo-deployment-full.png[,100%]
+
+{empty} +
+
+A more schematic view which maps closely to the composition view above is the following:
+
+.Schematic Overview of the Platform on OpenShift
+image::15-demo-diagram-full.png[,100%]
+
+{empty} +
+
+=== Initiate a support session
+
+Open your _OpenShift_ console with your given admin credentials and follow the instructions below:
+
+. Select from the left menu the _Developer_ view:
+- Click the _Administrator_ button and select _Developer_ from the drop down.
+. Use the filter `globex` in the search textbox.
+. Find and select the project `globex-im-platforms`
+. Make sure you display the _Topologoy_ view (left menu)
+
+You should see a number of deployments in your screen. Find among them the _RocketChat_ application and open it by clicking the route link as shown below:
+
+image::16-demo-rocket-onboarding.png[,100%]
+
+The login window to the Rocket Chat application will show in a new tab. +
+Enter the following credentials:
+
+- **username**: `user1`
+- **Password**: `openshift`
+
+[NOTE]
+_Rocket.chat_ here represents the customer's entry point to access the support channel and have conversations with support agents. Agents are not _Rochet.chat_ users, they use other collaboration tools, elsewhere, which are also plugged to the multi-channel platform.
+
+To start a support session, select the channel created for `user1`:
+
+- `globex-support-user1`
+
+image::17-demo-rocket-channel-start.png[,100%]
+
+Then, pretend you are a customer by typing a message and sending it. +
+For example:
+
+> Hello, can I get help please?
+
+
+{empty} +
+
+Now, let's switch to the agent's system. +
+From _OpenShift_'s _Topology_ view, find the _Element_ application.
+
+[NOTE]
+_Element_ is the front facing interface application that connects to the _Matrix_ server.
+
+To open _Matrix_, click _Element_'s route link and then click `Sign in` as shown below:
+
+image::18-demo-matrix-onboarding.png[,100%]
+
+The login window to _Matrix_ will show in a new tab. +
+Enter the following credentials:
+
+- **username**: `user2`
+- **Password**: `openshift`
+
+[NOTE]
+_Matrix_ here represents the collaboration tool agents use to assist customer enquiries. Matrix is integrated with the multi-channel platform and serves in the demo to show one of many tools from where different groups and partners could connect from.
+
+As soon as you login, on the left panel of the window, you'll see an entry in your list of invites:
+
+- `rocketchat-user1`
+
+The invite was generated the moment the customer sent the initial message to request assistance.
+
+Accept the invitation by following the actions below illustrated:
+
+image::19-demo-matrix-invite-accept.png[,100%]
+
+Once accepted, you'll see the message the customer sent (from _Rocket.chat_) in the main conversation area.
+
+To follow with the simulated conversation, now pretend you are the support agent and type back a welcome message. +
+For example:
+
+- Agent (1st line):
++
+--
+> Hi, what can I do for you today?
+-- 
+
+The diagram below illustrates the end-to-end traffic flow you've just enacted:
+
+.Data flow between customer and 1st line support
+image::20-demo-diagram-flow-first-line.png[,100%]
+
+
+
+{empty} +
+
+
+=== Simulate simultaneous Support teams
+
+The _Solution Pattern_ proposes a platform where multiple communication systems, internal and external, are integrated.
+
+However, on the agent's end, the demo only includes one system (_Matrix_). It's not ideal, but it doesn't stop us from simulating different groups participating in the same support session.
+
+
+
+// However, the demo only includes one (_Matrix_) from where support agents operate, not ideal, but still allows us to simulate different groups participating in the same support session.
+
+Earlier, the first team to respond was _"1st line Support"_. Now we introduce a new agent, member of the _"Technical Support"_ team.
+
+[NOTE]
+Since we just have _Matrix_, let's just pretend the _Technical Support_ team is connecting from a different IM system, not _Matrix_. From the demo's perspective nothing changes.
+
+Let's resume the conversation between the customer and the support teams. 
+
+Go back to _Rocket.chat_, put your customer's hat on, and describe the problem to the agent, for example:
+
+- Customer:
++
+--
+> When I browse the products, the wheel keeps spinning.
+--
+
+When the message is sent and the agent reads it in _Matrix_, he answers and explains the technical team will take over:
+
+- Agent (1st line):
++
+--
+> Please wait a moment, a member of the technical team will assist.
+--
+
+{empty} +
+
+Now, from the _OpenShift Developer_ view, you will open a new window from where the new technical agent will communicate.
+
+From _OpenShift_'s _Topology_ view, find the _Element_ application.
+
+Open your _OpenShift_ console with your given admin credentials and follow the instructions below:
+
+. Make sure you display the _Topologoy_ view (left menu)
+. Find and select the project `globex-integrations`
+
+From your _Topology_ view, open _Matrix_ by following the actions below described:
+
+[TIP]
+We open _Element_ in an _Incognito_ window to avoid entering in conflict with your previous _Matrix_ session.
+
+. Click the _Element_ deployment disc
+. Find and click the `Resources` tab
+. Copy the _Route_ URL
+. Open an incognito window and paste the URL address
+. Enter the Sign-In process in _Element_
+
+You should end up viewing the Login prompt as shown below:
+
+image::23-demo-incognito-login.png[,100%]
+
+[IMPORTANT]
+Make sure you use a different username to simulate the _"Technical Support"_ agent, for example `user3`.
+
+- **username**: `user3`
+- **Password**: `openshift`
+
+Again, you'll find in the left panel an invite to the room where the customer is being attended:
+
+- `rocketchat-user1`
+
+Accept the invitation by following the actions below illustrated:
+
+image::24-demo-matrix-invite-accept-technical.png[,100%]
+
+Once accepted, you'll see the entire conversation history.
+
+Now pretend you are the technical agent and respond to the customer. +
+For example:
+
+- Agent (technical team):
++
+--
+> Hi, I'm from the technical team. We just completed an update, please try again.
+--
+
+When you send the response, it should pop up in _Rocket.chat._
+
+In the _Rocket.chat_ channel you'll see now responses from 2 different agents. The first was a _"1st line Support"_ agent, and the second a _"Technical Support"_ agent.
+
+[NOTE]
+As previously explained, in the demo, both agents are connecting from _Matrix_, but the _Solution Pattern_ allows other IM platforms to plug in.
+
+Let's assume the problem was resolved and the customer responds with:
+
+- Customer:
++
+--
+> Thanks, I confirm I can now browse the products.
+--
+
+The diagram below illustrates the end-to-end traffic flow you've recreated involving the _Technical Support_ team:
+
+.Data flow between customer and technical support
+image::21-demo-diagram-flow-technical.png[,100%]
+
+
+{empty} +
+
+
+=== Close the session and archive the conversation
+
+One of the features the Solution Pattern showcases is the ability to integrate pluggable services in the background.
+
+To demonstrate the ability to plugin services, we've implemented an integration process that reacts when a customer support session ends. When a conversation is closed, the process listens to the signal and generates a transcript and is pushed to object storage (S3).
+
+[NOTE]
+The background context is that the organisation is obligated to meet certain security policies and Government regulations. All communications need to be kept for a certain period to comply with the established data retention policies.
+
+The diagram below illustrates what happens when the customer session ends.
+
+.Session playbacks to persist conversations
+image::11-arch-archiving-persist.jpeg[,90%]
+
+Kafka is used to replay customer/agent messages. The figure above shows traffic directed to kafka and consumed, processed and persisted by Camel. 
+
+Let's now see the functionality in action by ending the customer support session.
+
+From the _Matrix_ system, pretend you're the technical agent and send the following message to the customer:
+
+- Agent (technical team):
++
+--
+> Anything else I can do for you?
+--
+
+As the customer, you could follow with:
+
+- Customer:
++
+--
+> No, thanks for your assistance.
+--
+
+And then for politeness, the agent could respond:
+
+- Agent (technical team):
++
+--
+> You're welcome, I will close now the conversation.
+--
+
+{empty} +
+
+Once this formal chit-chat out of the way, from _Matrix_ follow the actions below to close the room:
+
+. In the left panel, right click the room
+. Click `Leave`
+
+image::25-demo-matrix-channel-leave.png[,50%]
+
+When prompted, click `Leave` in the confirmation window.
+
+Not only the actions above close the conversation in _Matrix_, but also, in the background, it triggers the process to generate and archive the transcript.
+
+In a matter of seconds, the customer receives a message in Rochet.chat with a link to the transcript.
+
+Click the `PDF transcript` to open it in your browser, as illustrated below.
+
+.Link to transcript in Rockat.chat
+image::26-demo-rchat-transcript.png[,100%]
+
+What the process did when the conversation was closed was the following sequence of actions:
+
+. Replay the full stream of messages stored in Kafka
+. Aggregate the messages
+. Format the content in PDF
+. Push the PDF file to S3 storage
+. Obtain a shareable URL of resource in S3
+. Send a message to Rocket.chat to share the URL
+
+The diagram below describes the processes involved:
+
+.Data flow to deliver transcript to customer
+image::22-demo-diagram-flow-transcript.png[,100%]
+
+{empty} +
+
+
+
+=== Get support from the Web Portal channel
+
+Up until now, all your customer interactions have been done from Rocket.Chat, but this is a multi-channel platform.
+
+Let's try out the support service from the Globex Web Portal.
+
+Open your _OpenShift_ console with your given admin credentials and follow the instructions below:
+
+. Make sure you display the _Topologoy_ view (left menu)
+. Find and select the project `globex-integrations`
+
+You should see a number of deployments in your screen. Find among them the _Globex Web_ application and follow the actions below described:
+
+. Click the route link from the `globex-web` deployment.
+. In the web page, find the `Login` option in the top bar and click it
+. You will be proxied to the Single-Sign-On window.
++
+--
+Enter the following credentials:
+
+- **username**: `asilva`
+- **Password**: `openshift`
+--
++
+. Click the _Chat_ blue icon
+
+
+image::27-demo-globex-login.png[,100%]
+
+
+After completing the above steps (as illustrated), you should be presented with the Globex Web Chat interface where you can type in messages to the support team.
+
+In the Chat window, exchange a few messages with the support team, and end the conversation as previously done with the Rocket.chat example.
+
+The diagram below shows how data flows via the Globex Web integration.
+
+.Data flow between Globex and support
+image::30-demo-diagram-flow-globex.png[,100%]
+
+
+
+Below you have a sample conversation and the transcript produced out of it.
+
+image::28-demo-globex-conversation.png[,100%]
+
+
+{empty} +
+
+Well done! You have iterated the _Product Catalogue_ to include new articles on offer.
+
+

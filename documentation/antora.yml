@@ -1,5 +1,5 @@
-name: solution-pattern-template
-title: Template Tutorial
+name: solution-pattern-multi-channel-support-service
+title: 'Event-Driven Multi-Channel Support Service'
 version: master
 nav:
   - modules/ROOT/nav.adoc

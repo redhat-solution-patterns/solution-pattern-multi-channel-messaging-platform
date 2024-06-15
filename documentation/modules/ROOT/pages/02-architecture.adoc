@@ -1,7 +1,8 @@
-= Solution Pattern: Name Template
+= Solution Pattern: Build an extendable Multi-Channel Messaging Platform
 :sectnums:
 :sectlinks:
 :doctype: book
+:imagesdir: ../assets/images
 
 = Architecture 
 
@@ -9,96 +10,231 @@ Introduction for the architecture of this solution pattern.
 
 == Common Challenges 
 
+To better explain and detail the reasons for the existence of this solution pattern we’ll picture some common needs and challenges amongst organizations that already have production systems and seeks innovation and modernization.
+
+- Complex connectivity to enable end to end communication flows
+- Continuous organisational changes and acquisitions constantly changing the landscape of communication parties.
+- Fast changing communication trends between users and providers.
+- Data retention policies in communications.
+- Compliance with government regulations, data privacy and security.
+
+
+// .AI/ML lifecycle for the Edge.
+// image::02-AIML-lifecycle.png[,80%]
+
+// As organizations continue to grapple with massive amounts of data being generated from sources ranging from device edge to off-site facilities and public and private cloud environments, data managers are encountering a new challenge: how to properly ingest and process that data to receive actionable intelligence in a timely manner.
+
+// With fresh, relevant data, businesses can learn effectively and adapt to changing customer behavior. However, managing vast amounts of ingested data  and preparing to make that data ready as soon as possible—preferably in real time—for analytics and artificial intelligence and machine learning (AI/ML), is extremely challenging for data engineers.
+
 [#tech_stack]
 == Technology Stack
 
-// Change links and text here as you see fit.
-* Red Hat supported products
-** https://www.redhat.com/en/technologies/cloud-computing/openshift[Red Hat OpenShift]
-** Red Hat Application Foundation
-*** https://access.redhat.com/products/quarkus[Quarkus]
-*** https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-streams-for-apache-kafka[Kafka Streams]
-* Other open source products:
-** https://www.postgresql.org/[PostgreSQL database]
-** https://helm.sh/[Helm]
+Red Hat® OpenShift® Container Platform, Red Hat OpenShift Data Foundation, Red Hat Application Foundations, and other tools can help automate the workflow of data ingestion, preparation, and management building data pipelines for hybrid cloud deployments that automate data processing upon acquisition.
 
+// === Red Hat Technology
+
+// Change links and text here as you see fit.
+* https://www.redhat.com/en/products/application-foundations[Red Hat Application Foundations,window=_blank]
+** *https://developers.redhat.com/products/redhat-build-of-apache-camel[Red Hat build of Apache Camel,window=_blank]:* Utilize the integration capabilities of Apache Camel and its vast component library in the Quarkus runtime, optimizing for peak application performance with fast start up time.
+** *https://access.redhat.com/products/red-hat-amq#broker[AMQ Broker,window=_blank]:* Pure-Java multi-protocol message broker. It’s built on an efficient, asynchronous core with a fast native journal for message persistence and the option of shared-nothing state replication for high availability.
+** *https://access.redhat.com/products/red-hat-amq#streams[AMQ Streams,window=_blank]:* Based on the Apache Kafka project, AMQ Streams offers a distributed backbone that allows microservices and other applications to share data with extremely high throughput and extremely low latency.
+** *https://developers.redhat.com/products/red-hat-data-grid[Red Hat Data Grid,window=_blank]:* An intelligent, distributed caching solution that boosts application performance, provides greater deployment flexibility, and minimizes the overhead of standing up new applications.
+* https://www.redhat.com/en/technologies/cloud-computing/openshift[Red Hat OpenShift,window=_blank]
+* https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation[Red Hat OpenShift Data Foundation]
+
+{empty} +
 
 [#in_depth]
 == An in-depth look at the solution's architecture
 
-Technical description including all or some of the following: architecture ir ed diagrams. In-depth details of the decisions made and solutions used. Description of each service and what it is used for. Description of any integration.
+The complete architecture diagram below illustrates all the technologies at play providing a pluggable and scalable platform.
 
-=== Using images 
+.Full Architecture Overview
+image::04-architecture-full.png[,90%]
 
-image::red_hat_open-hybrid-cloud.png[width=30%]
+{empty} +
 
-{empty}
+=== Diagram overview
 
-=== Embedding HTML
+The diagram above is divided in 2 blocks:
 
-++++
-  <br>
-  <h3> Embed HTML by surrounding it with with four +s before and after. </h3>
-  <span>View the ascii doc to learn more</span>
-  <br> 
-++++
-
-
-=== Different decorators
-
-[TIP]
-====
-This is a Tip
-====
-
+- The top group hosts all IM (Instant Messaging) platforms showcased in the demo, plus their associated integration processes (with Apache Camel) to plug in to the architecture. Also included in the same namespace you'll find AMQ messaging technologies (AMQ Streams and AMQ Broker).
++
 [NOTE]
-====
-This is a NOTE
-====
+The picture would look different if applying the solution pattern to external messaging platforms such as _Slack, Discord or WhatsApp_. Whether  internally or externally hosted, the core architecture would remain the same, their location is just a technical detail.
 
-[WARNING]
-====
-This is a WARNING
-====
+- The bottom group is dedicated to host API driven applications that plug in the architecture. Their respective Camel integrations are  co-located with them. Also included you'll find additional Red Hat capabilities such as Data Caching (with Data Grid) and Object Storage (S3 with OpenShift Data Foundation) to support the architecture's needs (more detail below).
 
-[IMPORTANT]
-====
-This is IMPORTANT
-====
+The sections below further detail the characteristics of this architecture.
 
+{empty} +
 
-=== Creating  tables
- 
-[cols="1a,1a,1a"]
-|===
-| *Column A*  | Column *A* | _Column C_
-|
-* Lorem Ipsum
-* Lorem Ipsum
+=== Scalability
 
-|
-* Lorem Ipsum
-* Lorem Ipsum
+Under increasing volumes of traffic, the architecture is conceived to allow each individual component to scale horizontally.
 
-|
-* Lorem Ipsum
-* Lorem Ipsum
-|===
+For example, let's assume the aggregation of input channels results in an increased overall output towards the agent's platform where the support team attends customers. We are referring to Matrix in the diagram below (could also be Discord, WhatsApp or similar). 
 
 
-
-=== Content that can be copied
-
-Click below to copy the content
-[.console-input]
-[source,shell script]
-----
-oc version #openshift cli client
-oc login --token=<token> --server=<server>
-----
+.Scaling outbound traffic
+image::05-scalability-target.png[,90%]
 
 
-[#more_tech]
-== About the Technology Stack
+We trust the target IM platform's scalability capabilities under big volumes of traffic. Popular platforms are known to handle millions of messages per second. From our platform's perspective, we can scale the Camel integration to Matrix by increasing the number of replicas. All Camel instances subscribe to the same queues in the AMQ platform. AMQ load-balances (by design) all the traffic between available subscribers and Camel forwards messages to the target platform using their scalable client API specification.
 
-If you want to include more details about the tech stack you used, this is the place.
+In the same diagram above you'll see _Red Hat Data Grid_ (Cache) acting as a backing capability to support and help correlate asynchronous communications between customers and support agents. Data Grid is extremely scalable by design and fit for cloud-native environments.
+
+The same is true for Red Hat AMQ, used in the architecture is the underlying asynchronous messaging capability to decouple the architecture as per the section that follows.
+
+In summary, all the components shown in _Figure 1_ plug and behave with scalability in mind.
+
+{empty} +
+
+=== Decoupled Architecture
+
+Connecting data sources and destinations is not a trivial challenge,  particularly when the number of integrations grows.
+
+For simple one-to-one flows, a single process can handle the data mappings required for both request and response directions. Data needs to be translated from the origin's data format to the target's data format.
+
+However, things get complex, exponentially fast, when we start plugging in source and target systems. This is due to the cross data translations required between all different systems.
+
+.One-to-one connectivity
+image::06-arch-no-decoupling.png[,50%]
+
+In the diagram above, a one-to-one strategy renders the architecture unable to cope as new systems are added to the platform. Every system requires to be translated to every other system.
+
+To solve this complexity, the architecture is decoupled by introducing asynchronous messaging with _Red Hat AMQ_ and adopting a star configuration, as the figure below illustrates.
+
+.Decoupled architecture
+image::07-arch-decoupling.png[,50%]
+
+The strategy to transform data between all participant systems in the platform is to adopt a common data schema that mediates between all of formats, reducing the number of data mappings to a manageable degree.
+
+.Common Schema for data exchanges
+image::08-arch-common-schema.png[,90%]
+
+The diagram above illustrates source messages (_In_) in their original format, then transformed in the common format and placed in the message broker (_AMQ_), and finally converted to the target format (_Out_) when sent to the destination system. 
+
+{empty} +
+
+=== Extensibility
+
+A decoupled approach makes the platform very easy to extend. Once you have defined the common schema as a means to interface with other systems, adding new ones to the platform becomes almost effortless.
+
+For example, if the platform wants to be extended to include a popular IM platform, all that is required is to define the integration piece that translates IN/OUT messages to/from the common schema.
+
+.Extending the platform with new IM
+image::09-arch-extend-im.png[,90%]
+
+In the above diagram, the *(?)* system represents the new IM platform to be plugged in. Connecting and integrating using Camel, as represented in the picture, supposes no impact or additional changes in the existing platform.
+
+The solution's demo also integrates the Globex's Web portal (see below), where an embedded Chat widget uses an API to connect to the platform via a _Camel_ integration.
+
+Similarly, if you wanted to extend the platform to include new API-based channels or services, adding them in would be straight-forward.
+
+.Extending the platform with new API-based system
+image::10-arch-extend-api.png[,90%]
+
+In the picture above, the *(?)* system represents the new system added in and connecting via an API exposed by a _Camel_ system.
+
+
+
+{empty} +
+
+=== Caching
+
+One crucial component in the architecture is _Red Hat Data Grid_, which is based on the open source project _Infinispan_.
+
+_Data Grid_ provides caching capabilities. In the context of this _Solution Pattern_, because it has a decoupled architecture and is event-driven, events freely flow in a non-blocking manner with no active waits for responses. Processes consume these events and react to them by firing new events/messages.
+
+Caching provides the capability to temporarily store the context of these communications. _Apache Camel_ can retrieve contextual information from _Data Grid_ to correlate the information.
+
+.Context Caching with Data Grid
+image::12-arch-caching.png[,50%]
+
+The picture above represents the role of _Apache Camel_ and _Data Grid_ to perform customer/agent context read/writes.
+
+To illustrate the different stages of a support interaction between a customer an an agent, the following actions take place:
+
+- When a new customer/agent session starts there is initially no context available, one has to be created. This is done with a PUT operation.
+
+- Agents attend customer queries from their IM platform (_Matrix_) by responding in their chat window. Camel finds out how to connect the response message to the originating customer by obtaining the contextual information from the caching layer. This is done with a GET operation.
+
+- More GET operations are performed, while both customer and agents exchange messages, to route the traffic back and forth.
+
+- When the case is resolved, _Apache Camel_ receives a signal and closes the conversation with a series of actions, including the context removal from _Data Grid_. This is done with a REMOVE operation. 
+
+
+{empty} +
+
+=== Transcript Archiving
+
+A requirement the solution pattern also covers is the capability to persist communication exchanges. By doing so, additional capabilities can be factored in to implement extra requirements, for example to meet data retention policies or to comply with government regulations to satisfy security and data privacy measures.
+
+A key capability in the solution is AMQ Streams (Kafka). For every exchange traversing the platform, copies are sent to Kafka.
+
+Looking more in detail into the different stages included in the architecture we find the processes writing conversations into object storage.
+
+.Session playbacks to persist conversations
+image::11-arch-archiving-persist.jpeg[,90%]
+
+Kafka is used to replay customer/agent messages. The figure above shows traffic directed to kafka and consumed, processed and persisted by Camel. 
+
+
+{empty} +
+
+// [#more_tech]
+// == Additional notes about the Technologies
+
+// === Red Hat Service Interconnect
+
+// The Solution Pattern connects (_Near_) _Edges_ to a _Core Data Centre_ with Red Hat Service Interconnect.
+
+// Red Hat Service Interconnect simplifies application connectivity across the hybrid cloud. Unlike traditional means of interconnectivity (such as VPNs combined with complex firewall rules), development teams can easily create interconnections without elevated privileges and deliver protected links without compromising the organization's security or data.
+
+// Applications and services across your environments can communicate with each other using Red Hat Service Interconnect as if they were all running in the same site. This connectivity can be maintained even as applications are migrated between environments.
+
+// In the _Solution Pattern_, when _Edge_ systems interact with _Core_ systems, they don't need to configure remote endpoints. _Service Interconnect_ bridges the connectivity between the two sites and exposes remote _Core_ services as local ones to _Edge_, as illustrated in the image below.
+
+// image::30-service-interconnect.png[]
+
+// === Edge Computing
+
+// [NOTE]
+// Although not explicitly implemented in the Solution Pattern's demonstration, the following sections discusses topics very relevant to our _Solution Pattern_.
+
+// https://www.redhat.com/en/topics/edge-computing/what-is-edge-computing[Edge computing] shifts computing power away from core data-centers and distributes it closer to users and data sources—often across a large number of locations, providing faster response times, more reliable services, and a better application experience back to users.
+
+
+// ==== What is Red Hat Device Edge?
+
+// Red Hat® Device Edge extends operational consistency across edge and hybrid cloud environments, no matter where devices are deployed in the field. Red Hat Device Edge combines enterprise-ready lightweight Kubernetes container orchestrations using MicroShift with Red Hat Enterprise Linux® to support different use cases and workloads on small, resource-constrained devices at the farthest edge.
+
+// MicroShift comes as an RPM software package that you can add to the blueprint of your system images when needed. Include your Kubernetes workloads, too, if you want. They will be deployed the next time you roll out updates to your devices. Red Hat Device Edge with MicroShift runs on Intel and Arm systems as small as 2 CPU cores and 2GB RAM.
+
+// MicroShift also provides OpenShift’s APIs for security context constraints and routes, but to reduce footprint we’ve removed APIs that are only useful on build clusters or clusters with multi-user interactive access. We’ve also removed Operators responsible for managing the operating system updates and configuration or orchestrating control plane components, as they are not needed in the MicroShift model.
+
+// .Red Hat Device Edge Technical Overview.
+
+// image::02-device-edge.png[,60%]
+
+// [TIP]
+// Learn more about Red Hat Device Edge collaborations with https://www.redhat.com/en/about/press-releases/lockheed-martin-red-hat-collaborate-advance-artificial-intelligence-military-missions[Lockheed Martin] and https://www.redhat.com/en/about/press-releases/abb-and-red-hat-partner-deliver-further-scalable-digital-solutions-across-industrial-edge-and-hybrid-cloud[ABB].
+
+// {empty} +
+
+// === Single Node Apache Kafka Broker
+
+// The Red Hat® AMQ streams component is a massively scalable, distributed, and high-performance data streaming platform based on the Apache Kafka project. It offers a distributed backbone that allows microservices and other applications to share data with high throughput and low latency. 
+
+// The latest AMQ Streams release introduces the new `UseKRaft` feature gate. This feature gate provides a way to deploy a Kafka cluster in the KRaft (Kafka Raft metadata) mode without ZooKeeper. This feature gate is currently in an experimental stage, but it can be used for development and testing of AMQ Streams and Apache Kafka.
+
+// .KRaft architecture for Kafka..
+
+// image::02-kafka-kraft-cluster.png[,60%]
+
+// ****
+// With KRaft, we can deploy a single node Kafka broker that also serves as the controller. All of the advantages of stream processing in a small footprint.
+// ****
+
+// end::arch-in-depth[]

@@ -1,7 +1,133 @@
+:imagesdir: ../assets/images
+
+[#use-cases]
+== Use cases
+
+Common use cases that can be address with this architecture are:
+
+- Creation of a multi-channel support service
+- Creation of a unified corporate instant messaging platform
+- Creation of a communications hub for sales agents
+- Storage enablement to persist communication exchanges between participants. 
+- Compliance with Government regulatory communication policies.
+- Generate and share transcript documents.
+- Pluggable architecture to enable future platform capabilities.
+
+
+{empty} +
+
+// [#_the_story_behind_this_solution_pattern]
 == The story behind this solution pattern
 
-A description of the story that was used to build the demo and architectures of this SP.
+Any organisation nowadays generally has support teams attending customer queries/problems. Some of these organisations are large and involve numerous departments, groups and partners.
 
+The picture below illustrates an example where a customer has to liaise with multiple support teams that are independent from each other.
+
+
+// PICTURE:
+// scenario problem
+
+// I don't find a way to center the image with the line below
+image::01-scenario-problem.png[width=60%]
+
+// I use a passthrough as a workaround
+// ++++
+// <p align="center">
+// 	<img src="_images/06-product-timeline.png" alt="06 product timeline" width="70%">
+// </p>
+// ++++
+
+
+The problem that arises from above is that it is common for support teams to redirect customers and delegate the resolution of problems to other (internal or external) groups or departments. Under such scenario the customer ends up having to navigate different sites and systems in order to obtain a final solution.
+
+This Solution Pattern proposes an implementation to build a platform that addresses similar scenarios by unifying all platforms as one, and plug in additional services associated with those interactions. The platform would provide new collaboration possibilities and new capabilities to help complying with government regulations, like data privacy and security.
+
+image::02-scenario-solution.png[width=60%]
+
+The picture above illustrates a system that integrates all platforms and allows communication exchanges between different members from unrelated entities, including systems from where customers communicate.
+
+Under such solution, customers and support agents would be abstracted from other internal/external platforms and would simply participate as global members of one unified platform.
+
+
+
+
+
+
+// Any organisation nowadays generally has a support team to attend customer queries or/and resolve problems. In an effort to get closer to the customer, companies offer a variety of channels for users to choose from when contacting the Support team. For example, a customer enquiring about a certain product, could do so by using the official portal's chat window, or via a dedicated App from their handsets, or by using an Instant Message application such as WhatsApp.
+
+// The challenge to build a Multi-Channel platform is to come up with an open and flexible architecture that allows to easily integrate external and internal communication systems.
+
+// The Multi-Channel Support Service is a platform that allows customers to choose between different channels to contact the support team. The platform has a pluggable architecture that allows new channels to be added in.
+
+{empty} +
+
+[#_the_solution]
 == The Solution
 
-This is a summary of the solution
+As an added initiative to the digital transformation, Globex, a fictitious retail store, wants to implement a new, all digital, support service where customers can get instant help from a team of support agents. The goal is to build a pluggable event-driven architecture that allows multiple communication channels and services to integrate with ease to the platform.
+
+See below a simplified representation of the solution:
+
+.Event-Driven architecture (high-level view)
+image::03-architecture-high-level.png[width=100%]
+
+
+The platform integrates, in its first iteration, three communication channels. On one end (left in the diagram, Rocket.Chat and Globex's embedded IM chat), two distinct customer facing platforms , and on the other end, an agent’s channel (right in the diagram, a Matrix-based messenger app).
+
+[NOTE]
+Rocket.Chat and Matrix are open-source implementations of direct messaging platforms. While not as popular or ubiquitous as WhatsApp or Discord for example, they can be installed on an OpenShift cluster and do not require registration, making them more suitable for our solution pattern demo environment.
+
+The multi-channel platform is supported by a variety of technologies provided by Red Hat Application Foundations that enable key capabilities like event-driven processing, decoupled architecture, scalability, persistence and easy to extensibility to accommodate new channels and services.
+
+// For convenience, the solution pattern uses Rocket.Chat as a customer facing open-source instant messaging platform. In a real world, systems like WhatsApp, Discord or Telegram, would be a better fit due to their popularity and large adoption. 
+
+[TIP]
+Please see the xref:02-architecture.adoc[Architecture] section for more details on the technologies involved and architecture diagrams.
+
+{empty} +
+
+[#_collaborative_interaction]
+== Collaborative interaction
+
+Because instant messaging platforms are not only designed for private one-to-one communications but also for plural conversations with many participants in a room or channel. 
+
+Instant messaging platforms are generally designed both private one-to-one communications and also plural conversations with many participants in a room or channel. 
+
+Not only the Solution Pattern proposes a platform where multiple IM systems are connected, but also includes collaborative one-to-many support sessions, meaning a customer being helped by multiple agents if necessary. The diagram below illustrates the proposal.
+
+.Collaborative support sessions
+image::13-scenario-collaborative-support.png[width=100%]
+
+Notice in the figure above the following concepts:
+
+- Customers can access the support line from various available channels. In the picture above they can use _Rocket.Chat_ or the chat widget in the _Globex_ web portal.
+
+- The _Unified Platform_ not only integrates the customer access points but also a series of instant messaging platforms from where different support teams can interact. For illustration purposes, the figure shows _Matrix_ and other very popular IMs available in the market.
+
+- Lastly, when a customer requests assistance, for example from _Rocket.Chat_ as in the diagram above, it can get help from more than one team at a time. First, a 1st line of support team might welcome the customer to understand the initial problem. Because the issue is of technical nature, the technical support team gets involved.
++
+{empty} +
++
+[NOTE]
+For simplicity, the demo in the _Solution Pattern_ only includes _Matrix_ as the access points for support agents. Consider the different support members in _Matrix_ as belonging to different support groups (1st line, technical, delivery, etc).
+
+
+// Customers (left) can choose to contact Globex via its Web portal or via a channel in Rocket.Chat, available on-line (using a browser). At the other end of the line, the team of agents (right) providing support services for Globex will use Matrix as their communication platform.
+
+
+
+// {empty} +
+
+// I don't find a way to center the image with the line below
+// image::06-product-timeline.png[width=40%]
+
+// I use a passthrough as a workaround
+// ++++
+// <p align="center">
+// 	<img src="_images/06-product-timeline.png" alt="06 product timeline" width="70%">
+// </p>
+// ++++
+
+
+
+{empty} +
