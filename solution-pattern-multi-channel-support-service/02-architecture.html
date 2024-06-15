@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Solution Pattern: Build an extendable Multi-Channel Messaging Platform :: Solution Patterns for Cloud Native Architectures</title>
+    <link rel="canonical" href="https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-multi-channel-support-service/02-architecture.html">
+    <link rel="prev" href="index.html">
+    <link rel="next" href="03-demo.html">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../_/css/site.css">
+<link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" style="font-size: 20px; color: white"
+        href="https://redhat-solution-patterns.github.io/solution-patterns">
+        <img src="../_/img/logo.png" height="35px" alt="Solution Patterns">&nbsp; Solution Patterns for Cloud Native Architectures</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Architectures &amp; Patterns</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://www.redhat.com/architect/portfolio/" target="_blank">Portfolio Architecture&nbsp; </a>
+            <a class="navbar-item" href="https://redhat-solution-patterns.github.io/solution-patterns/patterns.html"  target="_blank">Solution Patterns </a>
+            <a class="navbar-item" href="https://validatedpatterns.io/" target="_blank">Validated Patterns&nbsp;</a>
+            <a class="navbar-item" href="https://catalog.redhat.com/solutions" target="_blank">Ecosystem Solutions&nbsp;</a>
+          </div>
+        </div>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" target="_blank" href="https://developers.redhat.com">Red Hat Developers</a>
+            <a class="navbar-item" target="_blank" href="https://developers.redhat.com/app-dev-platform">App Dev Platform</a>
+            <a class="navbar-item" target="_blank" href="https://www.redhat.com/en/products/application-foundations">Red Hat Application Services</a>
+          </div>
+        </div>
+
+          <a class="navbar-item" target="_blank" href="https://github.com/redhat-solution-patterns/redhat-solution-patterns.github.io/issues">Feedback</a>
+          <a class="navbar-item" target="_blank" href="https://redhat-solution-patterns.github.io/solution-patterns/contributors-guide.html">Contribute</a>
+
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="solution-pattern-multi-channel-support-service" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html" class=" query-params-link">Event-Driven Multi-Channel Support Service</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">1. Home page</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#use-cases">1.1 Use cases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#_the_story_behind_this_solution_pattern">1.2 The story behind this solution pattern</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#_the_solution">1.3 The solution</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="02-architecture.html">2. Architecture</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#_common_challenges">2.1. Common challenges</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#tech_stack">2.2. Technology stack</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#in_depth">2.3. An in-depth look at the solution&#8217;s architecture</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#_diagram_overview">2.3.1. Diagram Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#_scalability">2.3.2. Scalability</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#_decoupled_architecture">2.3.3. Decoupled Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#_extensibility">2.3.4. Extensibility</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#_caching">2.3.5. Caching</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#_transcript_archiving">2.3.6. Transcript Archiving</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="03-demo.html">3. See the Solution in Action</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-demo.html#_demonstration">3.1 Demonstration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-demo.html#_recorded_video">3.2 Recorded Video</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-demo.html#_install_the_demonstration">3.3. Install the demonstration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-demo.html#_walkthrough_guide">3.4. Walkthrough guide</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="04-devresources.html">4. Developer Resources</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://redhat-solution-patterns.github.io/">5. Other Red Hat Solution Patterns</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Event-Driven Multi-Channel Support Service</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Event-Driven Multi-Channel Support Service</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Event-Driven Multi-Channel Support Service</a></li>
+    <li><a href="02-architecture.html">2. Architecture</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/redhat-solution-patterns/solution-pattern-multi-channel-messaging-platform/edit/main/documentation/modules/ROOT/pages/02-architecture.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Solution Pattern: Build an extendable Multi-Channel Messaging Platform</h1>
+<h1 id="_architecture" class="sect0"><a class="anchor" href="#_architecture"></a><a class="link" href="#_architecture">Architecture</a></h1>
+<div class="openblock partintro">
+<div class="content">
+Introduction for the architecture of this solution pattern.
+</div>
+</div>
+<div class="sect1">
+<h2 id="_common_challenges"><a class="anchor" href="#_common_challenges"></a><a class="link" href="#_common_challenges">1. Common Challenges</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To better explain and detail the reasons for the existence of this solution pattern we’ll picture some common needs and challenges amongst organizations that already have production systems and seeks innovation and modernization.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Complex connectivity to enable end to end communication flows</p>
+</li>
+<li>
+<p>Continuous organisational changes and acquisitions constantly changing the landscape of communication parties.</p>
+</li>
+<li>
+<p>Fast changing communication trends between users and providers.</p>
+</li>
+<li>
+<p>Data retention policies in communications.</p>
+</li>
+<li>
+<p>Compliance with government regulations, data privacy and security.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="tech_stack"><a class="anchor" href="#tech_stack"></a><a class="link" href="#tech_stack">2. Technology Stack</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Red Hat® OpenShift® Container Platform, Red Hat OpenShift Data Foundation, Red Hat Application Foundations, and other tools can help automate the workflow of data ingestion, preparation, and management building data pipelines for hybrid cloud deployments that automate data processing upon acquisition.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.redhat.com/en/products/application-foundations" target="_blank" rel="noopener">Red Hat Application Foundations</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><a href="https://developers.redhat.com/products/redhat-build-of-apache-camel" target="_blank" rel="noopener">Red Hat build of Apache Camel</a>:</strong> Utilize the integration capabilities of Apache Camel and its vast component library in the Quarkus runtime, optimizing for peak application performance with fast start up time.</p>
+</li>
+<li>
+<p><strong><a href="https://access.redhat.com/products/red-hat-amq#broker" target="_blank" rel="noopener">AMQ Broker</a>:</strong> Pure-Java multi-protocol message broker. It’s built on an efficient, asynchronous core with a fast native journal for message persistence and the option of shared-nothing state replication for high availability.</p>
+</li>
+<li>
+<p><strong><a href="https://access.redhat.com/products/red-hat-amq#streams" target="_blank" rel="noopener">AMQ Streams</a>:</strong> Based on the Apache Kafka project, AMQ Streams offers a distributed backbone that allows microservices and other applications to share data with extremely high throughput and extremely low latency.</p>
+</li>
+<li>
+<p><strong><a href="https://developers.redhat.com/products/red-hat-data-grid" target="_blank" rel="noopener">Red Hat Data Grid</a>:</strong> An intelligent, distributed caching solution that boosts application performance, provides greater deployment flexibility, and minimizes the overhead of standing up new applications.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift" target="_blank" rel="noopener">Red Hat OpenShift</a></p>
+</li>
+<li>
+<p><a href="https://www.redhat.com/en/technologies/cloud-computing/openshift-data-foundation">Red Hat OpenShift Data Foundation</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="in_depth"><a class="anchor" href="#in_depth"></a><a class="link" href="#in_depth">3. An in-depth look at the solution&#8217;s architecture</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The complete architecture diagram below illustrates all the technologies at play providing a pluggable and scalable platform.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/04-architecture-full.png" alt="04 architecture full" width="90%">
+</div>
+<div class="title">Figure 1. Full Architecture Overview</div>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+<div class="sect2">
+<h3 id="_diagram_overview"><a class="anchor" href="#_diagram_overview"></a><a class="link" href="#_diagram_overview">3.1. Diagram overview</a></h3>
+<div class="paragraph">
+<p>The diagram above is divided in 2 blocks:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The top group hosts all IM (Instant Messaging) platforms showcased in the demo, plus their associated integration processes (with Apache Camel) to plug in to the architecture. Also included in the same namespace you&#8217;ll find AMQ messaging technologies (AMQ Streams and AMQ Broker).</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The picture would look different if applying the solution pattern to external messaging platforms such as <em>Slack, Discord or WhatsApp</em>. Whether  internally or externally hosted, the core architecture would remain the same, their location is just a technical detail.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>The bottom group is dedicated to host API driven applications that plug in the architecture. Their respective Camel integrations are  co-located with them. Also included you&#8217;ll find additional Red Hat capabilities such as Data Caching (with Data Grid) and Object Storage (S3 with OpenShift Data Foundation) to support the architecture&#8217;s needs (more detail below).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The sections below further detail the characteristics of this architecture.</p>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_scalability"><a class="anchor" href="#_scalability"></a><a class="link" href="#_scalability">3.2. Scalability</a></h3>
+<div class="paragraph">
+<p>Under increasing volumes of traffic, the architecture is conceived to allow each individual component to scale horizontally.</p>
+</div>
+<div class="paragraph">
+<p>For example, let&#8217;s assume the aggregation of input channels results in an increased overall output towards the agent&#8217;s platform where the support team attends customers. We are referring to Matrix in the diagram below (could also be Discord, WhatsApp or similar).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/05-scalability-target.png" alt="05 scalability target" width="90%">
+</div>
+<div class="title">Figure 2. Scaling outbound traffic</div>
+</div>
+<div class="paragraph">
+<p>We trust the target IM platform&#8217;s scalability capabilities under big volumes of traffic. Popular platforms are known to handle millions of messages per second. From our platform&#8217;s perspective, we can scale the Camel integration to Matrix by increasing the number of replicas. All Camel instances subscribe to the same queues in the AMQ platform. AMQ load-balances (by design) all the traffic between available subscribers and Camel forwards messages to the target platform using their scalable client API specification.</p>
+</div>
+<div class="paragraph">
+<p>In the same diagram above you&#8217;ll see <em>Red Hat Data Grid</em> (Cache) acting as a backing capability to support and help correlate asynchronous communications between customers and support agents. Data Grid is extremely scalable by design and fit for cloud-native environments.</p>
+</div>
+<div class="paragraph">
+<p>The same is true for Red Hat AMQ, used in the architecture is the underlying asynchronous messaging capability to decouple the architecture as per the section that follows.</p>
+</div>
+<div class="paragraph">
+<p>In summary, all the components shown in <em>Figure 1</em> plug and behave with scalability in mind.</p>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_decoupled_architecture"><a class="anchor" href="#_decoupled_architecture"></a><a class="link" href="#_decoupled_architecture">3.3. Decoupled Architecture</a></h3>
+<div class="paragraph">
+<p>Connecting data sources and destinations is not a trivial challenge,  particularly when the number of integrations grows.</p>
+</div>
+<div class="paragraph">
+<p>For simple one-to-one flows, a single process can handle the data mappings required for both request and response directions. Data needs to be translated from the origin&#8217;s data format to the target&#8217;s data format.</p>
+</div>
+<div class="paragraph">
+<p>However, things get complex, exponentially fast, when we start plugging in source and target systems. This is due to the cross data translations required between all different systems.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/06-arch-no-decoupling.png" alt="06 arch no decoupling" width="50%">
+</div>
+<div class="title">Figure 3. One-to-one connectivity</div>
+</div>
+<div class="paragraph">
+<p>In the diagram above, a one-to-one strategy renders the architecture unable to cope as new systems are added to the platform. Every system requires to be translated to every other system.</p>
+</div>
+<div class="paragraph">
+<p>To solve this complexity, the architecture is decoupled by introducing asynchronous messaging with <em>Red Hat AMQ</em> and adopting a star configuration, as the figure below illustrates.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/07-arch-decoupling.png" alt="07 arch decoupling" width="50%">
+</div>
+<div class="title">Figure 4. Decoupled architecture</div>
+</div>
+<div class="paragraph">
+<p>The strategy to transform data between all participant systems in the platform is to adopt a common data schema that mediates between all of formats, reducing the number of data mappings to a manageable degree.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/08-arch-common-schema.png" alt="08 arch common schema" width="90%">
+</div>
+<div class="title">Figure 5. Common Schema for data exchanges</div>
+</div>
+<div class="paragraph">
+<p>The diagram above illustrates source messages (<em>In</em>) in their original format, then transformed in the common format and placed in the message broker (<em>AMQ</em>), and finally converted to the target format (<em>Out</em>) when sent to the destination system.</p>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_extensibility"><a class="anchor" href="#_extensibility"></a><a class="link" href="#_extensibility">3.4. Extensibility</a></h3>
+<div class="paragraph">
+<p>A decoupled approach makes the platform very easy to extend. Once you have defined the common schema as a means to interface with other systems, adding new ones to the platform becomes almost effortless.</p>
+</div>
+<div class="paragraph">
+<p>For example, if the platform wants to be extended to include a popular IM platform, all that is required is to define the integration piece that translates IN/OUT messages to/from the common schema.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/09-arch-extend-im.png" alt="09 arch extend im" width="90%">
+</div>
+<div class="title">Figure 6. Extending the platform with new IM</div>
+</div>
+<div class="paragraph">
+<p>In the above diagram, the <strong>(?)</strong> system represents the new IM platform to be plugged in. Connecting and integrating using Camel, as represented in the picture, supposes no impact or additional changes in the existing platform.</p>
+</div>
+<div class="paragraph">
+<p>The solution&#8217;s demo also integrates the Globex&#8217;s Web portal (see below), where an embedded Chat widget uses an API to connect to the platform via a <em>Camel</em> integration.</p>
+</div>
+<div class="paragraph">
+<p>Similarly, if you wanted to extend the platform to include new API-based channels or services, adding them in would be straight-forward.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/10-arch-extend-api.png" alt="10 arch extend api" width="90%">
+</div>
+<div class="title">Figure 7. Extending the platform with new API-based system</div>
+</div>
+<div class="paragraph">
+<p>In the picture above, the <strong>(?)</strong> system represents the new system added in and connecting via an API exposed by a <em>Camel</em> system.</p>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_caching"><a class="anchor" href="#_caching"></a><a class="link" href="#_caching">3.5. Caching</a></h3>
+<div class="paragraph">
+<p>One crucial component in the architecture is <em>Red Hat Data Grid</em>, which is based on the open source project <em>Infinispan</em>.</p>
+</div>
+<div class="paragraph">
+<p><em>Data Grid</em> provides caching capabilities. In the context of this <em>Solution Pattern</em>, because it has a decoupled architecture and is event-driven, events freely flow in a non-blocking manner with no active waits for responses. Processes consume these events and react to them by firing new events/messages.</p>
+</div>
+<div class="paragraph">
+<p>Caching provides the capability to temporarily store the context of these communications. <em>Apache Camel</em> can retrieve contextual information from <em>Data Grid</em> to correlate the information.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/12-arch-caching.png" alt="12 arch caching" width="50%">
+</div>
+<div class="title">Figure 8. Context Caching with Data Grid</div>
+</div>
+<div class="paragraph">
+<p>The picture above represents the role of <em>Apache Camel</em> and <em>Data Grid</em> to perform customer/agent context read/writes.</p>
+</div>
+<div class="paragraph">
+<p>To illustrate the different stages of a support interaction between a customer an an agent, the following actions take place:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>When a new customer/agent session starts there is initially no context available, one has to be created. This is done with a PUT operation.</p>
+</li>
+<li>
+<p>Agents attend customer queries from their IM platform (<em>Matrix</em>) by responding in their chat window. Camel finds out how to connect the response message to the originating customer by obtaining the contextual information from the caching layer. This is done with a GET operation.</p>
+</li>
+<li>
+<p>More GET operations are performed, while both customer and agents exchange messages, to route the traffic back and forth.</p>
+</li>
+<li>
+<p>When the case is resolved, <em>Apache Camel</em> receives a signal and closes the conversation with a series of actions, including the context removal from <em>Data Grid</em>. This is done with a REMOVE operation.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_transcript_archiving"><a class="anchor" href="#_transcript_archiving"></a><a class="link" href="#_transcript_archiving">3.6. Transcript Archiving</a></h3>
+<div class="paragraph">
+<p>A requirement the solution pattern also covers is the capability to persist communication exchanges. By doing so, additional capabilities can be factored in to implement extra requirements, for example to meet data retention policies or to comply with government regulations to satisfy security and data privacy measures.</p>
+</div>
+<div class="paragraph">
+<p>A key capability in the solution is AMQ Streams (Kafka). For every exchange traversing the platform, copies are sent to Kafka.</p>
+</div>
+<div class="paragraph">
+<p>Looking more in detail into the different stages included in the architecture we find the processes writing conversations into object storage.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/11-arch-archiving-persist.jpeg" alt="11 arch archiving persist" width="90%">
+</div>
+<div class="title">Figure 9. Session playbacks to persist conversations</div>
+</div>
+<div class="paragraph">
+<p>Kafka is used to replay customer/agent messages. The figure above shows traffic directed to kafka and consumed, processed and persisted by Camel.</p>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="index.html" class="query-params-link">1. Home page</a></span>
+  <span class="next"><a href="03-demo.html" class="query-params-link">3. See the Solution in Action</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img
+          src="../_/img/app-services-logo.png" height="40px" alt="Cloud Native Architecture Solution Patterns"  href="https://redhat.com" ></a>
+</footer><script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

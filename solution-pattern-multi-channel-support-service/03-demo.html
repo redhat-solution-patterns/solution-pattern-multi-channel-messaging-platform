@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Solution Pattern: Build an extendable Multi-Channel Messaging Platform :: Solution Patterns for Cloud Native Architectures</title>
+    <link rel="canonical" href="https://redhat-solution-patterns.github.io/solution-patterns/solution-pattern-multi-channel-support-service/03-demo.html">
+    <link rel="prev" href="02-architecture.html">
+    <link rel="next" href="04-devresources.html">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../_/css/site.css">
+<link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" style="font-size: 20px; color: white"
+        href="https://redhat-solution-patterns.github.io/solution-patterns">
+        <img src="../_/img/logo.png" height="35px" alt="Solution Patterns">&nbsp; Solution Patterns for Cloud Native Architectures</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Architectures &amp; Patterns</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://www.redhat.com/architect/portfolio/" target="_blank">Portfolio Architecture&nbsp; </a>
+            <a class="navbar-item" href="https://redhat-solution-patterns.github.io/solution-patterns/patterns.html"  target="_blank">Solution Patterns </a>
+            <a class="navbar-item" href="https://validatedpatterns.io/" target="_blank">Validated Patterns&nbsp;</a>
+            <a class="navbar-item" href="https://catalog.redhat.com/solutions" target="_blank">Ecosystem Solutions&nbsp;</a>
+          </div>
+        </div>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" target="_blank" href="https://developers.redhat.com">Red Hat Developers</a>
+            <a class="navbar-item" target="_blank" href="https://developers.redhat.com/app-dev-platform">App Dev Platform</a>
+            <a class="navbar-item" target="_blank" href="https://www.redhat.com/en/products/application-foundations">Red Hat Application Services</a>
+          </div>
+        </div>
+
+          <a class="navbar-item" target="_blank" href="https://github.com/redhat-solution-patterns/redhat-solution-patterns.github.io/issues">Feedback</a>
+          <a class="navbar-item" target="_blank" href="https://redhat-solution-patterns.github.io/solution-patterns/contributors-guide.html">Contribute</a>
+
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="solution-pattern-multi-channel-support-service" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html" class=" query-params-link">Event-Driven Multi-Channel Support Service</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">1. Home page</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#use-cases">1.1 Use cases</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#_the_story_behind_this_solution_pattern">1.2 The story behind this solution pattern</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#_the_solution">1.3 The solution</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="02-architecture.html">2. Architecture</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-architecture.html#_common_challenges">2.1. Common challenges</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-architecture.html#tech_stack">2.2. Technology stack</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="02-architecture.html#in_depth">2.3. An in-depth look at the solution&#8217;s architecture</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="02-architecture.html#_diagram_overview">2.3.1. Diagram Overview</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="02-architecture.html#_scalability">2.3.2. Scalability</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="02-architecture.html#_decoupled_architecture">2.3.3. Decoupled Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="02-architecture.html#_extensibility">2.3.4. Extensibility</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="02-architecture.html#_caching">2.3.5. Caching</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="02-architecture.html#_transcript_archiving">2.3.6. Transcript Archiving</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="03-demo.html">3. See the Solution in Action</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#_demonstration">3.1 Demonstration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#_recorded_video">3.2 Recorded Video</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#_install_the_demonstration">3.3. Install the demonstration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#_walkthrough_guide">3.4. Walkthrough guide</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="04-devresources.html">4. Developer Resources</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="https://redhat-solution-patterns.github.io/">5. Other Red Hat Solution Patterns</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Event-Driven Multi-Channel Support Service</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">Event-Driven Multi-Channel Support Service</span>
+      <ul class="versions">
+        <li class="version is-current">
+          <a href="index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Event-Driven Multi-Channel Support Service</a></li>
+    <li><a href="03-demo.html">3. See the Solution in Action</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/redhat-solution-patterns/solution-pattern-multi-channel-messaging-platform/edit/main/documentation/modules/ROOT/pages/03-demo.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Solution Pattern: Build an extendable Multi-Channel Messaging Platform</h1>
+<h1 id="_see_the_solution_in_action" class="sect0"><a class="anchor" href="#_see_the_solution_in_action"></a><a class="link" href="#_see_the_solution_in_action">See the Solution in Action</a></h1>
+<div class="sect1">
+<h2 id="_demonstration"><a class="anchor" href="#_demonstration"></a><a class="link" href="#_demonstration">1. Demonstration</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Demo primarily showcases how the combination of key Red Hat technologies are strategically used to deliver a cloud-native, unified collaboration platform. The concept can easily be leveraged to various other scenarios, but in this case, the demo focusses on a customer support multi-channel service.</p>
+</div>
+<div class="paragraph">
+<p>The sections below will help you walk through the essentials of installing and running the demo. Even though many technologies are at play, the demo is straightforward to showcase centring around the following bullet points:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Initiate a customer support session using Rocket.Chat</p>
+</li>
+<li>
+<p>Simulate a collaborative conversation between the customer and multiple support members (teams).</p>
+</li>
+<li>
+<p>Close a session and trigger the process to archive a transcript.</p>
+</li>
+<li>
+<p>Play a conversation using the Globex Web portal channel.</p>
+</li>
+<li>
+<p>Extend the platform by creating and plugging a new customer channel.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_recorded_video"><a class="anchor" href="#_recorded_video"></a><a class="link" href="#_recorded_video">2. Recorded Video</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Watch the recorded video of the solution pattern, and find below instructions on how to install the demo and run it.</p>
+</div>
+<div class="videoblock">
+<div class="content">
+<iframe width="800" height="480" src="https://www.youtube.com/embed/D7CsGIaKvhc?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_install_the_demonstration"><a class="anchor" href="#_install_the_demonstration"></a><a class="link" href="#_install_the_demonstration">3. Install the demonstration</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a><a class="link" href="#_prerequisites">3.1. Prerequisites</a></h3>
+<div class="paragraph">
+<p>You will require:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>An <em>OpenShift Container Platform</em> cluster running version 4.15 or above with cluster admin access.</p>
+</li>
+<li>
+<p><em>Docker, Podman or Ansible</em> installed and running.<br></p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+  To run the demo&#8217;s <em>Ansible Playbook</em> to deploy it you&#8217;ll need one of the above. If none of them is installed on your machine we suggest installing <em>Docker</em> using the most recent Docker version. See the <a href="https://docs.docker.com/engine/installation/" target="_blank" rel="noopener">Docker Engine installation documentation</a> for further information.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+  You&#8217;ll find more information below on how to use <em>Podman</em> or <em>Ansible</em> as alternatives to <em>Docker</em>.
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_provision_an_openshift_environment"><a class="anchor" href="#_provision_an_openshift_environment"></a><a class="link" href="#_provision_an_openshift_environment">3.2. Provision an OpenShift environment</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Provision the following <em>Red Hat Demo Platform</em> (RHDP) item:</p>
+<div class="openblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://demo.redhat.com/catalog?item=babylon-catalog-prod/community-content.com-multi-channel.prod&amp;utm_source=webapp&amp;utm_medium=share-link" target="_blank" rel="noopener"><strong>Solution Pattern - Build an extendable Multi-Channel Messaging Platform</strong></a></p>
+<div class="paragraph">
+<p><span class="image"><a class="image" href="https://demo.redhat.com/catalog?item=babylon-catalog-prod/community-content.com-multi-channel.prod&amp;utm_source=webapp&amp;utm_medium=share-link" target="_blank" rel="noopener"><img src="_images/29-rhdp-card.png" alt="29 rhdp card" width="30%"></a></span></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>The provisioning of the RHDP card above will just prepare for you a base environment (OCP). You still need to deploy the demo by running the installation process described below.<br></p>
+</li>
+<li>
+<p>The provisioning process takes around 80-90 minutes to complete. You need to wait its completion before proceeding to the demo installation.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</li>
+<li>
+<p>Alternatively, if you don&#8217;t have access to RHDP, ensure you have an <em>OpenShift</em> environment available.</p>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+  You can obtain one by deploying the trial version available at <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/try-it" target="_blank" rel="noopener">Try Red Hat OpenShift</a>.
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_install_the_demo_using_docker_or_podman"><a class="anchor" href="#_install_the_demo_using_docker_or_podman"></a><a class="link" href="#_install_the_demo_using_docker_or_podman">3.3. Install the demo using <em>Docker</em> or <em>Podman</em></a></h3>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>For more installation tips and alternative options to <em>Docker</em> and <em>Podman</em>, look at the <a href="https://github.com/brunoNetId/sp-multi-channel-messaging-platform/blob/main/README.md" target="_blank" rel="noopener">README</a> file in the demo&#8217;s GitHub repository.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Ensure your base <em>OpenShift</em> environment is ready and you have all the connection and credential details with you.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Clone this GitHub repository:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone https://github.com/brunoNetId/sp-multi-channel-messaging-platform.git</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Change to the <code>ansible</code> directory (in the root project).</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd sp-multi-channel-messaging-platform/ansible</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Configure the <code>KUBECONFIG</code> file to use (where kube details are set after login).</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export KUBECONFIG=./kube-demo</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Obtain and execute your login command from <em>OpenShift</em>'s console, or use the <code>oc</code> command line below to access your cluster.</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login --username="admin" --server=https://(...):6443 --insecure-skip-tls-verify=true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Replace the <code>--server</code> url with your own cluster API endpoint.</p>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</li>
+<li>
+<p>Run the Playbook</p>
+<div class="ulist">
+<ul>
+<li>
+<p>With Docker:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker run -i -t --rm --entrypoint /usr/local/bin/ansible-playbook \
+-v $PWD:/runner \
+-v $PWD/kube-demo:/home/runner/.kube/config \
+quay.io/agnosticd/ee-multicloud:v0.0.11  \
+./playbooks/install.yml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>With Podman:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman run -i -t --rm --entrypoint /usr/local/bin/ansible-playbook \
+-v $PWD:/runner \
+-v $PWD/kube-demo:/home/runner/.kube/config \
+quay.io/agnosticd/ee-multicloud:v0.0.11  \
+./playbooks/install.yml</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_walkthrough_guide"><a class="anchor" href="#_walkthrough_guide"></a><a class="link" href="#_walkthrough_guide">4. Walkthrough guide</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The guide below will help you to familiarise with the main components in the demo, and how to operate it to trigger the actions&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+<div class="sect2">
+<h3 id="_quick_topology_overview"><a class="anchor" href="#_quick_topology_overview"></a><a class="link" href="#_quick_topology_overview">4.1. Quick Topology Overview</a></h3>
+<div class="paragraph">
+<p>Because the automated installation process reuses deployment scripts from other lab resources, the platform components are split in three main namespaces:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>globex-im-platforms</code>: where the main instant messaging platfroms are deployed, namely Rocket.Chat and Matrix. The Apache Camel integration for Rocket.Chat is also included here.</p>
+</li>
+<li>
+<p><code>globex-integrations</code>: where all the main Apache Camel integrations are deployed. Also in this namespace you&#8217;ll find the Globex Web portal, an instance of Data Grid and S3 storage with Minio where conversation transcripts are stored.</p>
+</li>
+<li>
+<p><code>globex-mw</code>: where the AMQ Streams (Kafka) instance used by the platform is deployed.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The partitioned distribution of components is not ideal to get a single easy to understand view from the OpenShift console.</p>
+</div>
+<div class="paragraph">
+<p>The picture below shows a convenient composition of all three namespaces illustration all the relationships and interactions involved in the solution.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/14-demo-deployment-full.png" alt="14 demo deployment full" width="100%">
+</div>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+<div class="paragraph">
+<p>A more schematic view which maps closely to the composition view above is the following:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/15-demo-diagram-full.png" alt="15 demo diagram full" width="100%">
+</div>
+<div class="title">Figure 1. Schematic Overview of the Platform on OpenShift</div>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_initiate_a_support_session"><a class="anchor" href="#_initiate_a_support_session"></a><a class="link" href="#_initiate_a_support_session">4.2. Initiate a support session</a></h3>
+<div class="paragraph">
+<p>Open your <em>OpenShift</em> console with your given admin credentials and follow the instructions below:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select from the left menu the <em>Developer</em> view:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Click the <em>Administrator</em> button and select <em>Developer</em> from the drop down.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Use the filter <code>globex</code> in the search textbox.</p>
+</li>
+<li>
+<p>Find and select the project <code>globex-im-platforms</code></p>
+</li>
+<li>
+<p>Make sure you display the <em>Topologoy</em> view (left menu)</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You should see a number of deployments in your screen. Find among them the <em>RocketChat</em> application and open it by clicking the route link as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/16-demo-rocket-onboarding.png" alt="16 demo rocket onboarding" width="100%">
+</div>
+</div>
+<div class="paragraph">
+<p>The login window to the Rocket Chat application will show in a new tab.<br>
+Enter the following credentials:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>username</strong>: <code>user1</code></p>
+</li>
+<li>
+<p><strong>Password</strong>: <code>openshift</code></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<em>Rocket.chat</em> here represents the customer&#8217;s entry point to access the support channel and have conversations with support agents. Agents are not <em>Rochet.chat</em> users, they use other collaboration tools, elsewhere, which are also plugged to the multi-channel platform.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To start a support session, select the channel created for <code>user1</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>globex-support-user1</code></p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/17-demo-rocket-channel-start.png" alt="17 demo rocket channel start" width="100%">
+</div>
+</div>
+<div class="paragraph">
+<p>Then, pretend you are a customer by typing a message and sending it.<br>
+For example:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Hello, can I get help please?</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+<div class="paragraph">
+<p>Now, let&#8217;s switch to the agent&#8217;s system.<br>
+From <em>OpenShift</em>'s <em>Topology</em> view, find the <em>Element</em> application.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<em>Element</em> is the front facing interface application that connects to the <em>Matrix</em> server.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To open <em>Matrix</em>, click <em>Element</em>'s route link and then click <code>Sign in</code> as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/18-demo-matrix-onboarding.png" alt="18 demo matrix onboarding" width="100%">
+</div>
+</div>
+<div class="paragraph">
+<p>The login window to <em>Matrix</em> will show in a new tab.<br>
+Enter the following credentials:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>username</strong>: <code>user2</code></p>
+</li>
+<li>
+<p><strong>Password</strong>: <code>openshift</code></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<em>Matrix</em> here represents the collaboration tool agents use to assist customer enquiries. Matrix is integrated with the multi-channel platform and serves in the demo to show one of many tools from where different groups and partners could connect from.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>As soon as you login, on the left panel of the window, you&#8217;ll see an entry in your list of invites:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>rocketchat-user1</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The invite was generated the moment the customer sent the initial message to request assistance.</p>
+</div>
+<div class="paragraph">
+<p>Accept the invitation by following the actions below illustrated:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/19-demo-matrix-invite-accept.png" alt="19 demo matrix invite accept" width="100%">
+</div>
+</div>
+<div class="paragraph">
+<p>Once accepted, you&#8217;ll see the message the customer sent (from <em>Rocket.chat</em>) in the main conversation area.</p>
+</div>
+<div class="paragraph">
+<p>To follow with the simulated conversation, now pretend you are the support agent and type back a welcome message.<br>
+For example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Agent (1st line):</p>
+<div class="openblock">
+<div class="content">
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Hi, what can I do for you today?</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The diagram below illustrates the end-to-end traffic flow you&#8217;ve just enacted:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/20-demo-diagram-flow-first-line.png" alt="20 demo diagram flow first line" width="100%">
+</div>
+<div class="title">Figure 2. Data flow between customer and 1st line support</div>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_simulate_simultaneous_support_teams"><a class="anchor" href="#_simulate_simultaneous_support_teams"></a><a class="link" href="#_simulate_simultaneous_support_teams">4.3. Simulate simultaneous Support teams</a></h3>
+<div class="paragraph">
+<p>The <em>Solution Pattern</em> proposes a platform where multiple communication systems, internal and external, are integrated.</p>
+</div>
+<div class="paragraph">
+<p>However, on the agent&#8217;s end, the demo only includes one system (<em>Matrix</em>). It&#8217;s not ideal, but it doesn&#8217;t stop us from simulating different groups participating in the same support session.</p>
+</div>
+<div class="paragraph">
+<p>Earlier, the first team to respond was <em>"1st line Support"</em>. Now we introduce a new agent, member of the <em>"Technical Support"</em> team.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Since we just have <em>Matrix</em>, let&#8217;s just pretend the <em>Technical Support</em> team is connecting from a different IM system, not <em>Matrix</em>. From the demo&#8217;s perspective nothing changes.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s resume the conversation between the customer and the support teams.</p>
+</div>
+<div class="paragraph">
+<p>Go back to <em>Rocket.chat</em>, put your customer&#8217;s hat on, and describe the problem to the agent, for example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Customer:</p>
+<div class="openblock">
+<div class="content">
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>When I browse the products, the wheel keeps spinning.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When the message is sent and the agent reads it in <em>Matrix</em>, he answers and explains the technical team will take over:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Agent (1st line):</p>
+<div class="openblock">
+<div class="content">
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Please wait a moment, a member of the technical team will assist.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+<div class="paragraph">
+<p>Now, from the <em>OpenShift Developer</em> view, you will open a new window from where the new technical agent will communicate.</p>
+</div>
+<div class="paragraph">
+<p>From <em>OpenShift</em>'s <em>Topology</em> view, find the <em>Element</em> application.</p>
+</div>
+<div class="paragraph">
+<p>Open your <em>OpenShift</em> console with your given admin credentials and follow the instructions below:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Make sure you display the <em>Topologoy</em> view (left menu)</p>
+</li>
+<li>
+<p>Find and select the project <code>globex-integrations</code></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>From your <em>Topology</em> view, open <em>Matrix</em> by following the actions below described:</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+We open <em>Element</em> in an <em>Incognito</em> window to avoid entering in conflict with your previous <em>Matrix</em> session.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click the <em>Element</em> deployment disc</p>
+</li>
+<li>
+<p>Find and click the <code>Resources</code> tab</p>
+</li>
+<li>
+<p>Copy the <em>Route</em> URL</p>
+</li>
+<li>
+<p>Open an incognito window and paste the URL address</p>
+</li>
+<li>
+<p>Enter the Sign-In process in <em>Element</em></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You should end up viewing the Login prompt as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/23-demo-incognito-login.png" alt="23 demo incognito login" width="100%">
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Make sure you use a different username to simulate the <em>"Technical Support"</em> agent, for example <code>user3</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>username</strong>: <code>user3</code></p>
+</li>
+<li>
+<p><strong>Password</strong>: <code>openshift</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Again, you&#8217;ll find in the left panel an invite to the room where the customer is being attended:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>rocketchat-user1</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Accept the invitation by following the actions below illustrated:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/24-demo-matrix-invite-accept-technical.png" alt="24 demo matrix invite accept technical" width="100%">
+</div>
+</div>
+<div class="paragraph">
+<p>Once accepted, you&#8217;ll see the entire conversation history.</p>
+</div>
+<div class="paragraph">
+<p>Now pretend you are the technical agent and respond to the customer.<br>
+For example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Agent (technical team):</p>
+<div class="openblock">
+<div class="content">
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Hi, I&#8217;m from the technical team. We just completed an update, please try again.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When you send the response, it should pop up in <em>Rocket.chat.</em></p>
+</div>
+<div class="paragraph">
+<p>In the <em>Rocket.chat</em> channel you&#8217;ll see now responses from 2 different agents. The first was a <em>"1st line Support"</em> agent, and the second a <em>"Technical Support"</em> agent.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+As previously explained, in the demo, both agents are connecting from <em>Matrix</em>, but the <em>Solution Pattern</em> allows other IM platforms to plug in.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s assume the problem was resolved and the customer responds with:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Customer:</p>
+<div class="openblock">
+<div class="content">
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Thanks, I confirm I can now browse the products.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The diagram below illustrates the end-to-end traffic flow you&#8217;ve recreated involving the <em>Technical Support</em> team:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/21-demo-diagram-flow-technical.png" alt="21 demo diagram flow technical" width="100%">
+</div>
+<div class="title">Figure 3. Data flow between customer and technical support</div>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_close_the_session_and_archive_the_conversation"><a class="anchor" href="#_close_the_session_and_archive_the_conversation"></a><a class="link" href="#_close_the_session_and_archive_the_conversation">4.4. Close the session and archive the conversation</a></h3>
+<div class="paragraph">
+<p>One of the features the Solution Pattern showcases is the ability to integrate pluggable services in the background.</p>
+</div>
+<div class="paragraph">
+<p>To demonstrate the ability to plugin services, we&#8217;ve implemented an integration process that reacts when a customer support session ends. When a conversation is closed, the process listens to the signal and generates a transcript and is pushed to object storage (S3).</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The background context is that the organisation is obligated to meet certain security policies and Government regulations. All communications need to be kept for a certain period to comply with the established data retention policies.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The diagram below illustrates what happens when the customer session ends.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/11-arch-archiving-persist.jpeg" alt="11 arch archiving persist" width="90%">
+</div>
+<div class="title">Figure 4. Session playbacks to persist conversations</div>
+</div>
+<div class="paragraph">
+<p>Kafka is used to replay customer/agent messages. The figure above shows traffic directed to kafka and consumed, processed and persisted by Camel.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s now see the functionality in action by ending the customer support session.</p>
+</div>
+<div class="paragraph">
+<p>From the <em>Matrix</em> system, pretend you&#8217;re the technical agent and send the following message to the customer:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Agent (technical team):</p>
+<div class="openblock">
+<div class="content">
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Anything else I can do for you?</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>As the customer, you could follow with:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Customer:</p>
+<div class="openblock">
+<div class="content">
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>No, thanks for your assistance.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And then for politeness, the agent could respond:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Agent (technical team):</p>
+<div class="openblock">
+<div class="content">
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>You&#8217;re welcome, I will close now the conversation.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+<div class="paragraph">
+<p>Once this formal chit-chat out of the way, from <em>Matrix</em> follow the actions below to close the room:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the left panel, right click the room</p>
+</li>
+<li>
+<p>Click <code>Leave</code></p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/25-demo-matrix-channel-leave.png" alt="25 demo matrix channel leave" width="50%">
+</div>
+</div>
+<div class="paragraph">
+<p>When prompted, click <code>Leave</code> in the confirmation window.</p>
+</div>
+<div class="paragraph">
+<p>Not only the actions above close the conversation in <em>Matrix</em>, but also, in the background, it triggers the process to generate and archive the transcript.</p>
+</div>
+<div class="paragraph">
+<p>In a matter of seconds, the customer receives a message in Rochet.chat with a link to the transcript.</p>
+</div>
+<div class="paragraph">
+<p>Click the <code>PDF transcript</code> to open it in your browser, as illustrated below.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/26-demo-rchat-transcript.png" alt="26 demo rchat transcript" width="100%">
+</div>
+<div class="title">Figure 5. Link to transcript in Rockat.chat</div>
+</div>
+<div class="paragraph">
+<p>What the process did when the conversation was closed was the following sequence of actions:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Replay the full stream of messages stored in Kafka</p>
+</li>
+<li>
+<p>Aggregate the messages</p>
+</li>
+<li>
+<p>Format the content in PDF</p>
+</li>
+<li>
+<p>Push the PDF file to S3 storage</p>
+</li>
+<li>
+<p>Obtain a shareable URL of resource in S3</p>
+</li>
+<li>
+<p>Send a message to Rocket.chat to share the URL</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The diagram below describes the processes involved:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/22-demo-diagram-flow-transcript.png" alt="22 demo diagram flow transcript" width="100%">
+</div>
+<div class="title">Figure 6. Data flow to deliver transcript to customer</div>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_get_support_from_the_web_portal_channel"><a class="anchor" href="#_get_support_from_the_web_portal_channel"></a><a class="link" href="#_get_support_from_the_web_portal_channel">4.5. Get support from the Web Portal channel</a></h3>
+<div class="paragraph">
+<p>Up until now, all your customer interactions have been done from Rocket.Chat, but this is a multi-channel platform.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s try out the support service from the Globex Web Portal.</p>
+</div>
+<div class="paragraph">
+<p>Open your <em>OpenShift</em> console with your given admin credentials and follow the instructions below:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Make sure you display the <em>Topologoy</em> view (left menu)</p>
+</li>
+<li>
+<p>Find and select the project <code>globex-integrations</code></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You should see a number of deployments in your screen. Find among them the <em>Globex Web</em> application and follow the actions below described:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click the route link from the <code>globex-web</code> deployment.</p>
+</li>
+<li>
+<p>In the web page, find the <code>Login</code> option in the top bar and click it</p>
+</li>
+<li>
+<p>You will be proxied to the Single-Sign-On window.</p>
+<div class="openblock">
+<div class="content">
+<div class="paragraph">
+<p>Enter the following credentials:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>username</strong>: <code>asilva</code></p>
+</li>
+<li>
+<p><strong>Password</strong>: <code>openshift</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>Click the <em>Chat</em> blue icon</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/27-demo-globex-login.png" alt="27 demo globex login" width="100%">
+</div>
+</div>
+<div class="paragraph">
+<p>After completing the above steps (as illustrated), you should be presented with the Globex Web Chat interface where you can type in messages to the support team.</p>
+</div>
+<div class="paragraph">
+<p>In the Chat window, exchange a few messages with the support team, and end the conversation as previously done with the Rocket.chat example.</p>
+</div>
+<div class="paragraph">
+<p>The diagram below shows how data flows via the Globex Web integration.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/30-demo-diagram-flow-globex.png" alt="30 demo diagram flow globex" width="100%">
+</div>
+<div class="title">Figure 7. Data flow between Globex and support</div>
+</div>
+<div class="paragraph">
+<p>Below you have a sample conversation and the transcript produced out of it.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/28-demo-globex-conversation.png" alt="28 demo globex conversation" width="100%">
+</div>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+<div class="paragraph">
+<p>Well done! You have iterated the <em>Product Catalogue</em> to include new articles on offer.</p>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="02-architecture.html" class="query-params-link">2. Architecture</a></span>
+  <span class="next"><a href="04-devresources.html" class="query-params-link">4. Developer Resources</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img
+          src="../_/img/app-services-logo.png" height="40px" alt="Cloud Native Architecture Solution Patterns"  href="https://redhat.com" ></a>
+</footer><script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
