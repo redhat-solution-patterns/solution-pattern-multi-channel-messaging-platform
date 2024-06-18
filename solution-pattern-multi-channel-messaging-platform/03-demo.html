@@ -1217,25 +1217,322 @@ The background context is that the organisation is obligated to meet certain sec
 <p>You&#8217;ve used so far two customer chat systems currently plugged to the platform (<em>Rocket.chat</em> and <em>Globex Web Chat</em>).</p>
 </div>
 <div class="paragraph">
-<p>This section demonstrates the extensibility design of the platform to connect a new communication channel. All there is to do is to create an integration that complies with the platform&#8217;s data schemas.</p>
+<p>This section demonstrates the extensibility design of the platform to connect a new communication channel. All there is to do is to create an integration that produces/consumes messages to/from AMQ and complies with the data schemas.</p>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s start with the request flow, where the new system pushes messages from customers to agents.</p>
+<p>Let&#8217;s continue by:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Explaining the basics of both request/response flows</p>
+</li>
+<li>
+<p>Deploying and testing the new partner integration.</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
-<p>The picture</p>
+<p><br></p>
+</div>
+<div class="sect3">
+<h4 id="_overview_of_requestresponse_flows"><a class="anchor" href="#_overview_of_requestresponse_flows"></a><a class="link" href="#_overview_of_requestresponse_flows">4.6.1. Overview of request/response flows</a></h4>
+<div class="sect4">
+<h5 id="_request_flow"><a class="anchor" href="#_request_flow"></a><a class="link" href="#_request_flow">Request flow</a></h5>
+<div class="paragraph">
+<p>Let&#8217;s start with the request flow, where the new system pushes messages from customers to the messaging broker.</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
 <img src="_images/31-demo-extend-platform-request-flow.png" alt="31 demo extend platform request flow" width="70%">
 </div>
-<div class="title">Figure 8. Data flow between Globex and support</div>
+<div class="title">Figure 8. Data flow pushing messages to AMQ</div>
 </div>
+<div class="paragraph">
+<p>You could use any integration framework you&#8217;d like. We use <em>Apache Camel</em> for its versatility, ease of use and proven track record.</p>
+</div>
+<div class="paragraph">
+<p>The key Camel route to enable the above data flow is shown in this snippet:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">from("platform-http:/support/message")
+  .convertBodyTo(String.class)
+  .to("jslt:request.jslt?allowContextMapAll=true")
+  .to("amqp:topic:{{broker.amqp.topic.clients}}?disableReplyTo=true&amp;connectionFactory=#myFactory");</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The route above is self-describing.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>It exposes an HTTP entrypoint.</p>
+</li>
+<li>
+<p>Converts the body to a String (from Byte Stream).</p>
+</li>
+<li>
+<p>Executes a JSON transformation (to comply with the data format).</p>
+</li>
+<li>
+<p>Pushes an AMQP message to the broker.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The JSON transformation maps input fields to output fields and follows the following rules:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "user": .user,
+  "text": .text,
+  "source": {
+    "name" : "partner",
+    "uname": "partner",
+    "room" : .sessionid
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the transformation above, we&#8217;re mapping key fields, and we&#8217;re indicating the source of the message comes from <code>partner</code>.</p>
+</div>
+<div class="paragraph">
+<p>The <code>sessionid</code> is the correlator value for the entire conversation.</p>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_response_flow"><a class="anchor" href="#_response_flow"></a><a class="link" href="#_response_flow">Response flow</a></h5>
+<div class="paragraph">
+<p>The response flow consumes messages from the AMQ Broker, sent by the support agents and are directed to the system to be integrated.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="_images/32-demo-extend-platform-response-flow.png" alt="32 demo extend platform response flow" width="70%">
+</div>
+<div class="title">Figure 9. Data flow consuming messages from AMQ</div>
+</div>
+<div class="paragraph">
+<p>The key Camel route to enable the above data flow is shown in this snippet:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">from("amqp:topic:{{broker.amqp.topic.agents}}?connectionFactory=#myFactory")
+    .convertBodyTo(String.class)
+    .to("jslt:response.jslt?allowContextMapAll=true")
+    .to("{{client.callback.url}}");</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Again, a very simple route definition where:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The consumer obtains messages from a queue in the broker.</p>
+</li>
+<li>
+<p>Converts the body to a String (from Byte Stream).</p>
+</li>
+<li>
+<p>Executes a JSON transformation (to comply with the data format).</p>
+</li>
+<li>
+<p>Sends the data to the new system&#8217;s callback URL.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The JSLT transformation would look like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "agent": .agent,
+  "text": .text,
+  "sessionid" : .source.room,
+  "pdf":  .pdf
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can see how the <code>sessionid</code> carries the conversation correlation value, to ensure it&#8217;s not mixed with other customer conversations.</p>
+</div>
+<div class="paragraph">
+<p>That&#8217;s essentially all the code you need to integrate a new system. As usual you would add to that the configuration values in a properties file, and the credentials to connect to the broker, but those are technical details.</p>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_deploy_and_test_the_new_partner_system"><a class="anchor" href="#_deploy_and_test_the_new_partner_system"></a><a class="link" href="#_deploy_and_test_the_new_partner_system">4.6.2. Deploy and test the new Partner system</a></h4>
+<div class="paragraph">
+<p>It&#8217;s time to try it out.</p>
+</div>
+<div class="paragraph">
+<p>From the top of your OpenShift&#8217;s console, click the <code>⨁</code> button to import YAML code, as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/33-demo-import-yaml.png" alt="33 demo import yaml" width="80%">
+</div>
+<div class="title">Figure 10. Import YAML code</div>
+</div>
+<div class="paragraph">
+<p>Next, copy the YAML definitions below, and paste them into the YAML editor:</p>
+</div>
+<details>
+<summary class="title">Details</summary>
+<div class="content">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The source code below contains the snippets viewed earlier. They are deployed as Camel K definitions, automatically processed by the Camel K operator.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</details>
+<details class="console-input">
+<summary class="title">Details</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre>---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: partner-support-request-jslt
+  namespace: globex-integrations
+data:
+  request.jslt: |-
+    {
+        "user": .user,
+        "text": .text,
+        "source": {
+          "name" : "partner",
+          "uname": "partner",
+          "room" : .sessionid
+        }
+    }
+---
+apiVersion: camel.apache.org/v1
+kind: Integration
+metadata:
+  name: partner-support
+  namespace: globex-integrations
+spec:
+  dependencies:
+    - 'camel:amqp'
+    - 'camel:jackson'
+    - 'camel:jslt'
+    - 'camel:http'
+    - 'mvn:io.quarkiverse.messaginghub:quarkus-pooled-jms:1.1.0'
+  sources:
+    - name: RoutesPartner.java
+      content: |
+        // camel-k: language=java
+
+        import org.apache.camel.builder.RouteBuilder;
+
+        public class RoutesPartner extends RouteBuilder {
+
+            @Override
+            public void configure() throws Exception {
+
+                from("platform-http:/support/message")
+                    .convertBodyTo(String.class)
+                    .to("jslt:request.jslt?allowContextMapAll=true")
+                    .to("amqp:topic:{{broker.amqp.topic.clients}}?disableReplyTo=true&amp;connectionFactory=#myFactory");
+
+                from("amqp:topic:{{broker.amqp.topic.agents}}?connectionFactory=#myFactory")
+                    .convertBodyTo(String.class)
+                    .to("jslt:response.jslt?allowContextMapAll=true")
+                    .to("{{client.callback.url}}");
+          }
+        }
+    - name: CamelJmsConnectionFactory.java
+      content: |
+        // camel-k: language=java
+
+        import javax.jms.ConnectionFactory;
+        import org.apache.camel.PropertyInject;
+        import org.apache.camel.builder.RouteBuilder;
+        import org.apache.qpid.jms.JmsConnectionFactory;
+        import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+
+        public class CamelJmsConnectionFactory extends RouteBuilder {
+
+            private static final Logger LOGGER = LoggerFactory.getLogger(CamelJmsConnectionFactory.class);
+
+            @PropertyInject("broker.amqp.uri")
+            private static String uri;
+
+            @PropertyInject("broker.amqp.connections")
+            private static int maxConnections;
+
+            @Override
+            public void configure() {
+                JmsPoolConnectionFactory myFactory = createConnectionFactory();
+                getContext().getRegistry().bind("myFactory", myFactory);
+            }
+
+            private JmsPoolConnectionFactory createConnectionFactory() {
+
+                ConnectionFactory factory = new JmsConnectionFactory(uri);
+                JmsPoolConnectionFactory pool = new JmsPoolConnectionFactory();
+
+                try {
+                    pool.setConnectionFactory(factory);
+
+                    // Set the max connections per user to a higher value
+                    pool.setMaxConnections(maxConnections);
+
+                } catch (Exception e) {
+                    LOGGER.error("Exception creating JMS Connection Factory", e);
+                }
+
+                return pool;
+            }
+        }
+  traits:
+    camel:
+      properties:
+        - 'client.callback.url = http://partner-callback:80/partner/callback'
+        - broker.amqp.connections = 5
+        - broker.amqp.topic.clients = support.globex.client.partner
+        - broker.amqp.topic.agents = support.partner
+    mount:
+      configs:
+        - 'secret:client-amq'
+      resources:
+        - 'configmap:partner-support-request-jslt/request.jslt@/etc/camel/resources/request.jslt'
+        - 'configmap:globex-support-response-jslt/response.jslt@/etc/camel/resources/response.jslt'</pre>
+</div>
+</div>
+</div>
+</details>
 <div class="paragraph">
 <p>Up until now you&#8217;ve tried the two current systems integrated with the platform,</p>
 </div>
 <div class="paragraph">
 <p>Well done! You have iterated the <em>Product Catalogue</em> to include new articles on offer.</p>
+</div>
 </div>
 </div>
 </div>
