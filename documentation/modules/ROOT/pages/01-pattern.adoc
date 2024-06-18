@@ -84,7 +84,12 @@ See below a simplified representation of the solution:
 
 ifdef::env-vscode,env-github[]
 VS Code or GitHub
-endif::env-vscode[]
+endif::env-vscode,env-github[]
+
+ifndef::env-vscode,env-github[]
+NOT VS Code or GitHub
+endif::env-vscode,env-github[]
+
 
 ifdef::env-github[]
 GitHub
