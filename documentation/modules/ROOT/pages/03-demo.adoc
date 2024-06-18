@@ -386,56 +386,18 @@ The background context is that the organisation is obligated to meet certain sec
 
 The diagram below illustrates what happens when the customer session ends.
 
-.Session playbacks to persist conversations
-image::11-arch-archiving-persist.jpeg[,60%,align=center]
 
-.test1 Session playbacks to persist conversations
-image:11-arch-archiving-persist.jpeg[,60%,align=center]
+//Best alternative to center an image (in a table)
+// |===
+// ^.^| image:11-arch-archiving-persist.jpeg[,60%]
+// |===
 
-// .Session playbacks to persist conversations
-// [align=center]
-.test2
-image:11-arch-archiving-persist.jpeg[,60%,align=center]
-
-.test3
-image:11-arch-archiving-persist.jpeg[,60%]
-
-.test4
-[.right.text-center]
-image::11-arch-archiving-persist.jpeg[,60%]
-
-
-.test41
-[.text-center]
-image::11-arch-archiving-persist.jpeg[,60%]
-
-
-.test42
-[.text-center]
-image:11-arch-archiving-persist.jpeg[,60%]
-
-
-.test5
-|===
-^.^| image:11-arch-archiving-persist.jpeg[,60%]
-|===
-
-[frame=none]
-.test6
-|===
-^.^| image:11-arch-archiving-persist.jpeg[,60%]
-|===
-
-new
-[table-frame=none]
-|===
-^.^| image:11-arch-archiving-persist.jpeg[,60%]
-|===
-
-.test7
-image::11-arch-archiving-persist.jpeg[,60%,float="right",align="center"]
-
-
+// I use a passthrough as a workaround
+++++
+<p align="center">
+	<img src="_images/11-arch-archiving-persist.jpeg" alt="Session playbacks to persist conversations" width="60%">
+</p>
+++++
 
 Kafka is used to replay customer/agent messages. The figure above shows traffic directed to kafka and consumed, processed and persisted by Camel. 
 
