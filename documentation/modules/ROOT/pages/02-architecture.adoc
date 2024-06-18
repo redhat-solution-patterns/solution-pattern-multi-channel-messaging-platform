@@ -85,7 +85,7 @@ endif::env-vscode,env-github[]
 ifndef::env-vscode,env-github[]
 ++++
 <p align="center">
-	<img src="_images/05-scalability-target.png" alt="Scaling outbound traffic" width="40%">
+	<img src="_images/05-scalability-target.png" alt="Scaling outbound traffic" width="60%">
 </p>
 ++++
 endif::env-vscode,env-github[]
@@ -137,15 +137,27 @@ endif::env-vscode,env-github[]
 ifndef::env-vscode,env-github[]
 ++++
 <p align="center">
-	<img src="_images/07-arch-decoupling" alt="Decoupled architecture" width="40%">
+	<img src="_images/07-arch-decoupling.png" alt="Decoupled architecture" width="40%">
 </p>
 ++++
 endif::env-vscode,env-github[]
 
 The strategy to transform data between all participant systems in the platform is to adopt a common data schema that mediates between all of formats, reducing the number of data mappings to a manageable degree.
 
+//When rendering in VS-Code or GitHub
+ifdef::env-vscode,env-github[]
 .Common Schema for data exchanges
-image::08-arch-common-schema.png[,90%]
+image::08-arch-common-schema.png[,90%,align=center]
+endif::env-vscode,env-github[]
+
+//GitHub Pages needs a passthrough to center the image
+ifndef::env-vscode,env-github[]
+++++
+<p align="center">
+	<img src="_images/08-arch-common-schema.png" alt="Common Schema for data exchanges" width="90%">
+</p>
+++++
+endif::env-vscode,env-github[]
 
 The diagram above illustrates source messages (_In_) in their original format, then transformed in the common format and placed in the message broker (_AMQ_), and finally converted to the target format (_Out_) when sent to the destination system. 
 

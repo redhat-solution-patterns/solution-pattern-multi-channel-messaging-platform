@@ -793,7 +793,7 @@ Be patient, _Camel K_ will process the integration YAML, it'll take between 2-5 
 After some time you'll see the integration `partner-support` deployed and running:
 
 // .Partner integration
-image:34-demo-partner-support.png[,30%, align=left]
+image:34-demo-partner-support.png[,25%, align=left]
 
 {empty} +
 
