@@ -75,10 +75,20 @@ Under increasing volumes of traffic, the architecture is conceived to allow each
 
 For example, let's assume the aggregation of input channels results in an increased overall output towards the agent's platform where the support team attends customers. We are referring to Matrix in the diagram below (could also be Discord, WhatsApp or similar). 
 
-
+//When rendering in VS-Code or GitHub
+ifdef::env-vscode,env-github[]
 .Scaling outbound traffic
 image::05-scalability-target.png[,60%, align=center]
+endif::env-vscode,env-github[]
 
+//GitHub Pages needs a passthrough to center the image
+ifndef::env-vscode,env-github[]
+++++
+<p align="center">
+	<img src="_images/05-scalability-target.png" alt="Scaling outbound traffic" width="40%">
+</p>
+++++
+endif::env-vscode,env-github[]
 
 We trust the target IM platform's scalability capabilities under big volumes of traffic. Popular platforms are known to handle millions of messages per second. From our platform's perspective, we can scale the Camel integration to Matrix by increasing the number of replicas. All Camel instances subscribe to the same queues in the AMQ platform. AMQ load-balances (by design) all the traffic between available subscribers and Camel forwards messages to the target platform using their scalable client API specification.
 
@@ -98,15 +108,39 @@ For simple one-to-one flows, a single process can handle the data mappings requi
 
 However, things get complex, exponentially fast, when we start plugging in source and target systems. This is due to the cross data translations required between all different systems.
 
+//When rendering in VS-Code or GitHub
+ifdef::env-vscode,env-github[]
 .One-to-one connectivity
 image::06-arch-no-decoupling.png[,40%, align=center]
+endif::env-vscode,env-github[]
+
+//GitHub Pages needs a passthrough to center the image
+ifndef::env-vscode,env-github[]
+++++
+<p align="center">
+	<img src="_images/06-arch-no-decoupling.png" alt="One-to-one connectivity" width="40%">
+</p>
+++++
+endif::env-vscode,env-github[]
 
 In the diagram above, a one-to-one strategy renders the architecture unable to cope as new systems are added to the platform. Every system requires to be translated to every other system.
 
 To solve this complexity, the architecture is decoupled by introducing asynchronous messaging with _Red Hat AMQ_ and adopting a star configuration, as the figure below illustrates.
 
+//When rendering in VS-Code or GitHub
+ifdef::env-vscode,env-github[]
 .Decoupled architecture
 image::07-arch-decoupling.png[,40%, align=center]
+endif::env-vscode,env-github[]
+
+//GitHub Pages needs a passthrough to center the image
+ifndef::env-vscode,env-github[]
+++++
+<p align="center">
+	<img src="_images/07-arch-decoupling" alt="Decoupled architecture" width="40%">
+</p>
+++++
+endif::env-vscode,env-github[]
 
 The strategy to transform data between all participant systems in the platform is to adopt a common data schema that mediates between all of formats, reducing the number of data mappings to a manageable degree.
 
@@ -123,8 +157,20 @@ A decoupled approach makes the platform very easy to extend. Once you have defin
 
 For example, if the platform wants to be extended to include a popular IM platform, all that is required is to define the integration piece that translates IN/OUT messages to/from the common schema.
 
+//When rendering in VS-Code or GitHub
+ifdef::env-vscode,env-github[]
 .Extending the platform with new IM
-image::09-arch-extend-im.png[,90%]
+image::09-arch-extend-im.png[,90%,align=center]
+endif::env-vscode,env-github[]
+
+//GitHub Pages needs a passthrough to center the image
+ifndef::env-vscode,env-github[]
+++++
+<p align="center">
+	<img src="_images/09-arch-extend-im.png" alt="Extending the platform with new IM" width="90%">
+</p>
+++++
+endif::env-vscode,env-github[]
 
 In the above diagram, the *(?)* system represents the new IM platform to be plugged in. Connecting and integrating using Camel, as represented in the picture, supposes no impact or additional changes in the existing platform.
 
@@ -132,8 +178,20 @@ The solution's demo also integrates the Globex's Web portal (see below), where a
 
 Similarly, if you wanted to extend the platform to include new API-based channels or services, adding them in would be straight-forward.
 
+//When rendering in VS-Code or GitHub
+ifdef::env-vscode,env-github[]
 .Extending the platform with new API-based system
-image::10-arch-extend-api.png[,90%]
+image::10-arch-extend-api.png[,90%,align=center]
+endif::env-vscode,env-github[]
+
+//GitHub Pages needs a passthrough to center the image
+ifndef::env-vscode,env-github[]
+++++
+<p align="center">
+	<img src="_images/10-arch-extend-api.png" alt="Extending the platform with new API-based system" width="90%">
+</p>
+++++
+endif::env-vscode,env-github[]
 
 In the picture above, the *(?)* system represents the new system added in and connecting via an API exposed by a _Camel_ system.
 
@@ -149,8 +207,20 @@ _Data Grid_ provides caching capabilities. In the context of this _Solution Patt
 
 Caching provides the capability to temporarily store the context of these communications. _Apache Camel_ can retrieve contextual information from _Data Grid_ to correlate the information.
 
+//When rendering in VS-Code or GitHub
+ifdef::env-vscode,env-github[]
 .Context Caching with Data Grid
-image::12-arch-caching.png[,50%]
+image::12-arch-caching.png[,40%, align=center]
+endif::env-vscode,env-github[]
+
+//GitHub Pages needs a passthrough to center the image
+ifndef::env-vscode,env-github[]
+++++
+<p align="center">
+	<img src="_images/12-arch-caching.png" alt="Context Caching with Data Grid" width="40%">
+</p>
+++++
+endif::env-vscode,env-github[]
 
 The picture above represents the role of _Apache Camel_ and _Data Grid_ to perform customer/agent context read/writes.
 
@@ -175,8 +245,20 @@ A key capability in the solution is AMQ Streams (Kafka). For every exchange trav
 
 Looking more in detail into the different stages included in the architecture we find the processes writing conversations into object storage.
 
+//When rendering in VS-Code or GitHub
+ifdef::env-vscode,env-github[]
 .Session playbacks to persist conversations
-image::11-arch-archiving-persist.jpeg[,90%]
+image::11-arch-archiving-persist.jpeg[,60%,align=center]
+endif::env-vscode,env-github[]
+
+//GitHub Pages needs a passthrough to center the image
+ifndef::env-vscode,env-github[]
+++++
+<p align="center">
+	<img src="_images/11-arch-archiving-persist.jpeg" alt="Session playbacks to persist conversations" width="60%">
+</p>
+++++
+endif::env-vscode,env-github[]
 
 Kafka is used to replay customer/agent messages. The figure above shows traffic directed to kafka and consumed, processed and persisted by Camel. 
 

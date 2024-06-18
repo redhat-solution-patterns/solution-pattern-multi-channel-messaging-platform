@@ -392,12 +392,20 @@ The diagram below illustrates what happens when the customer session ends.
 // ^.^| image:11-arch-archiving-persist.jpeg[,60%]
 // |===
 
-// I use a passthrough as a workaround
+//When rendering in VS-Code or GitHub
+ifdef::env-vscode,env-github[]
+.Data flow consuming messages from AMQ
+image::11-arch-archiving-persist.jpeg[,60%,align=center]
+endif::env-vscode,env-github[]
+
+//GitHub Pages needs a passthrough to center the image
+ifndef::env-vscode,env-github[]
 ++++
 <p align="center">
-	<img src="_images/11-arch-archiving-persist.jpeg" alt="Session playbacks to persist conversations" width="60%">
+	<img src="_images/11-arch-archiving-persist.jpeg" alt="Data flow consuming messages from AMQ" width="60%">
 </p>
 ++++
+endif::env-vscode,env-github[]
 
 Kafka is used to replay customer/agent messages. The figure above shows traffic directed to kafka and consumed, processed and persisted by Camel. 
 
@@ -533,15 +541,20 @@ Let's continue by:
 
 Let's start with the request flow, where the new system pushes messages from customers to the messaging broker.
 
-// .Data flow pushing messages to AMQ
-// image::31-demo-extend-platform-request-flow.png[,70%,align=center]
+//When rendering in VS-Code or GitHub
+ifdef::env-vscode,env-github[]
+.Data flow pushing messages to AMQ
+image::31-demo-extend-platform-request-flow.png[,60%,align=center]
+endif::env-vscode,env-github[]
 
-// I use a passthrough as a workaround
+//GitHub Pages needs a passthrough to center the image
+ifndef::env-vscode,env-github[]
 ++++
 <p align="center">
 	<img src="_images/31-demo-extend-platform-request-flow.png" alt="Data flow pushing messages to AMQ" width="60%">
 </p>
 ++++
+endif::env-vscode,env-github[]
 
 You could use any integration framework you'd like. We use _Apache Camel_ for its versatility, ease of use and proven track record.
 
@@ -587,15 +600,20 @@ The `sessionid` is the correlator value for the entire conversation.
 
 The response flow consumes messages from the AMQ Broker, sent by the support agents and are directed to the system to be integrated.
 
-// .Data flow consuming messages from AMQ
-// image::32-demo-extend-platform-response-flow.png[,70%,align=center]
+//When rendering in VS-Code or GitHub
+ifdef::env-vscode,env-github[]
+.Data flow consuming messages from AMQ
+image::32-demo-extend-platform-response-flow.png[,60%,align=center]
+endif::env-vscode,env-github[]
 
-// I use a passthrough as a workaround
+//GitHub Pages needs a passthrough to center the image
+ifndef::env-vscode,env-github[]
 ++++
 <p align="center">
 	<img src="_images/32-demo-extend-platform-response-flow.png" alt="Data flow consuming messages from AMQ" width="60%">
 </p>
 ++++
+endif::env-vscode,env-github[]
 
 The key Camel route to enable the above data flow is shown in this snippet:
 
