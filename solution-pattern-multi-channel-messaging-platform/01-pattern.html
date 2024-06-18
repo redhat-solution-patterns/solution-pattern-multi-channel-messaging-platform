@@ -261,98 +261,12 @@
 <div class="paragraph">
 <p>See below a simplified representation of the solution:</p>
 </div>
-<div class="imageblock text-center">
-<div class="content">
-<img src="_images/03-architecture-high-level.png" alt="03 architecture high level" width="60%">
-</div>
-<div class="title">Figure 1. Event-Driven architecture (high-level view)</div>
-</div>
 <div class="paragraph">
-<p>The platform integrates, in its first iteration, three communication channels. On one end (left in the diagram, Rocket.Chat and Globex&#8217;s embedded IM chat), two distinct customer facing platforms , and on the other end, an agent’s channel (right in the diagram, a Matrix-based messenger app).</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Rocket.Chat and Matrix are open-source implementations of direct messaging platforms. While not as popular or ubiquitous as WhatsApp or Discord for example, they can be installed on an OpenShift cluster and do not require registration, making them more suitable for our solution pattern demo environment.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>The multi-channel platform is supported by a variety of technologies provided by Red Hat Application Foundations that enable key capabilities like event-driven processing, decoupled architecture, scalability, persistence and easy to extensibility to accommodate new channels and services.</p>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-Please see the <a href="02-architecture.html" class="xref page">Architecture</a> section for more details on the technologies involved and architecture diagrams.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p><br></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_collaborative_interaction"><a class="anchor" href="#_collaborative_interaction"></a>Collaborative interaction</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Because instant messaging platforms are not only designed for private one-to-one communications but also for plural conversations with many participants in a room or channel.</p>
-</div>
-<div class="paragraph">
-<p>Instant messaging platforms are generally designed both private one-to-one communications and also plural conversations with many participants in a room or channel.</p>
-</div>
-<div class="paragraph">
-<p>Not only the Solution Pattern proposes a platform where multiple IM systems are connected, but also includes collaborative one-to-many support sessions, meaning a customer being helped by multiple agents if necessary. The diagram below illustrates the proposal.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/13-scenario-collaborative-support.png" alt="13 scenario collaborative support" width="100%">
-</div>
-<div class="title">Figure 2. Collaborative support sessions</div>
-</div>
-<div class="paragraph">
-<p>Notice in the figure above the following concepts:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Customers can access the support line from various available channels. In the picture above they can use <em>Rocket.Chat</em> or the chat widget in the <em>Globex</em> web portal.</p>
-</li>
-<li>
-<p>The <em>Unified Platform</em> not only integrates the customer access points but also a series of instant messaging platforms from where different support teams can interact. For illustration purposes, the figure shows <em>Matrix</em> and other very popular IMs available in the market.</p>
-</li>
-<li>
-<p>Lastly, when a customer requests assistance, for example from <em>Rocket.Chat</em> as in the diagram above, it can get help from more than one team at a time. First, a 1st line of support team might welcome the customer to understand the initial problem. Because the issue is of technical nature, the technical support team gets involved.</p>
-<div class="paragraph">
-<p><br></p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-For simplicity, the demo in the <em>Solution Pattern</em> only includes <em>Matrix</em> as the access points for support agents. Consider the different support members in <em>Matrix</em> as belonging to different support groups (1st line, technical, delivery, etc).
-</td>
-</tr>
-</table>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><br></p>
+<p>/github/home
+{host-site}
+{address}
+{home}
+{website}</p>
 </div>
 </div>
 </div>
