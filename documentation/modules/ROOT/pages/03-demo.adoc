@@ -436,7 +436,7 @@ Once this formal chit-chat out of the way, from _Matrix_ follow the actions belo
 
 image::25-demo-matrix-channel-leave.png[,50%]
 
-When prompted, click `Leave` in the confirmation window.
+When prompted, click `[red]#Leave#` in the confirmation window.
 
 Not only the actions above close the conversation in _Matrix_, but also, in the background, it triggers the process to generate and archive the transcript.
 
