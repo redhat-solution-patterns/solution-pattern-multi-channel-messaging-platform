@@ -500,8 +500,29 @@ Below you have a sample conversation and the transcript produced out of it.
 
 image::28-demo-globex-conversation.png[,100%]
 
-
 {empty} +
+
+
+
+=== Integrate a new 3rd party system
+
+You've used so far two customer chat systems currently plugged to the platform (_Rocket.chat_ and _Globex Web Chat_).
+
+This section demonstrates the extensibility design of the platform to connect a new communication channel. All there is to do is to create an integration that complies with the platform's data schemas.
+
+Let's start with the request flow, where the new system pushes messages from customers to agents.
+
+The picture 
+
+.Data flow between Globex and support
+image::31-demo-extend-platform-request-flow.png[,70%,align=center]
+
+
+
+
+Up until now you've tried the two current systems integrated with the platform, 
+
+
 
 Well done! You have iterated the _Product Catalogue_ to include new articles on offer.
 

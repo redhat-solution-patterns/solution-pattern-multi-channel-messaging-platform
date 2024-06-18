@@ -28,7 +28,7 @@ The picture below illustrates an example where a customer has to liaise with mul
 // scenario problem
 
 // I don't find a way to center the image with the line below
-image::01-scenario-problem.png[width=60%]
+image::01-scenario-problem.png[width=40%,align=center]
 
 // I use a passthrough as a workaround
 // ++++
@@ -42,7 +42,7 @@ The problem that arises from above is that it is common for support teams to red
 
 This Solution Pattern proposes an implementation to build a platform that addresses similar scenarios by unifying all platforms as one, and plug in additional services associated with those interactions. The platform would provide new collaboration possibilities and new capabilities to help complying with government regulations, like data privacy and security.
 
-image::02-scenario-solution.png[width=60%]
+image::02-scenario-solution.png[width=40%]
 
 The picture above illustrates a system that integrates all platforms and allows communication exchanges between different members from unrelated entities, including systems from where customers communicate.
 

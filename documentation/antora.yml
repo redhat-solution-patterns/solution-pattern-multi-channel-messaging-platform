@@ -1,5 +1,5 @@
 name: solution-pattern-multi-channel-messaging-platform
-title: 'Event-Driven Multi-Channel Support Service'
+title: 'Event-Driven Multi-Channel Messaging Platform'
 version: master
 nav:
   - modules/ROOT/nav.adoc
