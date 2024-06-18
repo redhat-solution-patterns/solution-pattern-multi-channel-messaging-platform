@@ -68,51 +68,23 @@ As an added initiative to the digital transformation, Globex, a fictitious retai
 
 See below a simplified representation of the solution:
 
-// {env-github}
-// {env-browser}
-// {env-vscode}
+// GitHub pages {user-home} is "/github/home"
+// {user-home}
 
-{user-home}
-{host-site}
-{address}
-{home}
-{website}
-
-// ifdef::env-browser[]
-// browser
-// endif::env-browser[]
-
+//When rendering in VS-Code or GitHub
 ifdef::env-vscode,env-github[]
-VS Code or GitHub
+.Event-Driven architecture (high-level view)
+image::03-architecture-high-level.png[width=70%, align=center]
 endif::env-vscode,env-github[]
 
+//When rendering in GitHub Pages we use Passthrough
 ifndef::env-vscode,env-github[]
-NOT VS Code or GitHub
-endif::env-vscode,env-github[]
-
-
-ifdef::env-github[]
-GitHub
-endif::env-github[]
-
-ifdef::env-vscode[]
-VS Code
-endif::env-vscode[]
-
-
-// When rendered by GitHub, passthrough as a workaround
-ifdef::env-github[]
 ++++
 <p align="center">
-	<img src="_images/03-architecture-high-level.png" alt="Event-Driven architecture (high-level view)" width="60%">
+	<img src="_images/03-architecture-high-level.png" alt="Event-Driven architecture (high-level view)" width="70%">
 </p>
 ++++
-endif::[]
-
-ifndef::env-github[]
-.Event-Driven architecture (high-level view)
-image::03-architecture-high-level.png[width=60%, align=center]
-endif::[]
+endif::env-vscode,env-github[]
 
 The platform integrates, in its first iteration, three communication channels. On one end (left in the diagram, Rocket.Chat and Globex's embedded IM chat), two distinct customer facing platforms , and on the other end, an agent’s channel (right in the diagram, a Matrix-based messenger app).
 
