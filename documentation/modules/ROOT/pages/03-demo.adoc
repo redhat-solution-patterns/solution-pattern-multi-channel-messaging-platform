@@ -404,6 +404,17 @@ image:11-arch-archiving-persist.jpeg[,60%]
 [.right.text-center]
 image::11-arch-archiving-persist.jpeg[,60%]
 
+
+.test41
+[.text-center]
+image::11-arch-archiving-persist.jpeg[,60%]
+
+
+.test42
+[.text-center]
+image:11-arch-archiving-persist.jpeg[,60%]
+
+
 .test5
 |===
 ^.^| image:11-arch-archiving-persist.jpeg[,60%]
@@ -416,7 +427,8 @@ image::11-arch-archiving-persist.jpeg[,60%]
 |===
 
 
-[frame=none]
+[frame="none"]
+[table_border_color="blue"]
 |===
 ^.^| image:11-arch-archiving-persist.jpeg[,60%]
 |===
