@@ -225,6 +225,11 @@ _Element_ is the front facing interface application that connects to the _Matrix
 
 `[DodgerBlue-background]#Sign in#`
 
+`[#1E90FF-background]#Sign in#`
+
+
+`pass:[<mark style="background-color: dodgerblue; color: white">Sign In</mark>]`
+
 `[white DodgerBlue-background]#Sign in#`
 
 [blue]`#Sign in#`
