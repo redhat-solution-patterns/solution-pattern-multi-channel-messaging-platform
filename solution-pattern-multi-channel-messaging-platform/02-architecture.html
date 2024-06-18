@@ -317,12 +317,9 @@ The picture would look different if applying the solution pattern to external me
 <div class="paragraph">
 <p>For example, let&#8217;s assume the aggregation of input channels results in an increased overall output towards the agent&#8217;s platform where the support team attends customers. We are referring to Matrix in the diagram below (could also be Discord, WhatsApp or similar).</p>
 </div>
-<div class="imageblock text-center">
-<div class="content">
-<img src="_images/05-scalability-target.png" alt="05 scalability target" width="60%">
-</div>
-<div class="title">Figure 2. Scaling outbound traffic</div>
-</div>
+<p align="center">
+	<img src="_images/05-scalability-target.png" alt="Scaling outbound traffic" width="40%">
+</p>
 <div class="paragraph">
 <p>We trust the target IM platform&#8217;s scalability capabilities under big volumes of traffic. Popular platforms are known to handle millions of messages per second. From our platform&#8217;s perspective, we can scale the Camel integration to Matrix by increasing the number of replicas. All Camel instances subscribe to the same queues in the AMQ platform. AMQ load-balances (by design) all the traffic between available subscribers and Camel forwards messages to the target platform using their scalable client API specification.</p>
 </div>
@@ -350,24 +347,18 @@ The picture would look different if applying the solution pattern to external me
 <div class="paragraph">
 <p>However, things get complex, exponentially fast, when we start plugging in source and target systems. This is due to the cross data translations required between all different systems.</p>
 </div>
-<div class="imageblock text-center">
-<div class="content">
-<img src="_images/06-arch-no-decoupling.png" alt="06 arch no decoupling" width="40%">
-</div>
-<div class="title">Figure 3. One-to-one connectivity</div>
-</div>
+<p align="center">
+	<img src="_images/06-arch-no-decoupling.png" alt="One-to-one connectivity" width="40%">
+</p>
 <div class="paragraph">
 <p>In the diagram above, a one-to-one strategy renders the architecture unable to cope as new systems are added to the platform. Every system requires to be translated to every other system.</p>
 </div>
 <div class="paragraph">
 <p>To solve this complexity, the architecture is decoupled by introducing asynchronous messaging with <em>Red Hat AMQ</em> and adopting a star configuration, as the figure below illustrates.</p>
 </div>
-<div class="imageblock text-center">
-<div class="content">
-<img src="_images/07-arch-decoupling.png" alt="07 arch decoupling" width="40%">
-</div>
-<div class="title">Figure 4. Decoupled architecture</div>
-</div>
+<p align="center">
+	<img src="_images/07-arch-decoupling" alt="Decoupled architecture" width="40%">
+</p>
 <div class="paragraph">
 <p>The strategy to transform data between all participant systems in the platform is to adopt a common data schema that mediates between all of formats, reducing the number of data mappings to a manageable degree.</p>
 </div>
@@ -375,7 +366,7 @@ The picture would look different if applying the solution pattern to external me
 <div class="content">
 <img src="_images/08-arch-common-schema.png" alt="08 arch common schema" width="90%">
 </div>
-<div class="title">Figure 5. Common Schema for data exchanges</div>
+<div class="title">Figure 2. Common Schema for data exchanges</div>
 </div>
 <div class="paragraph">
 <p>The diagram above illustrates source messages (<em>In</em>) in their original format, then transformed in the common format and placed in the message broker (<em>AMQ</em>), and finally converted to the target format (<em>Out</em>) when sent to the destination system.</p>
@@ -392,12 +383,9 @@ The picture would look different if applying the solution pattern to external me
 <div class="paragraph">
 <p>For example, if the platform wants to be extended to include a popular IM platform, all that is required is to define the integration piece that translates IN/OUT messages to/from the common schema.</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/09-arch-extend-im.png" alt="09 arch extend im" width="90%">
-</div>
-<div class="title">Figure 6. Extending the platform with new IM</div>
-</div>
+<p align="center">
+	<img src="_images/09-arch-extend-im.png" alt="Extending the platform with new IM" width="90%">
+</p>
 <div class="paragraph">
 <p>In the above diagram, the <strong>(?)</strong> system represents the new IM platform to be plugged in. Connecting and integrating using Camel, as represented in the picture, supposes no impact or additional changes in the existing platform.</p>
 </div>
@@ -407,12 +395,9 @@ The picture would look different if applying the solution pattern to external me
 <div class="paragraph">
 <p>Similarly, if you wanted to extend the platform to include new API-based channels or services, adding them in would be straight-forward.</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/10-arch-extend-api.png" alt="10 arch extend api" width="90%">
-</div>
-<div class="title">Figure 7. Extending the platform with new API-based system</div>
-</div>
+<p align="center">
+	<img src="_images/10-arch-extend-api.png" alt="Extending the platform with new API-based system" width="90%">
+</p>
 <div class="paragraph">
 <p>In the picture above, the <strong>(?)</strong> system represents the new system added in and connecting via an API exposed by a <em>Camel</em> system.</p>
 </div>
@@ -431,12 +416,9 @@ The picture would look different if applying the solution pattern to external me
 <div class="paragraph">
 <p>Caching provides the capability to temporarily store the context of these communications. <em>Apache Camel</em> can retrieve contextual information from <em>Data Grid</em> to correlate the information.</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/12-arch-caching.png" alt="12 arch caching" width="50%">
-</div>
-<div class="title">Figure 8. Context Caching with Data Grid</div>
-</div>
+<p align="center">
+	<img src="_images/12-arch-caching.png" alt="Context Caching with Data Grid" width="40%">
+</p>
 <div class="paragraph">
 <p>The picture above represents the role of <em>Apache Camel</em> and <em>Data Grid</em> to perform customer/agent context read/writes.</p>
 </div>
@@ -474,12 +456,9 @@ The picture would look different if applying the solution pattern to external me
 <div class="paragraph">
 <p>Looking more in detail into the different stages included in the architecture we find the processes writing conversations into object storage.</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/11-arch-archiving-persist.jpeg" alt="11 arch archiving persist" width="90%">
-</div>
-<div class="title">Figure 9. Session playbacks to persist conversations</div>
-</div>
+<p align="center">
+	<img src="_images/11-arch-archiving-persist.jpeg" alt="Session playbacks to persist conversations" width="60%">
+</p>
 <div class="paragraph">
 <p>Kafka is used to replay customer/agent messages. The figure above shows traffic directed to kafka and consumed, processed and persisted by Camel.</p>
 </div>
