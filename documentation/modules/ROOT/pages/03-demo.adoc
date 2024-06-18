@@ -533,8 +533,15 @@ Let's continue by:
 
 Let's start with the request flow, where the new system pushes messages from customers to the messaging broker.
 
-.Data flow pushing messages to AMQ
-image::31-demo-extend-platform-request-flow.png[,70%,align=center]
+// .Data flow pushing messages to AMQ
+// image::31-demo-extend-platform-request-flow.png[,70%,align=center]
+
+// I use a passthrough as a workaround
+++++
+<p align="center">
+	<img src="_images/31-demo-extend-platform-request-flow.png" alt="Data flow pushing messages to AMQ" width="50%">
+</p>
+++++
 
 You could use any integration framework you'd like. We use _Apache Camel_ for its versatility, ease of use and proven track record.
 
@@ -580,8 +587,15 @@ The `sessionid` is the correlator value for the entire conversation.
 
 The response flow consumes messages from the AMQ Broker, sent by the support agents and are directed to the system to be integrated.
 
-.Data flow consuming messages from AMQ
-image::32-demo-extend-platform-response-flow.png[,70%,align=center]
+// .Data flow consuming messages from AMQ
+// image::32-demo-extend-platform-response-flow.png[,70%,align=center]
+
+// I use a passthrough as a workaround
+++++
+<p align="center">
+	<img src="_images/32-demo-extend-platform-response-flow.png" alt="Data flow consuming messages from AMQ" width="50%">
+</p>
+++++
 
 The key Camel route to enable the above data flow is shown in this snippet:
 
@@ -636,6 +650,7 @@ The source code below contains the snippets viewed earlier. They are deployed as
 
 [.console-input]
 [source,YAML]
+[.small]
 ----
 ---
 kind: ConfigMap
@@ -761,7 +776,7 @@ Be patient, _Camel K_ will process the integration YAML, it'll take between 2-5 
 After some time you'll see the integration `partner-support` deployed and running:
 
 .Partner integration
-image::34-demo-partner-support.png[,30%]
+image::34-demo-partner-support.png[,40%, align=left]
 
 {empty} +
 
@@ -774,7 +789,7 @@ The OpenShift console comes with a terminal you can use. Follow the steps below 
 . From the top of your OpenShift's console, click the `>_` button to open the terminal window:
 
 .Action to open the terminal
-image::35-demo-terminal-open.png[,80%]
+image::35-demo-terminal-open.png[,90%, align=center]
 
 Now, use the `curl` command below to send an HTTP request against the integration point to simulate the client interaction:
 
