@@ -620,16 +620,12 @@ image::33-demo-import-yaml.png[,80%]
 
 Next, copy the YAML definitions below, and paste them into the YAML editor:
 
-[%collapsible]
-====
+
 [NOTE]
 The source code below contains the snippets viewed earlier. They are deployed as Camel K definitions, automatically processed by the Camel K operator.
-====
 
 [.console-input]
-[source,YAML,collapsible]
-[%collapsible]
-====
+[source,YAML]
 ----
 ---
 kind: ConfigMap
@@ -746,12 +742,149 @@ spec:
 
 
 ----
-====
 
-Up until now you've tried the two current systems integrated with the platform, 
+Click `Create`.
+
+[NOTE]
+Be patient, _Camel K_ will process the integration YAML, it'll take between 2-5 minutes.
+
+After some time you'll see the integration `partner-support` deployed and running:
+
+.Partner integration
+image::34-demo-partner-support.png[,30%]
+
+{empty} +
+
+===== Test the request flow
+
+To simulate the client interface, using a `curl` command, we will invoke the integration HTTP endpoint to send a message from a fictitious customer.
+
+The OpenShift console comes with a terminal you can use. Follow the steps below to open the terminal.
+
+. From the top of your OpenShift's console, click the `>_` button to open the terminal window:
+
+.Action to open the terminal
+image::35-demo-terminal-open.png[,80%]
+
+Now, use the `curl` command below to send an HTTP request against the integration point to simulate the client interaction:
+
+[.console-input]
+[source,bash]
+----
+curl \
+-H "content-type: json" \
+-d '{"user":"client1", "text":"Asking for help from the command line", "sessionid":"0001"}' \
+http://partner-support.globex-integrations.svc:80/support/message
+----
+
+Press `Enter`.
+
+You should see in Matrix a new room created. Agents can now attend the client's request as usual.
+
+
+{empty} +
+
+===== Test the response flow
+
+When agents respond back, the new _Partner_ integration consumes events from _AMQ Broker_ and invokes the _Partner_ callback URL.
+
+The strategy to send asynchronous responses to the _Partner_ interface is via HTTP callbacks.
+
+We need to put in place an HTTP process that will listen for callbacks. The Camel integration has already been pre-defined to send callbacks to the following address:
+
+[source,bash]
+----
+http://partner-callback:80/partner/callback
+----
+
+Once again, you can choose the language of your liking to deploy a process ready to listen for HTTP callbacks.
+
+We will use Camel K once more since it's so handy and simple.
+
+From the top of your OpenShift's console, click the `⨁` button to import YAML code, as shown below:
+
+.Import YAML code
+image::33-demo-import-yaml.png[,80%]
+
+Next, copy the YAML definition below, and paste it into the YAML editor:
+
+
+[NOTE]
+The source code below contains the snippets viewed earlier. They are deployed as Camel K definitions, automatically processed by the Camel K operator.
+
+[.console-input]
+[source,YAML]
+----
+apiVersion: camel.apache.org/v1
+kind: Integration
+metadata:
+  name: partner-callback
+  namespace: globex-integrations
+spec:
+  flows:
+    - from:
+        uri: 'platform-http:/partner/callback'
+        steps:
+          - convertBodyTo:
+              type: String
+          - to: 'log:info'
+----
+
+Click `Create`.
+
+The Camel route above basically listens for HTTP requests, and prints out their body. The process prints the payload and we will be able to see the responses agents send from Matrix.
+
+[NOTE]
+Be patient, _Camel K_ will process the integration YAML, it'll take between 2-5 minutes.
 
 
 
-Well done! You have iterated the _Product Catalogue_ to include new articles on offer.
+After some time you'll see the `partner-callback` system deployed and running.
+
+Open the system logs. Follow the actions below:
+
+.Partner callback system
+image::36-demo-partner-callback-logs.png[,100%]
+
+Test your callback URL by issuing the following `curl` command:
+
+[.console-input]
+[source,bash]
+----
+curl \
+-H "content-type: text" \
+-d "test callback" \
+http://partner-callback.globex-integrations.svc:80/partner/callback
+----
+
+You should see in your logs the following trace:
+
+----
+... Exchange[ExchangePattern: InOut, BodyType: String, Body: test callback]
+----
+
+If you saw the trace, it means your callback system is ready to get agent responses.
+
+Put your support agent hat on, and from Matrix, respond to the client message, for example with:
+
+- Agent (1st line):
++
+--
+> Hello, how can I help a client using a terminal?
+-- 
+
+You see the response showing in the partner callback logs, with a trace similar to:
+
+----
+... Exchange[ExchangePattern: InOut, BodyType: String, Body: {"agent":"user2","text":"Hello, how can I help a user in the command line?","sessionid":"0001"}]
+----
+
+
+{empty} +
+
+
+
+
+Well done! You should now be familiar with the hightlights of this Solution Pattern.
 
 
