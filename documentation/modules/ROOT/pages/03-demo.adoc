@@ -190,11 +190,11 @@ Open your _OpenShift_ console with your given admin credentials and follow the i
 . Find and select the project `globex-im-platforms`
 . Make sure you display the _Topologoy_ view (left menu)
 
-You should see a number of deployments in your screen. Find among them the _RocketChat_ application and open it by clicking the route link as shown below:
+You should see a number of deployments in your screen. Find among them the _Rocket.chat_ application and open it by clicking the route link as shown below:
 
 image::16-demo-rocket-onboarding.png[,100%]
 
-The login window to the _Rocket Chat_ application will show in a new tab. +
+The login window to the _Rocket.chat_ application will show in a new tab. +
 Enter the following credentials:
 
 - **username**: `user1`
@@ -223,18 +223,7 @@ From _OpenShift_'s _Topology_ view, find the _Element_ application.
 [NOTE]
 _Element_ is the front facing interface application that connects to the _Matrix_ server.
 
-`[DodgerBlue-background]#Sign in#`
-
-`[#1E90FF-background]#Sign in#`
-
-
-`pass:[<mark style="background-color: dodgerblue; color: white">Sign In</mark>]`
-
-`[white DodgerBlue-background]#Sign in#`
-
-[blue]`#Sign in#`
-
-To open _Matrix_, click _Element_'s route link and then click `[blue-background]#Sign in#` as shown below:
+To open _Matrix_, click _Element_'s route link and then click `pass:[<mark style="background-color: dodgerblue; color: white">Sign In</mark>]` as shown below:
 
 image::18-demo-matrix-onboarding.png[,100%]
 
@@ -328,7 +317,7 @@ From your _Topology_ view, open _Matrix_ by following the actions below describe
 We open _Element_ in an _Incognito_ window to avoid entering in conflict with your previous _Matrix_ session.
 
 . Click the _Element_ deployment disc
-. Find and click the `Resources` tab
+. Find and click the `[blue]#Resources#` tab
 . Copy the _Route_ URL
 . Open an incognito window and paste the URL address
 . Enter the Sign-In process in _Element_
