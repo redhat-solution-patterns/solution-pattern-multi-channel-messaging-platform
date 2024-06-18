@@ -1389,9 +1389,6 @@ The background context is that the organisation is obligated to meet certain sec
 <div class="paragraph">
 <p>Next, copy the YAML definitions below, and paste them into the YAML editor:</p>
 </div>
-<details>
-<summary class="title">Details</summary>
-<div class="content">
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -1404,14 +1401,9 @@ The source code below contains the snippets viewed earlier. They are deployed as
 </tr>
 </table>
 </div>
-</div>
-</details>
-<details class="console-input">
-<summary class="title">Details</summary>
+<div class="listingblock console-input">
 <div class="content">
-<div class="listingblock">
-<div class="content">
-<pre>---
+<pre class="highlightjs highlight"><code class="language-YAML hljs" data-lang="YAML">---
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -1522,16 +1514,228 @@ spec:
         - 'secret:client-amq'
       resources:
         - 'configmap:partner-support-request-jslt/request.jslt@/etc/camel/resources/request.jslt'
-        - 'configmap:globex-support-response-jslt/response.jslt@/etc/camel/resources/response.jslt'</pre>
+        - 'configmap:globex-support-response-jslt/response.jslt@/etc/camel/resources/response.jslt'</code></pre>
 </div>
-</div>
-</div>
-</details>
-<div class="paragraph">
-<p>Up until now you&#8217;ve tried the two current systems integrated with the platform,</p>
 </div>
 <div class="paragraph">
-<p>Well done! You have iterated the <em>Product Catalogue</em> to include new articles on offer.</p>
+<p>Click <code>Create</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Be patient, <em>Camel K</em> will process the integration YAML, it&#8217;ll take between 2-5 minutes.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>After some time you&#8217;ll see the integration <code>partner-support</code> deployed and running:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/34-demo-partner-support.png" alt="34 demo partner support" width="30%">
+</div>
+<div class="title">Figure 11. Partner integration</div>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+<div class="sect4">
+<h5 id="_test_the_request_flow"><a class="anchor" href="#_test_the_request_flow"></a><a class="link" href="#_test_the_request_flow">Test the request flow</a></h5>
+<div class="paragraph">
+<p>To simulate the client interface, using a <code>curl</code> command, we will invoke the integration HTTP endpoint to send a message from a fictitious customer.</p>
+</div>
+<div class="paragraph">
+<p>The OpenShift console comes with a terminal you can use. Follow the steps below to open the terminal.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>From the top of your OpenShift&#8217;s console, click the <code>&gt;_</code> button to open the terminal window:</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/35-demo-terminal-open.png" alt="35 demo terminal open" width="80%">
+</div>
+<div class="title">Figure 12. Action to open the terminal</div>
+</div>
+<div class="paragraph">
+<p>Now, use the <code>curl</code> command below to send an HTTP request against the integration point to simulate the client interaction:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl \
+-H "content-type: json" \
+-d '{"user":"client1", "text":"Asking for help from the command line", "sessionid":"0001"}' \
+http://partner-support.globex-integrations.svc:80/support/message</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Press <code>Enter</code>.</p>
+</div>
+<div class="paragraph">
+<p>You should see in Matrix a new room created. Agents can now attend the client&#8217;s request as usual.</p>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_test_the_response_flow"><a class="anchor" href="#_test_the_response_flow"></a><a class="link" href="#_test_the_response_flow">Test the response flow</a></h5>
+<div class="paragraph">
+<p>When agents respond back, the new <em>Partner</em> integration consumes events from <em>AMQ Broker</em> and invokes the <em>Partner</em> callback URL.</p>
+</div>
+<div class="paragraph">
+<p>The strategy to send asynchronous responses to the <em>Partner</em> interface is via HTTP callbacks.</p>
+</div>
+<div class="paragraph">
+<p>We need to put in place an HTTP process that will listen for callbacks. The Camel integration has already been pre-defined to send callbacks to the following address:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">http://partner-callback:80/partner/callback</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once again, you can choose the language of your liking to deploy a process ready to listen for HTTP callbacks.</p>
+</div>
+<div class="paragraph">
+<p>We will use Camel K once more since it&#8217;s so handy and simple.</p>
+</div>
+<div class="paragraph">
+<p>From the top of your OpenShift&#8217;s console, click the <code>⨁</code> button to import YAML code, as shown below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/33-demo-import-yaml.png" alt="33 demo import yaml" width="80%">
+</div>
+<div class="title">Figure 13. Import YAML code</div>
+</div>
+<div class="paragraph">
+<p>Next, copy the YAML definition below, and paste it into the YAML editor:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The source code below contains the snippets viewed earlier. They are deployed as Camel K definitions, automatically processed by the Camel K operator.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-YAML hljs" data-lang="YAML">apiVersion: camel.apache.org/v1
+kind: Integration
+metadata:
+  name: partner-callback
+  namespace: globex-integrations
+spec:
+  flows:
+    - from:
+        uri: 'platform-http:/partner/callback'
+        steps:
+          - convertBodyTo:
+              type: String
+          - to: 'log:info'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Click <code>Create</code>.</p>
+</div>
+<div class="paragraph">
+<p>The Camel route above basically listens for HTTP requests, and prints out their body. The process prints the payload and we will be able to see the responses agents send from Matrix.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Be patient, <em>Camel K</em> will process the integration YAML, it&#8217;ll take between 2-5 minutes.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>After some time you&#8217;ll see the <code>partner-callback</code> system deployed and running.</p>
+</div>
+<div class="paragraph">
+<p>Open the system logs. Follow the actions below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/36-demo-partner-callback-logs.png" alt="36 demo partner callback logs" width="100%">
+</div>
+<div class="title">Figure 14. Partner callback system</div>
+</div>
+<div class="paragraph">
+<p>Test your callback URL by issuing the following <code>curl</code> command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl \
+-H "content-type: text" \
+-d "test callback" \
+http://partner-callback.globex-integrations.svc:80/partner/callback</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see in your logs the following trace:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>... Exchange[ExchangePattern: InOut, BodyType: String, Body: test callback]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you saw the trace, it means your callback system is ready to get agent responses.</p>
+</div>
+<div class="paragraph">
+<p>Put your support agent hat on, and from Matrix, respond to the client message, for example with:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Agent (1st line):</p>
+<div class="openblock">
+<div class="content">
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Hello, how can I help a client using a terminal?</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You see the response showing in the partner callback logs, with a trace similar to:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>... Exchange[ExchangePattern: InOut, BodyType: String, Body: {"agent":"user2","text":"Hello, how can I help a user in the command line?","sessionid":"0001"}]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><br></p>
+</div>
+<div class="paragraph">
+<p>Well done! You should now be familiar with the hightlights of this Solution Pattern.</p>
+</div>
 </div>
 </div>
 </div>
