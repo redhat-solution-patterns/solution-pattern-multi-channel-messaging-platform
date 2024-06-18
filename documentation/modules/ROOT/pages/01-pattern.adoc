@@ -69,7 +69,16 @@ As an added initiative to the digital transformation, Globex, a fictitious retai
 See below a simplified representation of the solution:
 
 .Event-Driven architecture (high-level view)
-image::03-architecture-high-level.png[width=100%]
+image::03-architecture-high-level.png[width=80%, align=center]
+
+[.text-center]
+.Event-Driven architecture (high-level view)
+image::03-architecture-high-level.png[width=80%]
+
+
+// .Event-Driven architecture (high-level view)
+[.text-center]
+image:03-architecture-high-level.png[width=80%]
 
 
 The platform integrates, in its first iteration, three communication channels. On one end (left in the diagram, Rocket.Chat and Globex's embedded IM chat), two distinct customer facing platforms , and on the other end, an agent’s channel (right in the diagram, a Matrix-based messenger app).
