@@ -200,7 +200,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Initiate a customer support session using Rocket.Chat</p>
+<p>Initiate a customer support session using <em>Rocket.Chat</em></p>
 </li>
 <li>
 <p>Simulate a collaborative conversation between the customer and multiple support members (teams).</p>
@@ -448,7 +448,7 @@ quay.io/agnosticd/ee-multicloud:v0.0.11  \
 <h2 id="_walkthrough_guide"><a class="anchor" href="#_walkthrough_guide"></a><a class="link" href="#_walkthrough_guide">4. Walkthrough guide</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The guide below will help you to familiarise with the main components in the demo, and how to operate it to trigger the actions&#8230;&#8203;</p>
+<p>The guide below will help you to familiarise with the main components in the demo, and how to operate it to demonstrate the characteristics of this <em>Solution Pattern</em>.</p>
 </div>
 <div class="paragraph">
 <p><br></p>
@@ -461,26 +461,27 @@ quay.io/agnosticd/ee-multicloud:v0.0.11  \
 <div class="ulist">
 <ul>
 <li>
-<p><code>globex-im-platforms</code>: where the main instant messaging platfroms are deployed, namely Rocket.Chat and Matrix. The Apache Camel integration for Rocket.Chat is also included here.</p>
+<p><code>globex-im-platforms</code>: where the main instant messaging platforms are deployed, namely <em>Rocket.Chat</em> and <em>Matrix</em>. The <em>Apache Camel</em> integration for <em>Rocket.Chat</em> is also included here.</p>
 </li>
 <li>
-<p><code>globex-integrations</code>: where all the main Apache Camel integrations are deployed. Also in this namespace you&#8217;ll find the Globex Web portal, an instance of Data Grid and S3 storage with Minio where conversation transcripts are stored.</p>
+<p><code>globex-integrations</code>: where all the main <em>Apache Camel</em> integrations are deployed. Also in this namespace you&#8217;ll find the <em>Globex Web</em> portal, an instance of Data Grid and S3 storage with <em>Minio</em> where conversation transcripts are stored.</p>
 </li>
 <li>
-<p><code>globex-mw</code>: where the AMQ Streams (Kafka) instance used by the platform is deployed.</p>
+<p><code>globex-mw</code>: where the <em>AMQ Streams</em> (<em>Kafka</em>) instance used by the platform is deployed.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The partitioned distribution of components is not ideal to get a single easy to understand view from the OpenShift console.</p>
+<p>To have scattered components across different namespaces doesn&#8217;t help to intuitively understand the overall architecture.</p>
 </div>
 <div class="paragraph">
-<p>The picture below shows a convenient composition of all three namespaces illustration all the relationships and interactions involved in the solution.</p>
+<p>The picture below shows a convenient composition of all three namespaces illustrating all the relationships and interactions involved in the solution.</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/14-demo-deployment-full.png" alt="14 demo deployment full" width="100%">
 </div>
+<div class="title">Figure 1. Topology Overview collage of the Platform on OpenShift</div>
 </div>
 <div class="paragraph">
 <p><br></p>
@@ -492,7 +493,7 @@ quay.io/agnosticd/ee-multicloud:v0.0.11  \
 <div class="content">
 <img src="_images/15-demo-diagram-full.png" alt="15 demo diagram full" width="100%">
 </div>
-<div class="title">Figure 1. Schematic Overview of the Platform on OpenShift</div>
+<div class="title">Figure 2. Schematic Overview of the Platform on OpenShift</div>
 </div>
 <div class="paragraph">
 <p><br></p>
@@ -692,7 +693,7 @@ For example:</p>
 <div class="content">
 <img src="_images/20-demo-diagram-flow-first-line.png" alt="20 demo diagram flow first line" width="100%">
 </div>
-<div class="title">Figure 2. Data flow between customer and 1st line support</div>
+<div class="title">Figure 3. Data flow between customer and 1st line support</div>
 </div>
 <div class="paragraph">
 <p><br></p>
@@ -941,7 +942,7 @@ As previously explained, in the demo, both agents are connecting from <em>Matrix
 <div class="content">
 <img src="_images/21-demo-diagram-flow-technical.png" alt="21 demo diagram flow technical" width="100%">
 </div>
-<div class="title">Figure 3. Data flow between customer and technical support</div>
+<div class="title">Figure 4. Data flow between customer and technical support</div>
 </div>
 <div class="paragraph">
 <p><br></p>
@@ -974,7 +975,7 @@ The background context is that the organisation is obligated to meet certain sec
 <div class="content">
 <img src="_images/11-arch-archiving-persist.jpeg" alt="11 arch archiving persist" width="90%">
 </div>
-<div class="title">Figure 4. Session playbacks to persist conversations</div>
+<div class="title">Figure 5. Session playbacks to persist conversations</div>
 </div>
 <div class="paragraph">
 <p>Kafka is used to replay customer/agent messages. The figure above shows traffic directed to kafka and consumed, processed and persisted by Camel.</p>
@@ -1082,7 +1083,7 @@ The background context is that the organisation is obligated to meet certain sec
 <div class="content">
 <img src="_images/26-demo-rchat-transcript.png" alt="26 demo rchat transcript" width="100%">
 </div>
-<div class="title">Figure 5. Link to transcript in Rockat.chat</div>
+<div class="title">Figure 6. Link to transcript in Rockat.chat</div>
 </div>
 <div class="paragraph">
 <p>What the process did when the conversation was closed was the following sequence of actions:</p>
@@ -1105,7 +1106,7 @@ The background context is that the organisation is obligated to meet certain sec
 <p>Obtain a shareable URL of resource in S3</p>
 </li>
 <li>
-<p>Send a message to Rocket.chat to share the URL</p>
+<p>Send a message to <em>Rocket.chat</em> to share the URL</p>
 </li>
 </ol>
 </div>
@@ -1116,7 +1117,7 @@ The background context is that the organisation is obligated to meet certain sec
 <div class="content">
 <img src="_images/22-demo-diagram-flow-transcript.png" alt="22 demo diagram flow transcript" width="100%">
 </div>
-<div class="title">Figure 6. Data flow to deliver transcript to customer</div>
+<div class="title">Figure 7. Data flow to deliver transcript to customer</div>
 </div>
 <div class="paragraph">
 <p><br></p>
@@ -1125,7 +1126,7 @@ The background context is that the organisation is obligated to meet certain sec
 <div class="sect2">
 <h3 id="_get_support_from_the_web_portal_channel"><a class="anchor" href="#_get_support_from_the_web_portal_channel"></a><a class="link" href="#_get_support_from_the_web_portal_channel">4.5. Get support from the Web Portal channel</a></h3>
 <div class="paragraph">
-<p>Up until now, all your customer interactions have been done from Rocket.Chat, but this is a multi-channel platform.</p>
+<p>Up until now, all your customer interactions have been done from <em>Rocket.Chat</em>, but this is a multi-channel platform.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s try out the support service from the Globex Web Portal.</p>
@@ -1188,7 +1189,7 @@ The background context is that the organisation is obligated to meet certain sec
 <p>After completing the above steps (as illustrated), you should be presented with the Globex Web Chat interface where you can type in messages to the support team.</p>
 </div>
 <div class="paragraph">
-<p>In the Chat window, exchange a few messages with the support team, and end the conversation as previously done with the Rocket.chat example.</p>
+<p>In the Chat window, exchange a few messages with the support team, and end the conversation as previously done with the <em>Rocket.chat</em> example.</p>
 </div>
 <div class="paragraph">
 <p>The diagram below shows how data flows via the Globex Web integration.</p>
@@ -1197,7 +1198,7 @@ The background context is that the organisation is obligated to meet certain sec
 <div class="content">
 <img src="_images/30-demo-diagram-flow-globex.png" alt="30 demo diagram flow globex" width="100%">
 </div>
-<div class="title">Figure 7. Data flow between Globex and support</div>
+<div class="title">Figure 8. Data flow between Globex and support</div>
 </div>
 <div class="paragraph">
 <p>Below you have a sample conversation and the transcript produced out of it.</p>
@@ -1246,7 +1247,7 @@ The background context is that the organisation is obligated to meet certain sec
 <div class="content">
 <img src="_images/31-demo-extend-platform-request-flow.png" alt="31 demo extend platform request flow" width="70%">
 </div>
-<div class="title">Figure 8. Data flow pushing messages to AMQ</div>
+<div class="title">Figure 9. Data flow pushing messages to AMQ</div>
 </div>
 <div class="paragraph">
 <p>You could use any integration framework you&#8217;d like. We use <em>Apache Camel</em> for its versatility, ease of use and proven track record.</p>
@@ -1316,7 +1317,7 @@ The background context is that the organisation is obligated to meet certain sec
 <div class="content">
 <img src="_images/32-demo-extend-platform-response-flow.png" alt="32 demo extend platform response flow" width="70%">
 </div>
-<div class="title">Figure 9. Data flow consuming messages from AMQ</div>
+<div class="title">Figure 10. Data flow consuming messages from AMQ</div>
 </div>
 <div class="paragraph">
 <p>The key Camel route to enable the above data flow is shown in this snippet:</p>
@@ -1384,7 +1385,7 @@ The background context is that the organisation is obligated to meet certain sec
 <div class="content">
 <img src="_images/33-demo-import-yaml.png" alt="33 demo import yaml" width="80%">
 </div>
-<div class="title">Figure 10. Import YAML code</div>
+<div class="title">Figure 11. Import YAML code</div>
 </div>
 <div class="paragraph">
 <p>Next, copy the YAML definitions below, and paste them into the YAML editor:</p>
@@ -1539,7 +1540,7 @@ Be patient, <em>Camel K</em> will process the integration YAML, it&#8217;ll take
 <div class="content">
 <img src="_images/34-demo-partner-support.png" alt="34 demo partner support" width="30%">
 </div>
-<div class="title">Figure 11. Partner integration</div>
+<div class="title">Figure 12. Partner integration</div>
 </div>
 <div class="paragraph">
 <p><br></p>
@@ -1563,7 +1564,7 @@ Be patient, <em>Camel K</em> will process the integration YAML, it&#8217;ll take
 <div class="content">
 <img src="_images/35-demo-terminal-open.png" alt="35 demo terminal open" width="80%">
 </div>
-<div class="title">Figure 12. Action to open the terminal</div>
+<div class="title">Figure 13. Action to open the terminal</div>
 </div>
 <div class="paragraph">
 <p>Now, use the <code>curl</code> command below to send an HTTP request against the integration point to simulate the client interaction:</p>
@@ -1615,7 +1616,7 @@ http://partner-support.globex-integrations.svc:80/support/message</code></pre>
 <div class="content">
 <img src="_images/33-demo-import-yaml.png" alt="33 demo import yaml" width="80%">
 </div>
-<div class="title">Figure 13. Import YAML code</div>
+<div class="title">Figure 14. Import YAML code</div>
 </div>
 <div class="paragraph">
 <p>Next, copy the YAML definition below, and paste it into the YAML editor:</p>
@@ -1677,7 +1678,7 @@ Be patient, <em>Camel K</em> will process the integration YAML, it&#8217;ll take
 <div class="content">
 <img src="_images/36-demo-partner-callback-logs.png" alt="36 demo partner callback logs" width="100%">
 </div>
-<div class="title">Figure 14. Partner callback system</div>
+<div class="title">Figure 15. Partner callback system</div>
 </div>
 <div class="paragraph">
 <p>Test your callback URL by issuing the following <code>curl</code> command:</p>
