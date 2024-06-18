@@ -432,17 +432,17 @@ And then for politeness, the agent could respond:
 Once this formal chit-chat out of the way, from _Matrix_ follow the actions below to close the room:
 
 . In the left panel, right click the room
-. Click `Leave`
+. Click `pass:[<font style="color: red">Leave</font>]`
 
 image::25-demo-matrix-channel-leave.png[,50%]
 
-When prompted, click `[red]#Leave#` in the confirmation window.
+When prompted, click `pass:[<mark style="background-color: green;color: white">Leave</mark>]` in the confirmation window.
 
 Not only the actions above close the conversation in _Matrix_, but also, in the background, it triggers the process to generate and archive the transcript.
 
 In a matter of seconds, the customer receives a message in Rochet.chat with a link to the transcript.
 
-Click the `PDF transcript` to open it in your browser, as illustrated below.
+Click the `pass:[<font style="color: blue">PDF transcript</font>]` to open it in your browser, as illustrated below.
 
 .Link to transcript in Rockat.chat
 image::26-demo-rchat-transcript.png[,100%]
@@ -753,7 +753,7 @@ spec:
 
 ----
 
-Click `Create`.
+Click `pass:[<mark style="background-color: dodgerblue; color: white">Create</mark>]`.
 
 [NOTE]
 Be patient, _Camel K_ will process the integration YAML, it'll take between 2-5 minutes.
@@ -840,7 +840,7 @@ spec:
           - to: 'log:info'
 ----
 
-Click `Create`.
+Click `pass:[<mark style="background-color: dodgerblue; color: white">Create</mark>]`.
 
 The Camel route above basically listens for HTTP requests, and prints out their body. The process prints the payload and we will be able to see the responses agents send from _Matrix_.
 
