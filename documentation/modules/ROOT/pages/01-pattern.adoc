@@ -68,19 +68,19 @@ As an added initiative to the digital transformation, Globex, a fictitious retai
 
 See below a simplified representation of the solution:
 
-[.text-center]
-test image:03-architecture-high-level.png[width=60%]
-
-[[metadata_governance]]
-.Event-Driven architecture (high-level view)
-image::03-architecture-high-level.png[width=60%, align=center]
-
-// I use a passthrough as a workaround
+// When rendered by GitHug, passthrough as a workaround
+ifdef::env-github[]
 ++++
 <p align="center">
-	<img src="_images/03-architecture-high-level.png" alt="Event-Driven architecture (high-level view)" width="70%">
+	<img src="_images/03-architecture-high-level.png" alt="Event-Driven architecture (high-level view)" width="60%">
 </p>
 ++++
+endif::[]
+
+ifndef::env-github[]
+.Event-Driven architecture (high-level view)
+image::03-architecture-high-level.png[width=60%, align=center]
+endif::[]
 
 The platform integrates, in its first iteration, three communication channels. On one end (left in the diagram, Rocket.Chat and Globex's embedded IM chat), two distinct customer facing platforms , and on the other end, an agent’s channel (right in the diagram, a Matrix-based messenger app).
 
