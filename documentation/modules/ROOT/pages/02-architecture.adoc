@@ -77,7 +77,7 @@ For example, let's assume the aggregation of input channels results in an increa
 
 
 .Scaling outbound traffic
-image::05-scalability-target.png[,90%]
+image::05-scalability-target.png[,60%, align=center]
 
 
 We trust the target IM platform's scalability capabilities under big volumes of traffic. Popular platforms are known to handle millions of messages per second. From our platform's perspective, we can scale the Camel integration to Matrix by increasing the number of replicas. All Camel instances subscribe to the same queues in the AMQ platform. AMQ load-balances (by design) all the traffic between available subscribers and Camel forwards messages to the target platform using their scalable client API specification.
@@ -99,14 +99,14 @@ For simple one-to-one flows, a single process can handle the data mappings requi
 However, things get complex, exponentially fast, when we start plugging in source and target systems. This is due to the cross data translations required between all different systems.
 
 .One-to-one connectivity
-image::06-arch-no-decoupling.png[,50%]
+image::06-arch-no-decoupling.png[,40%, align=center]
 
 In the diagram above, a one-to-one strategy renders the architecture unable to cope as new systems are added to the platform. Every system requires to be translated to every other system.
 
 To solve this complexity, the architecture is decoupled by introducing asynchronous messaging with _Red Hat AMQ_ and adopting a star configuration, as the figure below illustrates.
 
 .Decoupled architecture
-image::07-arch-decoupling.png[,50%]
+image::07-arch-decoupling.png[,40%, align=center]
 
 The strategy to transform data between all participant systems in the platform is to adopt a common data schema that mediates between all of formats, reducing the number of data mappings to a manageable degree.
 
