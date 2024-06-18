@@ -72,17 +72,27 @@ See below a simplified representation of the solution:
 // {env-browser}
 // {env-vscode}
 
-ifdef::env-browser[]
-browser
-endif::env-browser[]
+{user-home}
+{host-site}
+{address}
+{home}
+{website}
 
-ifdef::env-vscode[]
-VS Code
+// ifdef::env-browser[]
+// browser
+// endif::env-browser[]
+
+ifdef::env-vscode,env-github[]
+VS Code or GitHub
 endif::env-vscode[]
 
 ifdef::env-github[]
 GitHub
 endif::env-github[]
+
+ifdef::env-vscode[]
+VS Code
+endif::env-vscode[]
 
 
 // When rendered by GitHub, passthrough as a workaround
