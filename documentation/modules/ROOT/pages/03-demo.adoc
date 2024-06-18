@@ -508,17 +508,245 @@ image::28-demo-globex-conversation.png[,100%]
 
 You've used so far two customer chat systems currently plugged to the platform (_Rocket.chat_ and _Globex Web Chat_).
 
-This section demonstrates the extensibility design of the platform to connect a new communication channel. All there is to do is to create an integration that complies with the platform's data schemas.
+This section demonstrates the extensibility design of the platform to connect a new communication channel. All there is to do is to create an integration that produces/consumes messages to/from AMQ and complies with the data schemas.
 
-Let's start with the request flow, where the new system pushes messages from customers to agents.
+Let's continue by:
 
-The picture 
+. Explaining the basics of both request/response flows
+. Deploying and testing the new partner integration.
 
-.Data flow between Globex and support
+{empty} +
+
+==== Overview of request/response flows
+
+===== Request flow
+
+Let's start with the request flow, where the new system pushes messages from customers to the messaging broker.
+
+.Data flow pushing messages to AMQ
 image::31-demo-extend-platform-request-flow.png[,70%,align=center]
 
+You could use any integration framework you'd like. We use _Apache Camel_ for its versatility, ease of use and proven track record.
+
+The key Camel route to enable the above data flow is shown in this snippet:
+
+[source,java]
+----
+from("platform-http:/support/message")
+  .convertBodyTo(String.class)
+  .to("jslt:request.jslt?allowContextMapAll=true")
+  .to("amqp:topic:{{broker.amqp.topic.clients}}?disableReplyTo=true&connectionFactory=#myFactory");
+----
+
+The route above is self-describing.
+
+. It exposes an HTTP entrypoint.
+. Converts the body to a String (from Byte Stream).
+. Executes a JSON transformation (to comply with the data format). 
+. Pushes an AMQP message to the broker.
+
+The JSON transformation maps input fields to output fields and follows the following rules:
+
+[source,json]
+----
+{
+  "user": .user,
+  "text": .text,
+  "source": {
+    "name" : "partner",
+    "uname": "partner",
+    "room" : .sessionid
+  }
+}
+----
+
+In the transformation above, we're mapping key fields, and we're indicating the source of the message comes from `partner`.
+
+The `sessionid` is the correlator value for the entire conversation.
+
+{empty} +
+
+===== Response flow
+
+The response flow consumes messages from the AMQ Broker, sent by the support agents and are directed to the system to be integrated.
+
+.Data flow consuming messages from AMQ
+image::32-demo-extend-platform-response-flow.png[,70%,align=center]
+
+The key Camel route to enable the above data flow is shown in this snippet:
+
+[source,java]
+----
+from("amqp:topic:{{broker.amqp.topic.agents}}?connectionFactory=#myFactory")
+    .convertBodyTo(String.class)
+    .to("jslt:response.jslt?allowContextMapAll=true")
+    .to("{{client.callback.url}}");
+----
+
+Again, a very simple route definition where:
+
+. The consumer obtains messages from a queue in the broker.
+. Converts the body to a String (from Byte Stream).
+. Executes a JSON transformation (to comply with the data format). 
+. Sends the data to the new system's callback URL.
+
+The JSLT transformation would look like:
+
+[source,json]
+----
+{
+  "agent": .agent,
+  "text": .text,
+  "sessionid" : .source.room,
+  "pdf":  .pdf
+}
+----
+
+You can see how the `sessionid` carries the conversation correlation value, to ensure it's not mixed with other customer conversations.
+
+That's essentially all the code you need to integrate a new system. As usual you would add to that the configuration values in a properties file, and the credentials to connect to the broker, but those are technical details.
+
+{empty} +
 
 
+==== Deploy and test the new Partner system
+
+It's time to try it out.
+
+From the top of your OpenShift's console, click the `⨁` button to import YAML code, as shown below:
+
+.Import YAML code
+image::33-demo-import-yaml.png[,80%]
+
+Next, copy the YAML definitions below, and paste them into the YAML editor:
+
+[%collapsible]
+====
+[NOTE]
+The source code below contains the snippets viewed earlier. They are deployed as Camel K definitions, automatically processed by the Camel K operator.
+====
+
+[.console-input]
+[source,YAML,collapsible]
+[%collapsible]
+====
+----
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: partner-support-request-jslt
+  namespace: globex-integrations
+data:
+  request.jslt: |-
+    {
+        "user": .user,
+        "text": .text,
+        "source": {
+          "name" : "partner",
+          "uname": "partner",
+          "room" : .sessionid
+        }
+    }
+---
+apiVersion: camel.apache.org/v1
+kind: Integration
+metadata:
+  name: partner-support
+  namespace: globex-integrations
+spec:
+  dependencies:
+    - 'camel:amqp'
+    - 'camel:jackson'
+    - 'camel:jslt'
+    - 'camel:http'
+    - 'mvn:io.quarkiverse.messaginghub:quarkus-pooled-jms:1.1.0'
+  sources:
+    - name: RoutesPartner.java
+      content: |
+        // camel-k: language=java
+
+        import org.apache.camel.builder.RouteBuilder;
+
+        public class RoutesPartner extends RouteBuilder {
+
+            @Override
+            public void configure() throws Exception {
+
+                from("platform-http:/support/message")
+                    .convertBodyTo(String.class)
+                    .to("jslt:request.jslt?allowContextMapAll=true")
+                    .to("amqp:topic:{{broker.amqp.topic.clients}}?disableReplyTo=true&connectionFactory=#myFactory");
+                                
+                from("amqp:topic:{{broker.amqp.topic.agents}}?connectionFactory=#myFactory")
+                    .convertBodyTo(String.class)
+                    .to("jslt:response.jslt?allowContextMapAll=true")
+                    .to("{{client.callback.url}}");
+          }
+        }
+    - name: CamelJmsConnectionFactory.java
+      content: |
+        // camel-k: language=java
+
+        import javax.jms.ConnectionFactory;
+        import org.apache.camel.PropertyInject;
+        import org.apache.camel.builder.RouteBuilder;
+        import org.apache.qpid.jms.JmsConnectionFactory;
+        import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+
+        public class CamelJmsConnectionFactory extends RouteBuilder {
+            
+            private static final Logger LOGGER = LoggerFactory.getLogger(CamelJmsConnectionFactory.class);
+
+            @PropertyInject("broker.amqp.uri")
+            private static String uri;
+
+            @PropertyInject("broker.amqp.connections")
+            private static int maxConnections;
+
+            @Override
+            public void configure() {
+                JmsPoolConnectionFactory myFactory = createConnectionFactory();
+                getContext().getRegistry().bind("myFactory", myFactory);
+            }
+
+            private JmsPoolConnectionFactory createConnectionFactory() {
+                
+                ConnectionFactory factory = new JmsConnectionFactory(uri);
+                JmsPoolConnectionFactory pool = new JmsPoolConnectionFactory();
+
+                try {
+                    pool.setConnectionFactory(factory);
+
+                    // Set the max connections per user to a higher value
+                    pool.setMaxConnections(maxConnections);
+
+                } catch (Exception e) {
+                    LOGGER.error("Exception creating JMS Connection Factory", e);
+                }
+
+                return pool;
+            }
+        }
+  traits:
+    camel:
+      properties:
+        - 'client.callback.url = http://partner-callback:80/partner/callback'
+        - broker.amqp.connections = 5
+        - broker.amqp.topic.clients = support.globex.client.partner
+        - broker.amqp.topic.agents = support.partner
+    mount:
+      configs:
+        - 'secret:client-amq'
+      resources:
+        - 'configmap:partner-support-request-jslt/request.jslt@/etc/camel/resources/request.jslt'
+        - 'configmap:globex-support-response-jslt/response.jslt@/etc/camel/resources/response.jslt'
+
+
+----
+====
 
 Up until now you've tried the two current systems integrated with the platform, 
 
