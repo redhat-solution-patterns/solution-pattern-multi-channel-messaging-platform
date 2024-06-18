@@ -389,16 +389,25 @@ The diagram below illustrates what happens when the customer session ends.
 .Session playbacks to persist conversations
 image::11-arch-archiving-persist.jpeg[,60%,align=center]
 
-.Session playbacks to persist conversations
+.test1 Session playbacks to persist conversations
 image:11-arch-archiving-persist.jpeg[,60%,align=center]
 
 // .Session playbacks to persist conversations
 // [align=center]
+.test2
 image:11-arch-archiving-persist.jpeg[,60%,align=center]
 
+.test3
+image:11-arch-archiving-persist.jpeg[,60%]
+
+.test4
 [.right.text-center]
 image::11-arch-archiving-persist.jpeg[,60%]
 
+.test5
+|===
+^.^| image:11-arch-archiving-persist.jpeg[,60%]
+|===
 
 Kafka is used to replay customer/agent messages. The figure above shows traffic directed to kafka and consumed, processed and persisted by Camel. 
 
