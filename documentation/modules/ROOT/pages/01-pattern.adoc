@@ -68,8 +68,9 @@ As an added initiative to the digital transformation, Globex, a fictitious retai
 
 See below a simplified representation of the solution:
 
+[[metadata_governance]]
 .Event-Driven architecture (high-level view)
-image::03-architecture-high-level.png[[width=80%, align=center]]
+image::03-architecture-high-level.png[width=60%, align=center]
 
 // I use a passthrough as a workaround
 ++++
