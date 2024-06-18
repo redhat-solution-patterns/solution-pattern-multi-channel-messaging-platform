@@ -318,7 +318,7 @@ The picture would look different if applying the solution pattern to external me
 <p>For example, let&#8217;s assume the aggregation of input channels results in an increased overall output towards the agent&#8217;s platform where the support team attends customers. We are referring to Matrix in the diagram below (could also be Discord, WhatsApp or similar).</p>
 </div>
 <p align="center">
-	<img src="_images/05-scalability-target.png" alt="Scaling outbound traffic" width="40%">
+	<img src="_images/05-scalability-target.png" alt="Scaling outbound traffic" width="60%">
 </p>
 <div class="paragraph">
 <p>We trust the target IM platform&#8217;s scalability capabilities under big volumes of traffic. Popular platforms are known to handle millions of messages per second. From our platform&#8217;s perspective, we can scale the Camel integration to Matrix by increasing the number of replicas. All Camel instances subscribe to the same queues in the AMQ platform. AMQ load-balances (by design) all the traffic between available subscribers and Camel forwards messages to the target platform using their scalable client API specification.</p>
@@ -357,17 +357,14 @@ The picture would look different if applying the solution pattern to external me
 <p>To solve this complexity, the architecture is decoupled by introducing asynchronous messaging with <em>Red Hat AMQ</em> and adopting a star configuration, as the figure below illustrates.</p>
 </div>
 <p align="center">
-	<img src="_images/07-arch-decoupling" alt="Decoupled architecture" width="40%">
+	<img src="_images/07-arch-decoupling.png" alt="Decoupled architecture" width="40%">
 </p>
 <div class="paragraph">
 <p>The strategy to transform data between all participant systems in the platform is to adopt a common data schema that mediates between all of formats, reducing the number of data mappings to a manageable degree.</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/08-arch-common-schema.png" alt="08 arch common schema" width="90%">
-</div>
-<div class="title">Figure 2. Common Schema for data exchanges</div>
-</div>
+<p align="center">
+	<img src="_images/08-arch-common-schema.png" alt="Common Schema for data exchanges" width="90%">
+</p>
 <div class="paragraph">
 <p>The diagram above illustrates source messages (<em>In</em>) in their original format, then transformed in the common format and placed in the message broker (<em>AMQ</em>), and finally converted to the target format (<em>Out</em>) when sent to the destination system.</p>
 </div>
