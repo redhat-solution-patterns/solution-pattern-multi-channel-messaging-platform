@@ -223,7 +223,13 @@ From _OpenShift_'s _Topology_ view, find the _Element_ application.
 [NOTE]
 _Element_ is the front facing interface application that connects to the _Matrix_ server.
 
-To open _Matrix_, click _Element_'s route link and then click `Sign in` as shown below:
+`[DodgerBlue-background]#Sign in#`
+
+`[white DodgerBlue-background]#Sign in#`
+
+[blue]`#Sign in#`
+
+To open _Matrix_, click _Element_'s route link and then click `[blue-background]#Sign in#` as shown below:
 
 image::18-demo-matrix-onboarding.png[,100%]
 
