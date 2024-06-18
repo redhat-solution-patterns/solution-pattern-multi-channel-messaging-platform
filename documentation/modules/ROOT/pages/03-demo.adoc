@@ -432,6 +432,10 @@ new
 ^.^| image:11-arch-archiving-persist.jpeg[,60%]
 |===
 
+.test7
+image::11-arch-archiving-persist.jpeg[,60%,float="right",align="center"]
+
+
 
 Kafka is used to replay customer/agent messages. The figure above shows traffic directed to kafka and consumed, processed and persisted by Camel. 
 
