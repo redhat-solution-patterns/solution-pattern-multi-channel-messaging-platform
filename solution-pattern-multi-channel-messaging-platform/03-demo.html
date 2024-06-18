@@ -1240,12 +1240,9 @@ The background context is that the organisation is obligated to meet certain sec
 <div class="paragraph">
 <p>Let&#8217;s start with the request flow, where the new system pushes messages from customers to the messaging broker.</p>
 </div>
-<div class="imageblock text-center">
-<div class="content">
-<img src="_images/31-demo-extend-platform-request-flow.png" alt="31 demo extend platform request flow" width="70%">
-</div>
-<div class="title">Figure 8. Data flow pushing messages to AMQ</div>
-</div>
+<p align="center">
+	<img src="_images/31-demo-extend-platform-request-flow.png" alt="Data flow pushing messages to AMQ" width="50%">
+</p>
 <div class="paragraph">
 <p>You could use any integration framework you&#8217;d like. We use <em>Apache Camel</em> for its versatility, ease of use and proven track record.</p>
 </div>
@@ -1310,12 +1307,9 @@ The background context is that the organisation is obligated to meet certain sec
 <div class="paragraph">
 <p>The response flow consumes messages from the AMQ Broker, sent by the support agents and are directed to the system to be integrated.</p>
 </div>
-<div class="imageblock text-center">
-<div class="content">
-<img src="_images/32-demo-extend-platform-response-flow.png" alt="32 demo extend platform response flow" width="70%">
-</div>
-<div class="title">Figure 9. Data flow consuming messages from AMQ</div>
-</div>
+<p align="center">
+	<img src="_images/32-demo-extend-platform-response-flow.png" alt="Data flow consuming messages from AMQ" width="50%">
+</p>
 <div class="paragraph">
 <p>The key Camel route to enable the above data flow is shown in this snippet:</p>
 </div>
@@ -1382,7 +1376,7 @@ The background context is that the organisation is obligated to meet certain sec
 <div class="content">
 <img src="_images/33-demo-import-yaml.png" alt="33 demo import yaml" width="80%">
 </div>
-<div class="title">Figure 10. Import YAML code</div>
+<div class="title">Figure 8. Import YAML code</div>
 </div>
 <div class="paragraph">
 <p>Next, copy the YAML definitions below, and paste them into the YAML editor:</p>
@@ -1399,7 +1393,7 @@ The source code below contains the snippets viewed earlier. They are deployed as
 </tr>
 </table>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock console-input small">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-YAML hljs" data-lang="YAML">---
 kind: ConfigMap
@@ -1533,11 +1527,11 @@ Be patient, <em>Camel K</em> will process the integration YAML, it&#8217;ll take
 <div class="paragraph">
 <p>After some time you&#8217;ll see the integration <code>partner-support</code> deployed and running:</p>
 </div>
-<div class="imageblock">
+<div class="imageblock text-left">
 <div class="content">
-<img src="_images/34-demo-partner-support.png" alt="34 demo partner support" width="30%">
+<img src="_images/34-demo-partner-support.png" alt="34 demo partner support" width="40%">
 </div>
-<div class="title">Figure 11. Partner integration</div>
+<div class="title">Figure 9. Partner integration</div>
 </div>
 <div class="paragraph">
 <p><br></p>
@@ -1557,11 +1551,11 @@ Be patient, <em>Camel K</em> will process the integration YAML, it&#8217;ll take
 </li>
 </ol>
 </div>
-<div class="imageblock">
+<div class="imageblock text-center">
 <div class="content">
-<img src="_images/35-demo-terminal-open.png" alt="35 demo terminal open" width="80%">
+<img src="_images/35-demo-terminal-open.png" alt="35 demo terminal open" width="90%">
 </div>
-<div class="title">Figure 12. Action to open the terminal</div>
+<div class="title">Figure 10. Action to open the terminal</div>
 </div>
 <div class="paragraph">
 <p>Now, use the <code>curl</code> command below to send an HTTP request against the integration point to simulate the client interaction:</p>
@@ -1613,7 +1607,7 @@ http://partner-support.globex-integrations.svc:80/support/message</code></pre>
 <div class="content">
 <img src="_images/33-demo-import-yaml.png" alt="33 demo import yaml" width="80%">
 </div>
-<div class="title">Figure 13. Import YAML code</div>
+<div class="title">Figure 11. Import YAML code</div>
 </div>
 <div class="paragraph">
 <p>Next, copy the YAML definition below, and paste it into the YAML editor:</p>
@@ -1675,7 +1669,7 @@ Be patient, <em>Camel K</em> will process the integration YAML, it&#8217;ll take
 <div class="content">
 <img src="_images/36-demo-partner-callback-logs.png" alt="36 demo partner callback logs" width="100%">
 </div>
-<div class="title">Figure 14. Partner callback system</div>
+<div class="title">Figure 12. Partner callback system</div>
 </div>
 <div class="paragraph">
 <p>Test your callback URL by issuing the following <code>curl</code> command:</p>
