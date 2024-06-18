@@ -68,8 +68,8 @@ As an added initiative to the digital transformation, Globex, a fictitious retai
 
 See below a simplified representation of the solution:
 
-// .Event-Driven architecture (high-level view)
-// image::03-architecture-high-level.png[width=80%, align=center]
+.Event-Driven architecture (high-level view)
+image::03-architecture-high-level.png[[width=80%, align=center]]
 
 // I use a passthrough as a workaround
 ++++
