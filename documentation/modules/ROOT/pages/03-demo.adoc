@@ -194,7 +194,7 @@ You should see a number of deployments in your screen. Find among them the _Rock
 
 image::16-demo-rocket-onboarding.png[,100%]
 
-The login window to the Rocket Chat application will show in a new tab. +
+The login window to the _Rocket Chat_ application will show in a new tab. +
 Enter the following credentials:
 
 - **username**: `user1`
@@ -234,7 +234,7 @@ Enter the following credentials:
 - **Password**: `openshift`
 
 [NOTE]
-_Matrix_ here represents the collaboration tool agents use to assist customer enquiries. Matrix is integrated with the multi-channel platform and serves in the demo to show one of many tools from where different groups and partners could connect from.
+_Matrix_ here represents the collaboration tool agents use to assist customer enquiries. _Matrix_ is integrated with the multi-channel platform and serves in the demo to show one of many tools from where different groups and partners could connect from.
 
 As soon as you login, on the left panel of the window, you'll see an entry in your list of invites:
 
@@ -387,7 +387,7 @@ The background context is that the organisation is obligated to meet certain sec
 The diagram below illustrates what happens when the customer session ends.
 
 .Session playbacks to persist conversations
-image::11-arch-archiving-persist.jpeg[,90%]
+image::11-arch-archiving-persist.jpeg[,60%,align=center]
 
 Kafka is used to replay customer/agent messages. The figure above shows traffic directed to kafka and consumed, processed and persisted by Camel. 
 
@@ -779,7 +779,7 @@ http://partner-support.globex-integrations.svc:80/support/message
 
 Press `Enter`.
 
-You should see in Matrix a new room created. Agents can now attend the client's request as usual.
+You should see in _Matrix_ a new room created. Agents can now attend the client's request as usual.
 
 
 {empty} +
@@ -832,7 +832,7 @@ spec:
 
 Click `Create`.
 
-The Camel route above basically listens for HTTP requests, and prints out their body. The process prints the payload and we will be able to see the responses agents send from Matrix.
+The Camel route above basically listens for HTTP requests, and prints out their body. The process prints the payload and we will be able to see the responses agents send from _Matrix_.
 
 [NOTE]
 Be patient, _Camel K_ will process the integration YAML, it'll take between 2-5 minutes.
@@ -865,7 +865,7 @@ You should see in your logs the following trace:
 
 If you saw the trace, it means your callback system is ready to get agent responses.
 
-Put your support agent hat on, and from Matrix, respond to the client message, for example with:
+Put your support agent hat on, and from _Matrix_, respond to the client message, for example with:
 
 - Agent (1st line):
 +
