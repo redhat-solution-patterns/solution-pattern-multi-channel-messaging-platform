@@ -68,9 +68,22 @@ As an added initiative to the digital transformation, Globex, a fictitious retai
 
 See below a simplified representation of the solution:
 
+// {env-github}
+// {env-browser}
+// {env-vscode}
+
+ifdef::env-browser[]
+browser
+endif::env-browser[]
+
+ifdef::env-vscode[]
+VS Code
+endif::env-vscode[]
+
 ifdef::env-github[]
-Test conditional
+GitHub
 endif::env-github[]
+
 
 // When rendered by GitHub, passthrough as a workaround
 ifdef::env-github[]
