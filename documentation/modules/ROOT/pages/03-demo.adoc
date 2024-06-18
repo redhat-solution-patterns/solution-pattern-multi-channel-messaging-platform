@@ -426,9 +426,8 @@ image:11-arch-archiving-persist.jpeg[,60%]
 ^.^| image:11-arch-archiving-persist.jpeg[,60%]
 |===
 
-
-[frame="none"]
-[table_border_color="blue"]
+new
+[table-frame=none]
 |===
 ^.^| image:11-arch-archiving-persist.jpeg[,60%]
 |===
