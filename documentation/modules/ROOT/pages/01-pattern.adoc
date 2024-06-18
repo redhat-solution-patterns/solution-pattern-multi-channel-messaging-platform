@@ -68,7 +68,11 @@ As an added initiative to the digital transformation, Globex, a fictitious retai
 
 See below a simplified representation of the solution:
 
-// When rendered by GitHug, passthrough as a workaround
+ifdef::env-github[]
+Test conditional
+endif::env-github[]
+
+// When rendered by GitHub, passthrough as a workaround
 ifdef::env-github[]
 ++++
 <p align="center">
