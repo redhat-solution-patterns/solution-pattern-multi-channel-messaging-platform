@@ -640,7 +640,7 @@ It's time to try it out.
 From the top of your OpenShift's console, click the `⨁` button to import YAML code, as shown below:
 
 .Import YAML code
-image::33-demo-import-yaml.png[,80%]
+image::33-demo-import-yaml.png[,90%, align=center]
 
 Next, copy the YAML definitions below, and paste them into the YAML editor:
 
@@ -650,7 +650,6 @@ The source code below contains the snippets viewed earlier. They are deployed as
 
 [.console-input]
 [source,YAML]
-[.small]
 ----
 ---
 kind: ConfigMap
@@ -775,8 +774,8 @@ Be patient, _Camel K_ will process the integration YAML, it'll take between 2-5 
 
 After some time you'll see the integration `partner-support` deployed and running:
 
-.Partner integration
-image::34-demo-partner-support.png[,40%, align=left]
+// .Partner integration
+image:34-demo-partner-support.png[,40%, align=left]
 
 {empty} +
 
