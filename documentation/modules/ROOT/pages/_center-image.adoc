@@ -1,0 +1,15 @@
+//When rendering in VS-Code or GitHub
+ifdef::env-vscode,env-github[]
+.{image-desc}
+image::{image-file}[width={image-width}, align=center]
+endif::env-vscode,env-github[]
+
+//When rendering in GitHub Pages we use Passthrough
+ifndef::env-vscode,env-github[]
+[subs=attributes+]
+++++
+<p align="center">
+	<img src="_images/{image-file}" alt="{image-desc}" width="{image-width}">
+</p>
+++++
+endif::env-vscode,env-github[]

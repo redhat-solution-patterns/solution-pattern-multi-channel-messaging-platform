@@ -23,20 +23,25 @@ Any organisation nowadays generally has support teams attending customer queries
 
 The picture below illustrates an example where a customer has to liaise with multiple support teams that are independent from each other.
 
+:image-desc: Customer contacting multiple support teams
+:image-file: 01-scenario-problem.png
+:image-width: 40%
+include::_center-image.adoc[]
 
-//When rendering in VS-Code or GitHub
-ifdef::env-vscode,env-github[]
-image::01-scenario-problem.png[width=40%, align=center]
-endif::env-vscode,env-github[]
 
-//GitHub Pages needs a passthrough to center the image
-ifndef::env-vscode,env-github[]
-++++
-<p align="center">
-	<img src="_images/01-scenario-problem.png" alt="Scenario problem" width="40%">
-</p>
-++++
-endif::env-vscode,env-github[]
+// //When rendering in VS-Code or GitHub
+// ifdef::env-vscode,env-github[]
+// image::01-scenario-problem.png[width=40%, align=center]
+// endif::env-vscode,env-github[]
+
+// //GitHub Pages needs a passthrough to center the image
+// ifndef::env-vscode,env-github[]
+// ++++
+// <p align="center">
+// 	<img src="_images/01-scenario-problem.png" alt="Scenario problem" width="40%">
+// </p>
+// ++++
+// endif::env-vscode,env-github[]
 
 
 The problem that arises from above is that it is common for support teams to redirect customers and delegate the resolution of problems to other (internal or external) groups or departments. Under such scenario the customer ends up having to navigate different sites and systems in order to obtain a final solution.
@@ -86,29 +91,35 @@ See below a simplified representation of the solution:
 // GitHub pages {user-home} is "/github/home"
 // {user-home}
 
-//When rendering in VS-Code or GitHub
-ifdef::env-vscode,env-github[]
-.Event-Driven architecture (high-level view)
-image::03-architecture-high-level.png[width=70%, align=center]
-endif::env-vscode,env-github[]
+:image-desc: Event-Driven architecture (high-level view)
+:image-file: 03-architecture-high-level.png
+:image-width: 70%
+include::_center-image.adoc[]
 
-//When rendering in GitHub Pages we use Passthrough
-ifndef::env-vscode,env-github[]
-++++
-<p align="center">
-	<img src="_images/03-architecture-high-level.png" alt="Event-Driven architecture (high-level view)" width="70%">
-</p>
-++++
-endif::env-vscode,env-github[]
+// //When rendering in VS-Code or GitHub
+// ifdef::env-vscode,env-github[]
+// .Event-Driven architecture (high-level view)
+// // image::03-architecture-high-level.png[width=70%, align=center]
+// image::{image-file}[width={image-width}, align=center]
+// endif::env-vscode,env-github[]
+
+// //When rendering in GitHub Pages we use Passthrough
+// // ifndef::env-vscode,env-github[]
+// [subs=attributes+]
+// ++++
+// <p align="center">
+// {image-file}
+// 	<img src="_images/03-architecture-high-level.png" alt="Event-Driven architecture (high-level view)" width="70%">
+// </p>
+// ++++
+// // endif::env-vscode,env-github[]
 
 The platform integrates, in its first iteration, three communication channels. On one end (left in the diagram, Rocket.Chat and Globex's embedded IM chat), two distinct customer facing platforms , and on the other end, an agent’s channel (right in the diagram, a Matrix-based messenger app).
 
 [NOTE]
 Rocket.Chat and Matrix are open-source implementations of direct messaging platforms. While not as popular or ubiquitous as WhatsApp or Discord for example, they can be installed on an OpenShift cluster and do not require registration, making them more suitable for our solution pattern demo environment.
 
-The multi-channel platform is supported by a variety of technologies provided by Red Hat Application Foundations that enable key capabilities like event-driven processing, decoupled architecture, scalability, persistence and easy to extensibility to accommodate new channels and services.
-
-// For convenience, the solution pattern uses Rocket.Chat as a customer facing open-source instant messaging platform. In a real world, systems like WhatsApp, Discord or Telegram, would be a better fit due to their popularity and large adoption. 
+The multi-channel platform is backed by a variety of technologies provided by Red Hat Application Foundations that enable key capabilities like event-driven processing, decoupled architecture, scalability, persistence and easy to extensibility to accommodate new channels and services.
 
 [TIP]
 Please see the xref:02-architecture.adoc[Architecture] section for more details on the technologies involved and architecture diagrams.
@@ -139,24 +150,6 @@ Notice in the figure above the following concepts:
 +
 [NOTE]
 For simplicity, the demo in the _Solution Pattern_ only includes _Matrix_ as the access points for support agents. Consider the different support members in _Matrix_ as belonging to different support groups (1st line, technical, delivery, etc).
-
-
-// Customers (left) can choose to contact Globex via its Web portal or via a channel in Rocket.Chat, available on-line (using a browser). At the other end of the line, the team of agents (right) providing support services for Globex will use Matrix as their communication platform.
-
-
-
-// {empty} +
-
-// I don't find a way to center the image with the line below
-// image::06-product-timeline.png[width=40%]
-
-// I use a passthrough as a workaround
-// ++++
-// <p align="center">
-// 	<img src="_images/06-product-timeline.png" alt="06 product timeline" width="70%">
-// </p>
-// ++++
-
 
 
 {empty} +
