@@ -28,56 +28,19 @@ The picture below illustrates an example where a customer has to liaise with mul
 :image-width: 40%
 include::_center-image.adoc[]
 
-
-// //When rendering in VS-Code or GitHub
-// ifdef::env-vscode,env-github[]
-// image::01-scenario-problem.png[width=40%, align=center]
-// endif::env-vscode,env-github[]
-
-// //GitHub Pages needs a passthrough to center the image
-// ifndef::env-vscode,env-github[]
-// ++++
-// <p align="center">
-// 	<img src="_images/01-scenario-problem.png" alt="Scenario problem" width="40%">
-// </p>
-// ++++
-// endif::env-vscode,env-github[]
-
-
 The problem that arises from above is that it is common for support teams to redirect customers and delegate the resolution of problems to other (internal or external) groups or departments. Under such scenario the customer ends up having to navigate different sites and systems in order to obtain a final solution.
 
 This Solution Pattern proposes an implementation to build a platform that addresses similar scenarios by unifying all platforms as one, and plug in additional services associated with those interactions. The platform would provide new collaboration possibilities and new capabilities to help complying with government regulations, like data privacy and security.
 
 
-//When rendering in VS-Code or GitHub
-ifdef::env-vscode,env-github[]
-image::02-scenario-solution.png[width=40%, align=center]
-endif::env-vscode,env-github[]
-
-//GitHub Pages needs a passthrough to center the image
-ifndef::env-vscode,env-github[]
-++++
-<p align="center">
-	<img src="_images/02-scenario-solution.png" alt="Scenario solution" width="40%">
-</p>
-++++
-endif::env-vscode,env-github[]
-
+:image-desc: Unified Platform simplifies user interaction.
+:image-file: 02-scenario-solution.png
+:image-width: 40%
+include::_center-image.adoc[]
 
 The picture above illustrates a system that integrates all platforms and allows communication exchanges between different members from unrelated entities, including systems from where customers communicate.
 
 Under such solution, customers and support agents would be abstracted from other internal/external platforms and would simply participate as global members of one unified platform.
-
-
-
-
-
-
-// Any organisation nowadays generally has a support team to attend customer queries or/and resolve problems. In an effort to get closer to the customer, companies offer a variety of channels for users to choose from when contacting the Support team. For example, a customer enquiring about a certain product, could do so by using the official portal's chat window, or via a dedicated App from their handsets, or by using an Instant Message application such as WhatsApp.
-
-// The challenge to build a Multi-Channel platform is to come up with an open and flexible architecture that allows to easily integrate external and internal communication systems.
-
-// The Multi-Channel Support Service is a platform that allows customers to choose between different channels to contact the support team. The platform has a pluggable architecture that allows new channels to be added in.
 
 {empty} +
 
@@ -88,31 +51,10 @@ As an added initiative to the digital transformation, Globex, a fictitious retai
 
 See below a simplified representation of the solution:
 
-// GitHub pages {user-home} is "/github/home"
-// {user-home}
-
 :image-desc: Event-Driven architecture (high-level view)
 :image-file: 03-architecture-high-level.png
 :image-width: 70%
 include::_center-image.adoc[]
-
-// //When rendering in VS-Code or GitHub
-// ifdef::env-vscode,env-github[]
-// .Event-Driven architecture (high-level view)
-// // image::03-architecture-high-level.png[width=70%, align=center]
-// image::{image-file}[width={image-width}, align=center]
-// endif::env-vscode,env-github[]
-
-// //When rendering in GitHub Pages we use Passthrough
-// // ifndef::env-vscode,env-github[]
-// [subs=attributes+]
-// ++++
-// <p align="center">
-// {image-file}
-// 	<img src="_images/03-architecture-high-level.png" alt="Event-Driven architecture (high-level view)" width="70%">
-// </p>
-// ++++
-// // endif::env-vscode,env-github[]
 
 The platform integrates, in its first iteration, three communication channels. On one end (left in the diagram, Rocket.Chat and Globex's embedded IM chat), two distinct customer facing platforms , and on the other end, an agent’s channel (right in the diagram, a Matrix-based messenger app).
 
@@ -135,8 +77,10 @@ Instant messaging platforms are generally designed both private one-to-one commu
 
 Not only the Solution Pattern proposes a platform where multiple IM systems are connected, but also includes collaborative one-to-many support sessions, meaning a customer being helped by multiple agents if necessary. The diagram below illustrates the proposal.
 
-.Collaborative support sessions
-image::13-scenario-collaborative-support.png[width=100%]
+:image-desc: Collaborative support sessions
+:image-file: 13-scenario-collaborative-support.png
+:image-width: 90%
+include::_center-image.adoc[]
 
 Notice in the figure above the following concepts:
 
