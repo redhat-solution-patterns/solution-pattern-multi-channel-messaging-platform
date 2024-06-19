@@ -386,26 +386,10 @@ The background context is that the organisation is obligated to meet certain sec
 
 The diagram below illustrates what happens when the customer session ends.
 
-
-//Best alternative to center an image (in a table)
-// |===
-// ^.^| image:11-arch-archiving-persist.jpeg[,60%]
-// |===
-
-//When rendering in VS-Code or GitHub
-ifdef::env-vscode,env-github[]
-.Data flow consuming messages from AMQ
-image::11-arch-archiving-persist.jpeg[,60%,align=center]
-endif::env-vscode,env-github[]
-
-//GitHub Pages needs a passthrough to center the image
-ifndef::env-vscode,env-github[]
-++++
-<p align="center">
-	<img src="_images/11-arch-archiving-persist.jpeg" alt="Data flow consuming messages from AMQ" width="60%">
-</p>
-++++
-endif::env-vscode,env-github[]
+:image-desc: Data flow consuming messages from AMQ
+:image-file: 11-arch-archiving-persist.jpeg
+:image-width: 60%
+include::_center-image.adoc[]
 
 Kafka is used to replay customer/agent messages. The figure above shows traffic directed to kafka and consumed, processed and persisted by Camel. 
 
@@ -470,7 +454,6 @@ The diagram below describes the processes involved:
 image::22-demo-diagram-flow-transcript.png[,100%]
 
 {empty} +
-
 
 
 === Get support from the Web Portal channel
@@ -541,20 +524,10 @@ Let's continue by:
 
 Let's start with the request flow, where the new system pushes messages from customers to the messaging broker.
 
-//When rendering in VS-Code or GitHub
-ifdef::env-vscode,env-github[]
-.Data flow pushing messages to AMQ
-image::31-demo-extend-platform-request-flow.png[,60%,align=center]
-endif::env-vscode,env-github[]
-
-//GitHub Pages needs a passthrough to center the image
-ifndef::env-vscode,env-github[]
-++++
-<p align="center">
-	<img src="_images/31-demo-extend-platform-request-flow.png" alt="Data flow pushing messages to AMQ" width="60%">
-</p>
-++++
-endif::env-vscode,env-github[]
+:image-desc: Data flow pushing messages to AMQ
+:image-file: 31-demo-extend-platform-request-flow.png
+:image-width: 60%
+include::_center-image.adoc[]
 
 You could use any integration framework you'd like. We use _Apache Camel_ for its versatility, ease of use and proven track record.
 
@@ -600,20 +573,10 @@ The `sessionid` is the correlator value for the entire conversation.
 
 The response flow consumes messages from the AMQ Broker, sent by the support agents and are directed to the system to be integrated.
 
-//When rendering in VS-Code or GitHub
-ifdef::env-vscode,env-github[]
-.Data flow consuming messages from AMQ
-image::32-demo-extend-platform-response-flow.png[,60%,align=center]
-endif::env-vscode,env-github[]
-
-//GitHub Pages needs a passthrough to center the image
-ifndef::env-vscode,env-github[]
-++++
-<p align="center">
-	<img src="_images/32-demo-extend-platform-response-flow.png" alt="Data flow consuming messages from AMQ" width="60%">
-</p>
-++++
-endif::env-vscode,env-github[]
+:image-desc: Data flow consuming messages from AMQ
+:image-file: 32-demo-extend-platform-response-flow.png
+:image-width: 60%
+include::_center-image.adoc[]
 
 The key Camel route to enable the above data flow is shown in this snippet:
 
@@ -657,8 +620,10 @@ It's time to try it out.
 
 From the top of your OpenShift's console, click the `⨁` button to import YAML code, as shown below:
 
-.Import YAML code
-image::33-demo-import-yaml.png[,90%, align=center]
+:image-desc: Import YAML code
+:image-file: 33-demo-import-yaml.png
+:image-width: 90%
+include::_center-image.adoc[]
 
 Next, copy the YAML definitions below, and paste them into the YAML editor:
 
@@ -845,11 +810,12 @@ We will use Camel K once more since it's so handy and simple.
 
 From the top of your OpenShift's console, click the `⨁` button to import YAML code, as shown below:
 
-.Import YAML code
-image::33-demo-import-yaml.png[,80%]
+:image-desc: Import YAML code
+:image-file: 33-demo-import-yaml.png
+:image-width: 90%
+include::_center-image.adoc[]
 
 Next, copy the YAML definition below, and paste it into the YAML editor:
-
 
 [NOTE]
 The source code below contains the snippets viewed earlier. They are deployed as Camel K definitions, automatically processed by the Camel K operator.

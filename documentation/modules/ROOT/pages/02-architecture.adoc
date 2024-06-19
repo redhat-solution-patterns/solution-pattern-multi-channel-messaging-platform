@@ -19,13 +19,6 @@ To better explain and detail the reasons for the existence of this solution patt
 - Compliance with government regulations, data privacy and security.
 
 
-// .AI/ML lifecycle for the Edge.
-// image::02-AIML-lifecycle.png[,80%]
-
-// As organizations continue to grapple with massive amounts of data being generated from sources ranging from device edge to off-site facilities and public and private cloud environments, data managers are encountering a new challenge: how to properly ingest and process that data to receive actionable intelligence in a timely manner.
-
-// With fresh, relevant data, businesses can learn effectively and adapt to changing customer behavior. However, managing vast amounts of ingested data  and preparing to make that data ready as soon as possible—preferably in real time—for analytics and artificial intelligence and machine learning (AI/ML), is extremely challenging for data engineers.
-
 [#tech_stack]
 == Technology Stack
 
@@ -75,20 +68,10 @@ Under increasing volumes of traffic, the architecture is conceived to allow each
 
 For example, let's assume the aggregation of input channels results in an increased overall output towards the agent's platform where the support team attends customers. We are referring to Matrix in the diagram below (could also be Discord, WhatsApp or similar). 
 
-//When rendering in VS-Code or GitHub
-ifdef::env-vscode,env-github[]
-.Scaling outbound traffic
-image::05-scalability-target.png[,60%, align=center]
-endif::env-vscode,env-github[]
-
-//GitHub Pages needs a passthrough to center the image
-ifndef::env-vscode,env-github[]
-++++
-<p align="center">
-	<img src="_images/05-scalability-target.png" alt="Scaling outbound traffic" width="60%">
-</p>
-++++
-endif::env-vscode,env-github[]
+:image-desc: Scaling outbound traffic
+:image-file: 05-scalability-target.png
+:image-width: 60%
+include::_center-image.adoc[]
 
 We trust the target IM platform's scalability capabilities under big volumes of traffic. Popular platforms are known to handle millions of messages per second. From our platform's perspective, we can scale the Camel integration to Matrix by increasing the number of replicas. All Camel instances subscribe to the same queues in the AMQ platform. AMQ load-balances (by design) all the traffic between available subscribers and Camel forwards messages to the target platform using their scalable client API specification.
 
@@ -108,56 +91,26 @@ For simple one-to-one flows, a single process can handle the data mappings requi
 
 However, things get complex, exponentially fast, when we start plugging in source and target systems. This is due to the cross data translations required between all different systems.
 
-//When rendering in VS-Code or GitHub
-ifdef::env-vscode,env-github[]
-.One-to-one connectivity
-image::06-arch-no-decoupling.png[,40%, align=center]
-endif::env-vscode,env-github[]
-
-//GitHub Pages needs a passthrough to center the image
-ifndef::env-vscode,env-github[]
-++++
-<p align="center">
-	<img src="_images/06-arch-no-decoupling.png" alt="One-to-one connectivity" width="40%">
-</p>
-++++
-endif::env-vscode,env-github[]
+:image-desc: One-to-one connectivity
+:image-file: 06-arch-no-decoupling.png
+:image-width: 40%
+include::_center-image.adoc[]
 
 In the diagram above, a one-to-one strategy renders the architecture unable to cope as new systems are added to the platform. Every system requires to be translated to every other system.
 
 To solve this complexity, the architecture is decoupled by introducing asynchronous messaging with _Red Hat AMQ_ and adopting a star configuration, as the figure below illustrates.
 
-//When rendering in VS-Code or GitHub
-ifdef::env-vscode,env-github[]
-.Decoupled architecture
-image::07-arch-decoupling.png[,40%, align=center]
-endif::env-vscode,env-github[]
-
-//GitHub Pages needs a passthrough to center the image
-ifndef::env-vscode,env-github[]
-++++
-<p align="center">
-	<img src="_images/07-arch-decoupling.png" alt="Decoupled architecture" width="40%">
-</p>
-++++
-endif::env-vscode,env-github[]
+:image-desc: Decoupled architecture
+:image-file: 07-arch-decoupling.png
+:image-width: 40%
+include::_center-image.adoc[]
 
 The strategy to transform data between all participant systems in the platform is to adopt a common data schema that mediates between all of formats, reducing the number of data mappings to a manageable degree.
 
-//When rendering in VS-Code or GitHub
-ifdef::env-vscode,env-github[]
-.Common Schema for data exchanges
-image::08-arch-common-schema.png[,90%,align=center]
-endif::env-vscode,env-github[]
-
-//GitHub Pages needs a passthrough to center the image
-ifndef::env-vscode,env-github[]
-++++
-<p align="center">
-	<img src="_images/08-arch-common-schema.png" alt="Common Schema for data exchanges" width="90%">
-</p>
-++++
-endif::env-vscode,env-github[]
+:image-desc: Common Schema for data exchanges
+:image-file: 08-arch-common-schema.png
+:image-width: 90%
+include::_center-image.adoc[]
 
 The diagram above illustrates source messages (_In_) in their original format, then transformed in the common format and placed in the message broker (_AMQ_), and finally converted to the target format (_Out_) when sent to the destination system. 
 
@@ -169,20 +122,10 @@ A decoupled approach makes the platform very easy to extend. Once you have defin
 
 For example, if the platform wants to be extended to include a popular IM platform, all that is required is to define the integration piece that translates IN/OUT messages to/from the common schema.
 
-//When rendering in VS-Code or GitHub
-ifdef::env-vscode,env-github[]
-.Extending the platform with new IM
-image::09-arch-extend-im.png[,90%,align=center]
-endif::env-vscode,env-github[]
-
-//GitHub Pages needs a passthrough to center the image
-ifndef::env-vscode,env-github[]
-++++
-<p align="center">
-	<img src="_images/09-arch-extend-im.png" alt="Extending the platform with new IM" width="90%">
-</p>
-++++
-endif::env-vscode,env-github[]
+:image-desc: Extending the platform with new IM
+:image-file: 09-arch-extend-im.png
+:image-width: 90%
+include::_center-image.adoc[]
 
 In the above diagram, the *(?)* system represents the new IM platform to be plugged in. Connecting and integrating using Camel, as represented in the picture, supposes no impact or additional changes in the existing platform.
 
@@ -190,20 +133,10 @@ The solution's demo also integrates the Globex's Web portal (see below), where a
 
 Similarly, if you wanted to extend the platform to include new API-based channels or services, adding them in would be straight-forward.
 
-//When rendering in VS-Code or GitHub
-ifdef::env-vscode,env-github[]
-.Extending the platform with new API-based system
-image::10-arch-extend-api.png[,90%,align=center]
-endif::env-vscode,env-github[]
-
-//GitHub Pages needs a passthrough to center the image
-ifndef::env-vscode,env-github[]
-++++
-<p align="center">
-	<img src="_images/10-arch-extend-api.png" alt="Extending the platform with new API-based system" width="90%">
-</p>
-++++
-endif::env-vscode,env-github[]
+:image-desc: Extending the platform with new API-based system
+:image-file: 10-arch-extend-api.png
+:image-width: 90%
+include::_center-image.adoc[]
 
 In the picture above, the *(?)* system represents the new system added in and connecting via an API exposed by a _Camel_ system.
 
@@ -219,20 +152,10 @@ _Data Grid_ provides caching capabilities. In the context of this _Solution Patt
 
 Caching provides the capability to temporarily store the context of these communications. _Apache Camel_ can retrieve contextual information from _Data Grid_ to correlate the information.
 
-//When rendering in VS-Code or GitHub
-ifdef::env-vscode,env-github[]
-.Context Caching with Data Grid
-image::12-arch-caching.png[,40%, align=center]
-endif::env-vscode,env-github[]
-
-//GitHub Pages needs a passthrough to center the image
-ifndef::env-vscode,env-github[]
-++++
-<p align="center">
-	<img src="_images/12-arch-caching.png" alt="Context Caching with Data Grid" width="40%">
-</p>
-++++
-endif::env-vscode,env-github[]
+:image-desc: Context Caching with Data Grid
+:image-file: 12-arch-caching.png
+:image-width: 40%
+include::_center-image.adoc[]
 
 The picture above represents the role of _Apache Camel_ and _Data Grid_ to perform customer/agent context read/writes.
 
@@ -257,78 +180,11 @@ A key capability in the solution is AMQ Streams (Kafka). For every exchange trav
 
 Looking more in detail into the different stages included in the architecture we find the processes writing conversations into object storage.
 
-//When rendering in VS-Code or GitHub
-ifdef::env-vscode,env-github[]
-.Session playbacks to persist conversations
-image::11-arch-archiving-persist.jpeg[,60%,align=center]
-endif::env-vscode,env-github[]
-
-//GitHub Pages needs a passthrough to center the image
-ifndef::env-vscode,env-github[]
-++++
-<p align="center">
-	<img src="_images/11-arch-archiving-persist.jpeg" alt="Session playbacks to persist conversations" width="60%">
-</p>
-++++
-endif::env-vscode,env-github[]
+:image-desc: Session playbacks to persist conversations
+:image-file: 11-arch-archiving-persist.jpeg
+:image-width: 60%
+include::_center-image.adoc[]
 
 Kafka is used to replay customer/agent messages. The figure above shows traffic directed to kafka and consumed, processed and persisted by Camel. 
 
-
 {empty} +
-
-// [#more_tech]
-// == Additional notes about the Technologies
-
-// === Red Hat Service Interconnect
-
-// The Solution Pattern connects (_Near_) _Edges_ to a _Core Data Centre_ with Red Hat Service Interconnect.
-
-// Red Hat Service Interconnect simplifies application connectivity across the hybrid cloud. Unlike traditional means of interconnectivity (such as VPNs combined with complex firewall rules), development teams can easily create interconnections without elevated privileges and deliver protected links without compromising the organization's security or data.
-
-// Applications and services across your environments can communicate with each other using Red Hat Service Interconnect as if they were all running in the same site. This connectivity can be maintained even as applications are migrated between environments.
-
-// In the _Solution Pattern_, when _Edge_ systems interact with _Core_ systems, they don't need to configure remote endpoints. _Service Interconnect_ bridges the connectivity between the two sites and exposes remote _Core_ services as local ones to _Edge_, as illustrated in the image below.
-
-// image::30-service-interconnect.png[]
-
-// === Edge Computing
-
-// [NOTE]
-// Although not explicitly implemented in the Solution Pattern's demonstration, the following sections discusses topics very relevant to our _Solution Pattern_.
-
-// https://www.redhat.com/en/topics/edge-computing/what-is-edge-computing[Edge computing] shifts computing power away from core data-centers and distributes it closer to users and data sources—often across a large number of locations, providing faster response times, more reliable services, and a better application experience back to users.
-
-
-// ==== What is Red Hat Device Edge?
-
-// Red Hat® Device Edge extends operational consistency across edge and hybrid cloud environments, no matter where devices are deployed in the field. Red Hat Device Edge combines enterprise-ready lightweight Kubernetes container orchestrations using MicroShift with Red Hat Enterprise Linux® to support different use cases and workloads on small, resource-constrained devices at the farthest edge.
-
-// MicroShift comes as an RPM software package that you can add to the blueprint of your system images when needed. Include your Kubernetes workloads, too, if you want. They will be deployed the next time you roll out updates to your devices. Red Hat Device Edge with MicroShift runs on Intel and Arm systems as small as 2 CPU cores and 2GB RAM.
-
-// MicroShift also provides OpenShift’s APIs for security context constraints and routes, but to reduce footprint we’ve removed APIs that are only useful on build clusters or clusters with multi-user interactive access. We’ve also removed Operators responsible for managing the operating system updates and configuration or orchestrating control plane components, as they are not needed in the MicroShift model.
-
-// .Red Hat Device Edge Technical Overview.
-
-// image::02-device-edge.png[,60%]
-
-// [TIP]
-// Learn more about Red Hat Device Edge collaborations with https://www.redhat.com/en/about/press-releases/lockheed-martin-red-hat-collaborate-advance-artificial-intelligence-military-missions[Lockheed Martin] and https://www.redhat.com/en/about/press-releases/abb-and-red-hat-partner-deliver-further-scalable-digital-solutions-across-industrial-edge-and-hybrid-cloud[ABB].
-
-// {empty} +
-
-// === Single Node Apache Kafka Broker
-
-// The Red Hat® AMQ streams component is a massively scalable, distributed, and high-performance data streaming platform based on the Apache Kafka project. It offers a distributed backbone that allows microservices and other applications to share data with high throughput and low latency. 
-
-// The latest AMQ Streams release introduces the new `UseKRaft` feature gate. This feature gate provides a way to deploy a Kafka cluster in the KRaft (Kafka Raft metadata) mode without ZooKeeper. This feature gate is currently in an experimental stage, but it can be used for development and testing of AMQ Streams and Apache Kafka.
-
-// .KRaft architecture for Kafka..
-
-// image::02-kafka-kraft-cluster.png[,60%]
-
-// ****
-// With KRaft, we can deploy a single node Kafka broker that also serves as the controller. All of the advantages of stream processing in a small footprint.
-// ****
-
-// end::arch-in-depth[]

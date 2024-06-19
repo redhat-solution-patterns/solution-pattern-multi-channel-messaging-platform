@@ -79,7 +79,7 @@ Not only the Solution Pattern proposes a platform where multiple IM systems are 
 
 :image-desc: Collaborative support sessions
 :image-file: 13-scenario-collaborative-support.png
-:image-width: 90%
+:image-width: 80%
 include::_center-image.adoc[]
 
 Notice in the figure above the following concepts:

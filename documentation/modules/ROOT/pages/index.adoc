@@ -5,7 +5,6 @@
 :doctype: book
 
 
-
 As the internet evolves and technologies and trends emerge, so does the way people and organisations connect. Not only is digitalization transforming and automating processes, but also social changes and events are making an impact that is shaping how we interact.
 
 Not so long ago, Email and SMSs started to replace direct phone conversations, and soon after, instant messaging platforms gained popularity over them. Today we have a big landscape of messaging platforms and often we feel divided on which one to use to communicate with family and friends.
@@ -15,40 +14,6 @@ On the professional side, organisations mandate one common communication platfor
 As an example, let's discuss how support teams may operate in an organisation. Telephone / email are channels that start getting old fashioned. Organisations may enable instant messaging platforms, which are more cost effective, and provide a closer and friendlier experience for customers in need to contact support teams. 
 
 Here we address the scenario mentioned in the example above and propose a solution pattern that implements an architecture fit for a diverse range of relatable scenarios.
-
-
-// END
-
-
-
-// The solution pattern proposed here addresses such scenario and 
-
-
-
-// PICTURE:
-// scenario problem
-
-// The picture above illustrates an example where a customer has to liaise with multiple support teams that are independent from each other.
-
-// The problem that arises from above is that it is common for support teams to redirect customers and delegate the resolution of problems to other (internal or external) groups or departments. Under such scenario the customer ends up having to navigate different sites and systems in order to obtain a final solution.
-
-// This Solution Pattern proposes an implementation to build a platform that addresses similar scenarios. It would integrate all platforms as one, and plug in additional services associated with those interactions. The platform would provide new collaboration possibilities and new capabilities to help complying with government regulations, like data privacy and security.
-
-// The picture below illustrates a system that integrates all platforms and allows communication exchanges between different members from unrelated entities, including systems from where customers communicate.
-
-// PICTURE:
-// scenario message hub
-
-// Under such solution, customers and support agents would be abstracted from other internal/external platforms and would simply participate as global members of one unified platform.
-
-
-// Any organisation nowadays generally has a support team to attend customer queries or/and resolve problems. In an effort to get closer to the customer, companies offer a variety of channels for users to choose from when contacting the Support team. For example, a customer enquiring about a certain product, could do so by using the official portal's chat window, or via a dedicated App from their handsets, or by using an Instant Message application such as WhatsApp.
-
-// The challenge to build a Multi-Channel platform is to come up with an open and flexible architecture that allows to easily integrate external and internal communication systems.
-
-// The Multi-Channel Support Service is a platform that allows customers to choose between different channels to contact the support team. The platform has a pluggable architecture that allows new channels to be added in.
-
-// This solution pattern showcases the implementation of a multi-channel support service that enables clients to chat in real time with a team of agents.
 
 
 *Contributors*: _Bruno Meseguer (Red Hat), Bernard Tison (Red Hat), Jaya Baskaran (Red Hat)_

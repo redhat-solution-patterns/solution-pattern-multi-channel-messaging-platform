@@ -14,6 +14,8 @@
 // GitHub pages {user-home} is "/github/home"
 // {user-home}
 
+
+
 //When rendering in VS-Code or GitHub
 ifdef::env-vscode,env-github[]
 .{image-desc}
@@ -29,3 +31,10 @@ ifndef::env-vscode,env-github[]
 </p>
 ++++
 endif::env-vscode,env-github[]
+
+
+
+//Another alternative to center an image (in a table)
+// |===
+// ^.^| image:11-arch-archiving-persist.jpeg[,60%]
+// |===
