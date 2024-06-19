@@ -753,7 +753,7 @@ spec:
 Click `pass:[<mark style="background-color: dodgerblue; color: white">Create</mark>]`.
 
 [NOTE]
-Be patient, _Camel K_ will process the integration YAML, it'll take between 2-5 minutes.
+Be patient, _Camel K_ will process the integration YAML. It shouldn't take too long, between 1-2 minutes.
 
 After some time you'll see the integration `partner-support` deployed and running:
 
@@ -843,9 +843,7 @@ Click `pass:[<mark style="background-color: dodgerblue; color: white">Create</ma
 The Camel route above basically listens for HTTP requests, and prints out their body. The process prints the payload and we will be able to see the responses agents send from _Matrix_.
 
 [NOTE]
-Be patient, _Camel K_ will process the integration YAML, it'll take between 2-5 minutes.
-
-
+Be patient, _Camel K_ will process the integration YAML. It shouldn't take too long, between 1-2 minutes.
 
 After some time you'll see the `partner-callback` system deployed and running.
 
