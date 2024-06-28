@@ -23,7 +23,9 @@ The sections below will help you walk through the essentials of installing and r
 == Recorded Video
 Watch the recorded video of the solution pattern, and find below instructions on how to install the demo and run it.
 
-video::D7CsGIaKvhc[youtube, width=800, height=480] 
+video::M1iYa4-U2a0[youtube, width=800, height=480] 
+
+// https://youtu.be/M1iYa4-U2a0
 
 // [#demo-video]
 // === Watch a demonstration
