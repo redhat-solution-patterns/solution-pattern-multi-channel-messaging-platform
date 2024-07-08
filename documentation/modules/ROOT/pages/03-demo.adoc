@@ -121,9 +121,28 @@ Replace the `--server` url with your own cluster API endpoint.
 +
 {empty} +
 
-1. Run the Playbook
+1. Run the Playbook with Docker/Podman
 +
-* With Docker:
+* First, read the note below
++
+[IMPORTANT]
+--
+If your system is SELinux enabled, you'll need to label the project directory to allow docker/podman to access it. Run the command:
+
+[.console-input]
+[source,bash]
+----
+sudo chcon -Rt svirt_sandbox_file_t $PWD
+----
+
+The error you may get if SELinux blocks the process would be similar to:
+
+----
+ERROR! the playbook: ./ansible/install.yaml could not be found
+----
+--
++
+* Then, to run with Docker:
 +
 [.console-input]
 [source,bash]
@@ -135,7 +154,7 @@ quay.io/agnosticd/ee-multicloud:v0.0.11  \
 ./playbooks/install.yml
 ----
 
-* With Podman:
+* Or, run with Podman:
 +
 [.console-input]
 [source,bash]
