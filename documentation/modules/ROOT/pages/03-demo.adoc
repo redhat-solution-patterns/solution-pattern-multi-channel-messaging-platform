@@ -173,6 +173,13 @@ quay.io/agnosticd/ee-multicloud:v0.0.11  \
 
 The guide below will help you to familiarise with the main components in the demo, and how to operate it to demonstrate the characteristics of this _Solution Pattern_.
 
+[IMPORTANT]
+--
+The solution and examples in this chapter utilize integrations based on _Apache Camel K_. While _Camel K_ is still active within upstream _Apache Camel_, Red Hat has shifted its support to a cloud-native approach, focusing on https://camel.apache.org/manual/camel-jbang.html[_Camel JBang_] and https://kaoto.io[_Kaoto_] as primary development tools.
+
+As a result, all Camel K instances in this Solution Pattern will transition to the https://developers.redhat.com/products/redhat-build-of-apache-camel/overview[Red Hat build of Apache Camel], aligning with Red Hat's new strategic direction.
+--
+
 {empty} +
 
 === Quick Topology Overview
